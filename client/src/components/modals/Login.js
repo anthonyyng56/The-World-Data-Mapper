@@ -2,7 +2,7 @@ import React, { useState } 	from 'react';
 import { LOGIN } 			from '../../cache/mutations';
 import { useMutation }    	from '@apollo/client';
 
-import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput } from 'wt-frontend';
+import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const Login = (props) => {
 	const [input, setInput] = useState({ email: '', password: '' });
@@ -26,10 +26,10 @@ const Login = (props) => {
 		}
 		if (data) {
 			props.fetchUser();
-			props.refetchTodos();
 			toggleLoading(false)
 			props.toggleShowLogin(false)
 		};
+		console.log(data.login.name)
 	};
 
 	const handleCancel = () => {
@@ -38,20 +38,35 @@ const Login = (props) => {
 
 
 	return (
-        // Replace div with WModal
-
 		<WModal className="login-modal" visible={true} cover={true} animation="slide-fade-top">
 			<WMHeader className="modal-header" onClose={() => props.toggleShowLogin(false)}>
-				Login
+				Login To Your Account
 			</WMHeader>
 
 			{
 				loading ? <div />
-					: <WMMain className="main-login-modal">
+					: <WMMain>
+						<WRow className="modal-row">
+							<div className="modal-row-content">
+								<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
+								<WInput 
+									className="modal-input" onBlur={updateInput} name='email' labelAnimation="up" 
+									labelText="*Enter Email Here*" wType="outlined" inputType='text' 
 
-						<WInput className="modal-input" onBlur={updateInput} name='email' labelAnimation="up" barAnimation="solid" labelText="Email Address" wType="outlined" inputType='text' />
+								/>
+							</div>
+						</WRow>
 						<div className="modal-spacer">&nbsp;</div>
-						<WInput className="modal-input" onBlur={updateInput} name='password' labelAnimation="up" barAnimation="solid" labelText="Password" wType="outlined" inputType='password' />
+						<WRow className="modal-row">
+							<div className="modal-row-content">
+								<div className="input-names">Password:</div>
+								<WInput 
+									className="modal-input" onBlur={updateInput} name='password' labelAnimation="up" 
+									labelText="*Enter Password Here*" wType="outlined" inputType='password' 
+								/>
+							</div>
+						</WRow>
+						<div className="modal-spacer">&nbsp;</div>
 
 						{
 							showErr ? <div className='modal-error'>
@@ -62,11 +77,15 @@ const Login = (props) => {
 
 					</WMMain>
 			}
-			<WMFooter>
-				<WButton className="modal-button" onClick={handleLogin} span clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
+			<div className="button-layout">
+				<WButton className="modal-button left-button" onClick={handleLogin} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
 					Login
 				</WButton>
-			</WMFooter>
+				<WButton className="modal-button" onClick={handleCancel} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
+					Cancel
+				</WButton>
+			</div>
+			<div className="modal-spacer">&nbsp;</div>
 		</WModal>
 	);
 }

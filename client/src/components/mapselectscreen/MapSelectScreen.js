@@ -7,14 +7,14 @@ import { WLayout, WLHeader, WLMain, WLSide } from 'wt-frontend';
 import WInput from 'wt-frontend/build/components/winput/WInput';
 
 
-const WelcomeScreen = (props) => {
+
+const MapSelectScreen = (props) => {
 
 	return (
 		<div>
-			<img className = "welcome-earth" src={require('../../images/earth.png')}/>
-			<div className="welcome-text">Welcome To The World Data Mapper</div>
+			Hiiii
 		</div>
 	);
 };
 
-export default WelcomeScreen;
+export default MapSelectScreen;

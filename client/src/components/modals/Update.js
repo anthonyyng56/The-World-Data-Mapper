@@ -4,7 +4,7 @@ import { useMutation }    	from '@apollo/client';
 
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
-const CreateAccount = (props) => {
+const Update = (props) => {
 	const [input, setInput] = useState({ email: '', password: '', name: '' });
 	const [loading, toggleLoading] = useState(false);
 	const [Register] = useMutation(REGISTER);
@@ -16,7 +16,7 @@ const CreateAccount = (props) => {
 		setInput(updated);
 	};
 
-	const handleCreateAccount = async (e) => {
+	const handleUpdate = async (e) => {
 		for (let field in input) {
 			if (!input[field]) {
 				alert('All fields must be filled out to register');
@@ -41,13 +41,13 @@ const CreateAccount = (props) => {
 	};
 
 	const handleCancel = () => {
-		props.toggleShowCreate(false);
+		props.toggleShowUpdate(false);
 	}
 
 	return (
 		<WModal className="signup-modal" visible={true} cover={true} animation="slide-fade-top">
-			<WMHeader className="modal-header" onClose={() => props.toggleShowCreate(false)}>
-				Create A New Account
+			<WMHeader className="modal-header" onClose={() => props.toggleShowUpdate(false)}>
+				Enter Updated Account Information
 			</WMHeader>
 
 			{
@@ -86,8 +86,8 @@ const CreateAccount = (props) => {
 					</WMMain>
 			}
 			<div className="button-layout">
-				<WButton className="modal-button left-button" onClick={handleCreateAccount} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
-					Create Account
+				<WButton className="modal-button left-button" onClick={handleUpdate} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
+					Update
 				</WButton>
 				<WButton className="modal-button" onClick={handleCancel} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
 					Cancel
@@ -98,4 +98,4 @@ const CreateAccount = (props) => {
 	);
 }
 
-export default CreateAccount;
+export default Update;

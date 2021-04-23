@@ -1,5 +1,5 @@
 import React, { useState, useEffect } 				from 'react';
-import Welcomescreen 								from './components/welcomescreen/Welcomescreen';
+import WelcomeScreen 								from './components/welcomescreen/WelcomeScreen';
 import { useQuery } 								from '@apollo/client';
 import * as queries 								from './cache/queries';
 import { jsTPS } 									from './utils/jsTPS';
@@ -7,6 +7,7 @@ import { BrowserRouter, Switch, Route, Redirect } 	from 'react-router-dom';
 import Logo 										from './components/navbar/Logo';
 import CreateAccount								from './components/modals/CreateAccount';
 import Login										from './components/modals/Login';
+import Update										from './components/modals/Update';
 import NavbarOptions								from './components/navbar/NavbarOptions';
 import { WNavbar, WSidebar, WNavItem } 				from 'wt-frontend';
 import { WLayout, WLHeader, WLMain, WLSide } 		from 'wt-frontend';
@@ -17,6 +18,7 @@ const App = () => {
 
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
+	const [showUpdate, toggleShowUpdate] 	= useState(false);
 
 
     const { loading, error, data, refetch } = useQuery(queries.GET_DB_USER);
@@ -27,12 +29,6 @@ const App = () => {
 		let { getCurrentUser } = data;
 		if(getCurrentUser !== null) { user = getCurrentUser; }
     }
-
-
-
-
-
-
 
 
 
@@ -73,6 +69,7 @@ const App = () => {
 						<NavbarOptions
 							fetchUser={refetch} user={user} 
 							toggleShowCreate={toggleShowCreate} toggleShowLogin={toggleShowLogin}
+							toggleShowUpdate={toggleShowUpdate}
 						/>
 					</ul>
 				</WNavbar>
@@ -84,7 +81,7 @@ const App = () => {
 					path="/welcome" exact
 					name="welcome" 
 					render={() => 
-						<Welcomescreen tps={transactionStack} fetchUser={refetch} user={user} />
+						<WelcomeScreen tps={transactionStack} fetchUser={refetch} user={user} />
 					} 
 				/>
 				<Route/>
@@ -95,7 +92,11 @@ const App = () => {
 			}
 
 			{
-				showLogin && (<Login fetchUser={refetch} toggleShowLogin={toggleShowLogin} />)
+				showLogin && (<Login fetchUser={refetch} toggleShowLogin={toggleShowLogin}/>)
+			}
+			
+			{
+				showUpdate && (<Update fetchUser={refetch} toggleShowUpdate={toggleShowUpdate}/>)
 			}
 		</BrowserRouter>
 	);

@@ -1,3 +1,8 @@
+@use 'node_modules/wt-frontend/build/global/theme' with (
+    $modal-border: 1px solid rgb(87, 93, 105),
+    // other variable changes here
+);
+
 @use 'node_modules/wt-frontend/build/global/wolfie' as *;
 @use 'node_modules/wt-frontend/build/global/components';
 
@@ -7,14 +12,14 @@
 
 html, body {
     margin: 0;
-    font-family: 'Consolas', sans-serif;
+    font-family: 'Arial', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 .logo {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
     text-align: center;
 }
 
@@ -24,6 +29,8 @@ html, body {
 
 .navbar-options {
     color: white;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .navbar-options:hover {
@@ -33,4 +40,13 @@ html, body {
 .modal-header {
     background-color: #02BFA5;
     color: white;
+}
+
+.welcome-text {
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.modal-error {
+    font-size: 20px;
 }

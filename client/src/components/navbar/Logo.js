@@ -1,10 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 const Logo = (props) => {
     return (
         <div className='logo'>
-            The World 
-            Data Mapper
+            The World Data Mapper
         </div>
     );
 };
