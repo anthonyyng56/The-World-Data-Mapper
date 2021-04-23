@@ -18,7 +18,6 @@ const Login = (props) => {
 	}
 
 	const handleLogin = async (e) => {
-
 		const { loading, error, data } = await Login({ variables: { ...input } });
 		if (loading) { toggleLoading(true) };
 		if (data.login._id === null) {
@@ -29,16 +28,20 @@ const Login = (props) => {
 			props.fetchUser();
 			props.refetchTodos();
 			toggleLoading(false)
-			props.setShowLogin(false)
+			props.toggleShowLogin(false)
 		};
 	};
+
+	const handleCancel = () => {
+		props.toggleShowLogin(false);
+	}
 
 
 	return (
         // Replace div with WModal
 
 		<WModal className="login-modal" visible={true} cover={true} animation="slide-fade-top">
-			<WMHeader className="modal-header" onClose={() => props.setShowLogin(false)}>
+			<WMHeader className="modal-header" onClose={() => props.toggleShowLogin(false)}>
 				Login
 			</WMHeader>
 

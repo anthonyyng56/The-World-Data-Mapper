@@ -1,6 +1,5 @@
 #root {
     height: 100vh;
-    background-color: #d9d6cc;
 }
 
 html {
@@ -11,255 +10,52 @@ body {
     overflow: hidden;
 }
 
-/* ----------------------------- Top-Level Setup ---------------------------- */
-.container-primary {
-    width: 100%;
-    height: 100%;
-    padding: 0 24px;
-}
-
-.container-secondary {
-    width: 100%;
-    height: 100%;
-    display: flex;
-}
-
-.wsidebar {
-    scrollbar-width: thin;
-}
-
-.list-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1.125rem;
-    padding: 12px 24px;
-}
-
-.table-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1.125rem;
-    padding-bottom: 12px;
-    padding-top: 12px;
-    cursor: pointer;
-}
-
-.table {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-}
-
-.table-entries {
-    overflow-y: scroll;
-}
-
-.table-header {
-    width: calc(100% - 56px);
-    box-sizing: border-box;
-    margin-left: 24px;
-    margin-right: 32px;
-}
-
-.table-header-section {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    padding-top: 24px;
-    padding-bottom: 12px;
-}
-
-.table-header-button {
-    padding: 0;
-    padding-top: 13px;
-}
-
-.table-header-button-disabled {
-    padding: 0;
-    padding-top: 13px;
-    
-}
-
-.table-header-buttons {
-    float: right;
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.table-entry-buttons {
-    padding: 0;
-    margin-left: 18px;
-    margin-right: 18px;
-}
-
-.table-entry {
-    padding: 10px 0px;
-}
-
-.button-group {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.sidebar-header {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.sidebar-header-container {
-    min-width: 90%;
-    height: 100%;
-    padding-top: 24px;
-    padding-bottom: 12px;
-    display: flex;
-    justify-content: center;
-    border-bottom: 2px dotted white;
-}
-
-.sidebar-header-name {
-    padding-right: 20px;
-}
-
-.sidebar-options {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    column-gap: 0.5rem;
-}
-
-.sidebar-buttons {
-    padding: 0;
-    scale: 0.95;
-}
-
-.modal-input {
-    width: 100%;
-}
-
-.login-modal {
-    width: 350px;
+.logo {
+    max-width: 109px;
 }
 
 .signup-modal {
-    width: 375px;
+    width: 60%;
+    height: 50%;
 }
 
-.modal-col-gap{
-    column-gap: 24px;
+.modal-input {
+    width: 300px;
+}
+
+.input-names {
+    padding: 10px;
+
+}
+
+.modal-row {
+    display: flex;
+    align-items: center;
+}
+
+.modal-row-content {
+    margin: 0 auto;
+    display: flex;
+}
+
+.modal-header {
+    height: 60px;
+    text-align: center;
+    padding-top: 16px;
+    font-size: 25px;
 }
 
 .modal-button {
-    text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-.modal-spacer {
-    height: 24px;
-}
-
-.main-login-modal {
-    padding: 24px 24px 0px 24px;
-}
-
-.modal-error {
-    height: 24px;
-    align-items: center;
-    display: flex;
-}
-
-.delete-modal {
-    width: fit-content;
-}
-
-.col-spacer {
-    width: 24px;
-    display: inline-block;
-}
-
-.wsidebar {
-    overflow-y: scroll;
-}
-
-.list-item {
+    width: 40%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 12px;
 }
 
-.list-item-edit, .table-input, .table-select {
-    width: 100%;
-}
-
-.list-item-edit-input {
-    padding: 23px 24px 24px 24px !important;
-}
-
-.table-input, .table-select {
-    height: 100%;
+.button-layout {
     display: flex;
-    align-items: center;
 }
 
-.table-input-class {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    //font-size: 1.125rem;
-}
-
-.wLheader {
-    display: flex;
-    align-items: center;
-}
-
-.wnavbar {
-    margin: 0px 8px;
-    padding: 0px 10px;
-    width: 100%;
-    height: 50px;
-}
-
-.wLside-l {
-    margin-left: 8px;
-    margin-bottom: 8px;
-}
-
-.wLmain {
-    margin-right: 8px;
-    margin-bottom: 8px;
-}
-
-.wsidebar {
-    height: calc(100% - 66px);
-}
-
-.wcol-4 {
-    width: inherit;
-}
-
-.signup-modal, .login-modal, .delete-modal {
-    display: block;
-}
-
-.modal-error {
-    padding: 20px 0px;
-}
-
-.undo-redo {
-    padding-top: 13px;
-}
-
-.material-icons {
-    padding: 2px;
-    border-radius: 5px;
-}
-
-.add-button {
-    padding: 0px;
+.create {
+    margin-left: 7%;
+    margin-right: 6%;
 }

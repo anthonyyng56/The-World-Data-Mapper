@@ -4,17 +4,9 @@ const userSchema = new Schema(
 	{
 		_id: {
 			type: ObjectId,
-			required: true
+	 		required: true
 		},
-		firstName: {
-			type: String,
-			required: true
-		},
-		lastName: {
-			type: String,
-			required: true
-		},
-		initials: {
+		name: {
 			type: String,
 			required: true
 		},
@@ -26,9 +18,10 @@ const userSchema = new Schema(
 			type: String,
 			required: true
 		}
-	},
-	{ timestamps: true }
+    },
+    { timestamps: true }
 );
+
 
 const User = model('User', userSchema);
 module.exports = User;
