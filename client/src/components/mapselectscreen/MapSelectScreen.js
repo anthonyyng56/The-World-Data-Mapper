@@ -11,6 +11,7 @@ const MapSelectScreen = (props) => {
 	const [createInput, setCreateInput] = useState({ name: '' });
 
 	const [AddMap] 			= useMutation(mutations.ADD_MAP);
+	const [DeleteMap] 		= useMutation(mutations.DELETE_MAP);
 	const [UpdateMapField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
@@ -51,6 +52,11 @@ const MapSelectScreen = (props) => {
 		toggleShowMapInput(false);
 	};
 
+	const deleteMap = async (_id) => {
+		DeleteMap({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAPS }] });
+		refetch();
+	};
+
 	const updateMapField = async (_id, field, value) => {
 		const {data} = await UpdateMapField({variables: { _id: _id, field: field, value: value }})
 		refetchMaps(refetch);
@@ -70,9 +76,11 @@ const MapSelectScreen = (props) => {
 		<div className="map-select">
 			<h1 className="map-select-header">Your Maps</h1>
 			<div className="maps-container">
-				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} />
+				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} deleteMap={deleteMap} />
 				<div className="create-map-container">
-					<img src={require('../../images/earth-1.png')} className = "map-earth" />
+					<div className="map-earth-container">
+						<img src={require('../../images/earth-1.png')} className = "map-earth" />
+					</div>
 					{
 						showMapInput ? 
 						<div className="create-map-input-container">

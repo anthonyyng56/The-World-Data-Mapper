@@ -71,6 +71,10 @@ html, body {
     font-weight: bold;
 }
 
+.map-entry:hover {
+    background-color: rgb(226, 226, 226);
+}
+
 .create-map-input {
     border: none;
     border-bottom: 1px solid rgb(226, 226, 226);
@@ -79,22 +83,22 @@ html, body {
 }
 
 .material-icons:hover {
-    background-color: rgb(177, 177, 177);
+    background-color: rgb(194, 194, 194);
     cursor: pointer;
 }
 
 .edit {
-    color: rgb(231, 197, 43);
+    color: rgb(240, 206, 56);
 }
 
 .delete {
-    color: rgb(105, 105, 105);
+    color: rgb(85, 85, 85);
 }
 
 .edit-map-name-input {
-    background-color: rgb(226, 226, 226);
+    background-color: rgb(247, 247, 247);
     border-radius: 5px;
-    border: 1px solid rgb(107, 107, 107);
+    border: 2px solid #02BFA5;
     outline: 0;
 }
 
@@ -105,5 +109,17 @@ html, body {
 .create-map-input {
     outline: none;
     border-radius: 5px;
-    border: 1px solid rgb(107, 107, 107);
+    border: 2px solid #02BFA5;
+}
+
+.map-entry-name {
+    color: rgb(85, 85, 85);
+}
+
+.editingMap {
+    background-color: rgb(226, 226, 226);
+}
+
+.map-delete-confirmation-text {
+    color: #D32F2F;
 }

@@ -124,9 +124,17 @@ body {
     text-align:  center;
 }
 
+.map-earth-container {
+    height: 85%;
+    width: 100%;
+}
+
 .map-earth {
-    height: 84%;
+    max-height: 100%;;
     max-width: 100%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .create-map {
@@ -158,6 +166,7 @@ body {
     padding: 5px;
     border-radius: 6px;
     font-size: 30px;
+    user-select: none;
 }
 
 .create-map-input-container {
@@ -171,7 +180,7 @@ body {
     width: 75%;
     float: left;
     font-size: 25px;
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .create-button-container {
@@ -190,6 +199,24 @@ body {
 .edit-map-name-input {
     font-size: 25px;
     margin-left: 5%;
-    padding-left: 10px;
+    padding-left: 5px;
     width: 90%;
 }
+
+.map-delete-confirmation {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.map-delete-confirmation-text {
+    margin-left: 5%;
+    width: 50%;
+    padding-top: 4px;
+}
+
+.map-delete-confirmation-controls {
+    justify-content: center;
+    width: 20%;
+    margin-left: 1px;
+} 
