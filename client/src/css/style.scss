@@ -60,6 +60,12 @@ html, body {
     font-weight: bold;
 }
 
+.map-list {
+    background-color: rgb(214, 214, 214);
+    scrollbar-width: thin;
+}
+
+
 .map-entry {
     font-size: 25px;
     font-weight: bold;
@@ -67,13 +73,14 @@ html, body {
 
 .create-map-input {
     border: none;
-    border-bottom: 1px solid rgb(226, 226, 226) ;
+    border-bottom: 1px solid rgb(226, 226, 226);
     background-color: rgb(245, 245, 245);
     color: rgb(109, 109, 109);
 }
 
 .material-icons:hover {
     background-color: rgb(177, 177, 177);
+    cursor: pointer;
 }
 
 .edit {
@@ -82,4 +89,21 @@ html, body {
 
 .delete {
     color: rgb(105, 105, 105);
+}
+
+.edit-map-name-input {
+    background-color: rgb(226, 226, 226);
+    border-radius: 5px;
+    border: 1px solid rgb(107, 107, 107);
+    outline: 0;
+}
+
+.wnavitem::marker {
+    color: rgb(214, 214, 214);
+}
+
+.create-map-input {
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid rgb(107, 107, 107);
 }

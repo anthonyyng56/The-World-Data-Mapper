@@ -9,7 +9,9 @@ const MapSelectScreen = (props) => {
 	let maps = [];
 	const [showMapInput, toggleShowMapInput] = useState(false);
 	const [createInput, setCreateInput] = useState({ name: '' });
+
 	const [AddMap] 			= useMutation(mutations.ADD_MAP);
+	const [UpdateMapField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
 	if(loading) { console.log(loading, 'loading'); }
@@ -49,6 +51,11 @@ const MapSelectScreen = (props) => {
 		toggleShowMapInput(false);
 	};
 
+	const updateMapField = async (_id, field, value) => {
+		const {data} = await UpdateMapField({variables: { _id: _id, field: field, value: value }})
+		refetchMaps(refetch);
+	}
+
 	const handleHideCreateInput = () => {
 		toggleShowMapInput(false)
 	}
@@ -63,7 +70,7 @@ const MapSelectScreen = (props) => {
 		<div className="map-select">
 			<h1 className="map-select-header">Your Maps</h1>
 			<div className="maps-container">
-				<MapList maps={maps} />
+				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} />
 				<div className="create-map-container">
 					<img src={require('../../images/earth-1.png')} className = "map-earth" />
 					{

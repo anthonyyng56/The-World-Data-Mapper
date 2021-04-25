@@ -4,7 +4,7 @@ import { useMutation }    	from '@apollo/client';
 import { useHistory } from "react-router-dom";
 
 
-import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
+import { WModal, WMHeader, WMMain, WButton, WInput, WRow } from 'wt-frontend';
 
 const Login = (props) => {
 	const [input, setInput] = useState({ email: '', password: '' });

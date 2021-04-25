@@ -115,9 +115,7 @@ body {
 .map-list {
     width: 50%;
     height: 100%;
-    background-color: rgb(206, 206, 206);
     overflow-y: scroll;
-    scrollbar-width: thin;
 }
 
 .create-map-container {
@@ -141,15 +139,15 @@ body {
     align-items: center;
     width: 100%;
     padding: 20px 0px;
-    padding-left: 25px;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: flex;
 }
 
 .map-entry-name {
-    width: 75%;
-    padding-right: 20px;
+    width: 70%;
+    margin-left: 5%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .map-entry-controls {
@@ -187,4 +185,11 @@ body {
     height: 50%;
     width: 100%;
     margin-bottom: 1px;
+}
+
+.edit-map-name-input {
+    font-size: 25px;
+    margin-left: 5%;
+    padding-left: 10px;
+    width: 90%;
 }

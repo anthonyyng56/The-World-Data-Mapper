@@ -40,5 +40,12 @@ module.exports = {
 			if(deleted) return true;
 			else return false;
 		},
+		updateMapField: async (_, args) => {
+			const { field, value, _id } = args;
+			const objectId = new ObjectId(_id);
+			const updated = await Map.updateOne({_id: objectId}, {[field]: value});
+			if(updated) return value;
+			else return "";
+		},
 	}
 }
