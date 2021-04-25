@@ -70,29 +70,29 @@ module.exports = {
 			@param 	 {object} res - response object containing the current access/refresh tokens  
 			@returns {object} the user object or an object with an error message
 		**/
-		// update: async (_, args, { res }) => {
-		// 	const { email, password, name } = args;
-		// 	const alreadyRegistered = await User.findOne({email: email});
-		// 	if(alreadyRegistered) {
-		// 		console.log('User with that email already registered.');
-		// 		return(new User({
-		// 			_id: '',
-		// 			name: '',
-		// 			email: 'already exists', 
-		// 			password: ''}));
-		// 	}
-		// 	const hashed = await bcrypt.hash(password, 10);
-		// 	const _id = new ObjectId();
-		// 	const user = new User({
-		// 		_id: _id,
-		// 		name: name,
-		// 		email: email, 
-		// 		password: hashed,
-		// 	})
-		// 	const saved = await user.save();
-		// 	// NOT are automatically logged in on account creation.
-		// 	return user;
-		// },
+		update: async (_, args, { res }) => {
+			const { email, password, name } = args;
+			const alreadyRegistered = await User.findOne({email: email});
+			if(alreadyRegistered) {
+				console.log('User with that email already registered.');
+				return(new User({
+					_id: '',
+					name: '',
+					email: 'already exists', 
+					password: ''}));
+			}
+			const hashed = await bcrypt.hash(password, 10);
+			const _id = new ObjectId();
+			const user = new User({
+				_id: _id,
+				name: name,
+				email: email, 
+				password: hashed,
+			})
+			const saved = await user.save();
+			// NOT are automatically logged in on account creation.
+			return user;
+		},
 		/** 
 			@param 	 {object} res - response object containing the current access/refresh tokens  
 			@returns {boolean} true 

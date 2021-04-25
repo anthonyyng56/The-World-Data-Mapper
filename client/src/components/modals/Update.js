@@ -58,8 +58,8 @@ const Update = (props) => {
 								<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:</div>
 							
 								<WInput 
-									className="modal-input" onBlur={updateInput} name="name" labelAnimation="up" 
-									labelText="*Enter Name Here*" wType="outlined" inputType="text" 
+									className="modal-input" onBlur={updateInput} name="name" labelAnimation="up" defaultValue={props.user.name}
+									labelText="*Enter Updated Name Here*" wType="outlined" inputType="text" 
 								/>
 							</div>
 						</WRow>
@@ -68,8 +68,8 @@ const Update = (props) => {
 							<div className="modal-row-content">
 								<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
 								<WInput 
-									className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
-									labelText="*Enter Email Here*" wType="outlined" inputType="text" 
+									className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" defaultValue={props.user.email}
+									labelText="*Enter Updated Email Here*" wType="outlined" inputType="text" 
 								/>
 							</div>
 						</WRow>
@@ -78,8 +78,8 @@ const Update = (props) => {
 							<div className="modal-row-content">
 								<div className="input-names">Password:</div>
 								<WInput 
-									className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
-									labelText="*Enter Password Here*" wType="outlined" inputType="password" 
+									className="modal-input" onBlur={updateInput} name="password" labelAnimation="up"
+									labelText="*Enter Updated Password Here*" wType="outlined" inputType="password"
 								/>
 							</div>
 						</WRow>

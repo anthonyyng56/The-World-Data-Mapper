@@ -20,8 +20,21 @@ export const REGISTER = gql`
 		}
 	}
 `;
+
 export const LOGOUT = gql`
 	mutation Logout {
 		logout 
+	}
+`;
+
+export const ADD_MAP = gql`
+	mutation AddMap($map: MapInput!) {
+		addMap(map: $map) 
+	}
+`;
+
+export const DELETE_MAP = gql`
+	mutation DeleteMap($_id: String!) {
+		deleteMap(_id: $_id)
 	}
 `;

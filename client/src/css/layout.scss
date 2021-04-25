@@ -60,16 +60,25 @@ body {
     margin-right: 6%;
 }
 
+.welcome-screen {
+    height: 100%;
+}
+
+.welcome-container {
+    height: 60%;
+}
+
 .welcome-text {
     width: 600px;
     text-align: center;
     margin: 0 auto;
+    height: 40%;
 }
 
 .welcome-earth {
     padding-top: 2%;
     padding-bottom:2%; 
-    max-width: 40%;
+    height: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -78,4 +87,104 @@ body {
 .modal-error {
     text-align: center;
     padding-top: 30px;
+}
+
+.map-select {
+    height: 75%;
+    width: 65%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -47%);
+}
+
+.map-select-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    height: 12%;
+}
+
+.maps-container {
+    height: 88%;
+    width: 100%;
+    display: flex;
+}
+
+.map-list {
+    width: 50%;
+    height: 100%;
+    background-color: rgb(206, 206, 206);
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
+.create-map-container {
+    width: 50%;
+    height: 100%;
+    text-align:  center;
+}
+
+.map-earth {
+    height: 84%;
+    max-width: 100%;
+}
+
+.create-map {
+    height: 15.3%;
+    width: 100%;
+    justify-content: center;
+}
+
+.map-entry {
+    align-items: center;
+    width: 100%;
+    padding: 20px 0px;
+    padding-left: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+}
+
+.map-entry-name {
+    width: 75%;
+    padding-right: 20px;
+}
+
+.map-entry-controls {
+    width: 25%;
+}
+
+.material-icons {
+    padding: 5px;
+    border-radius: 6px;
+    font-size: 30px;
+}
+
+.create-map-input-container {
+    height: 15.3%;
+    width: 100%;
+    display: flex;
+}
+
+.create-map-input {
+    height: 100%;
+    width: 75%;
+    float: left;
+    font-size: 25px;
+    padding-left: 20px;
+}
+
+.create-button-container {
+    height: 100%;
+    width: 25%;
+}
+
+.create-map-buttons {
+    display: flex;
+    justify-content: center;
+    height: 50%;
+    width: 100%;
+    margin-bottom: 1px;
 }

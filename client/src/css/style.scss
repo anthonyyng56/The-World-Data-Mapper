@@ -37,7 +37,7 @@ html, body {
     color: black;
 }
 
-.modal-header {
+.modal-header, .map-select-header {
     background-color: #02BFA5;
     color: white;
 }
@@ -49,4 +49,37 @@ html, body {
 
 .modal-error {
     font-size: 20px;
+}
+
+.map-select {
+    background-color: rgb(226, 226, 226);
+}
+
+.create-map {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.map-entry {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.create-map-input {
+    border: none;
+    border-bottom: 1px solid rgb(226, 226, 226) ;
+    background-color: rgb(245, 245, 245);
+    color: rgb(109, 109, 109);
+}
+
+.material-icons:hover {
+    background-color: rgb(177, 177, 177);
+}
+
+.edit {
+    color: rgb(231, 197, 43);
+}
+
+.delete {
+    color: rgb(105, 105, 105);
 }

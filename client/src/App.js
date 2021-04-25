@@ -1,5 +1,6 @@
 import React, { useState, useEffect } 				from 'react';
 import WelcomeScreen 								from './components/welcomescreen/WelcomeScreen';
+import MapSelectScreen 								from './components/mapselectscreen/MapSelectScreen';
 import { useQuery } 								from '@apollo/client';
 import * as queries 								from './cache/queries';
 import { jsTPS } 									from './utils/jsTPS';
@@ -9,8 +10,8 @@ import CreateAccount								from './components/modals/CreateAccount';
 import Login										from './components/modals/Login';
 import Update										from './components/modals/Update';
 import NavbarOptions								from './components/navbar/NavbarOptions';
-import { WNavbar, WSidebar, WNavItem } 				from 'wt-frontend';
-import { WLayout, WLHeader, WLMain, WLSide } 		from 'wt-frontend';
+import { WNavbar, WNavItem } 				from 'wt-frontend';
+import { WLHeader } 		from 'wt-frontend';
  
 const App = () => {
 	let user = null;
@@ -20,14 +21,15 @@ const App = () => {
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showUpdate, toggleShowUpdate] 	= useState(false);
 
-
     const { loading, error, data, refetch } = useQuery(queries.GET_DB_USER);
 
     if(error) { console.log(error); }
 	if(loading) { console.log(loading); }
 	if(data) { 
 		let { getCurrentUser } = data;
-		if(getCurrentUser !== null) { user = getCurrentUser; }
+		if(getCurrentUser !== null) { 
+			user = getCurrentUser; 
+		}
     }
 
 
@@ -57,7 +59,6 @@ const App = () => {
 
 	return(
 		<BrowserRouter>
-
 			<WLHeader>
 				<WNavbar color="colored">
 					<ul>
@@ -69,7 +70,7 @@ const App = () => {
 						<NavbarOptions
 							fetchUser={refetch} user={user} 
 							toggleShowCreate={toggleShowCreate} toggleShowLogin={toggleShowLogin}
-							toggleShowUpdate={toggleShowUpdate}
+							toggleShowUpdate={toggleShowUpdate} 
 						/>
 					</ul>
 				</WNavbar>
@@ -78,13 +79,20 @@ const App = () => {
 			<Switch>
 				<Redirect exact from="/" to={ {pathname: "/welcome"} } />
 				<Route 
-					path="/welcome" exact
+					exact path="/welcome"
 					name="welcome" 
 					render={() => 
-						<WelcomeScreen tps={transactionStack} fetchUser={refetch} user={user} />
+						<WelcomeScreen fetchUser={refetch} user={user} />
 					} 
 				/>
-				<Route/>
+				<Route 
+					exact path="/maps"
+					name="maps" 
+					render={() => 
+						<MapSelectScreen tps={transactionStack} fetchUser={refetch} user={user} />
+					} 
+				/>
+			
 			</Switch>
 
 			{
@@ -92,11 +100,11 @@ const App = () => {
 			}
 
 			{
-				showLogin && (<Login fetchUser={refetch} toggleShowLogin={toggleShowLogin}/>)
+				showLogin && (<Login fetchUser={refetch} toggleShowLogin={toggleShowLogin} />)
 			}
 			
 			{
-				showUpdate && (<Update fetchUser={refetch} toggleShowUpdate={toggleShowUpdate}/>)
+				showUpdate && (<Update fetchUser={refetch} toggleShowUpdate={toggleShowUpdate} user={user}/>)
 			}
 		</BrowserRouter>
 	);
