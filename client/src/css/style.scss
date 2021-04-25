@@ -6,10 +6,6 @@
 @use 'node_modules/wt-frontend/build/global/wolfie' as *;
 @use 'node_modules/wt-frontend/build/global/components';
 
-:root {
-    
-}
-
 html, body {
     margin: 0;
     font-family: 'Arial', sans-serif;
@@ -21,6 +17,11 @@ html, body {
     font-weight: bold;
     font-size: 20px;
     text-align: center;
+}
+
+.logo:hover {
+    cursor: pointer;
+    color: rgb(196, 196, 196);
 }
 
 .input-names {

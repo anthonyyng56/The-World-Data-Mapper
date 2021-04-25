@@ -1,9 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 
 const Logo = (props) => {
+    const history = useHistory();
+
+    const goHome = () => {
+        history.push("/maps");
+    }
     return (
-        <div className='logo'>
+        <div className='logo' onClick={goHome}>
             The World Data Mapper
         </div>
     );
