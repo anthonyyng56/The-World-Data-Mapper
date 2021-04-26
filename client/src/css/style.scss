@@ -124,3 +124,15 @@ html, body {
 .map-delete-confirmation-text {
     color: #D32F2F;
 }
+
+.update-input {
+    font-size: 18px;
+    padding-left: 8px;
+    border-radius: 5px;
+    outline: 0;
+    border: 1px solid rgb(175, 175, 175);
+}
+
+.password::placeholder {
+    font-weight: bold;
+}

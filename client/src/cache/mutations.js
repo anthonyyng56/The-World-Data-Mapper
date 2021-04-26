@@ -21,6 +21,12 @@ export const REGISTER = gql`
 	}
 `;
 
+export const UPDATE = gql`
+	mutation Update($_id: String!, $email: String!, $password: String!, $name: String!) {
+		update(_id: $_id, email: $email, password: $password, name: $name) 
+	}
+`;
+
 export const LOGOUT = gql`
 	mutation Logout {
 		logout 

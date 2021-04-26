@@ -10,6 +10,8 @@ const Login = (props) => {
 	const [input, setInput] = useState({ email: '', password: '' });
 	const [loading, toggleLoading] = useState(false);
 	const [showErr, displayErrorMsg] = useState(false);
+	const [showPassword, toggleShowPassword] = useState(false);
+	const passwordType = showPassword ? 'text' : 'password';
 	const errorMsg = "Email/Password not found.";
 	const [Login] = useMutation(LOGIN);
 	const history = useHistory();
@@ -39,6 +41,9 @@ const Login = (props) => {
 		props.toggleShowLogin(false);
 	}
 
+	const handleCheckShowPassword = () => {
+		toggleShowPassword(!showPassword);
+	}
 
 	return (
 		<WModal className="login-modal" visible={true} cover={true} animation="slide-fade-top">
@@ -65,12 +70,14 @@ const Login = (props) => {
 								<div className="input-names">Password:</div>
 								<WInput 
 									className="modal-input" onBlur={updateInput} name='password' labelAnimation="up" 
-									labelText="*Enter Password Here*" wType="outlined" inputType='password' 
+									labelText="*Enter Password Here*" wType="outlined" inputType={passwordType} 
 								/>
 							</div>
 						</WRow>
-						<div className="modal-spacer">&nbsp;</div>
-
+						<div className='show-password'>
+							<input type="checkbox" id="create-password" name="password" onClick={handleCheckShowPassword}/>
+							<div>Show password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+						</div>
 						{
 							showErr ? <div className='modal-error'>
 								{errorMsg}

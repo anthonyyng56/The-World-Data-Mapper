@@ -1,43 +1,40 @@
 import React, { useState } 	from 'react';
-import { REGISTER }			from '../../cache/mutations';
+import { UPDATE }			from '../../cache/mutations';
 import { useMutation }    	from '@apollo/client';
+import { useHistory } from "react-router-dom";
 
-import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
+import { WModal, WMHeader, WMMain, WButton, WRow } from 'wt-frontend';
 
 const Update = (props) => {
-	const [input, setInput] = useState({ email: '', password: '', name: '' });
-	const [loading, toggleLoading] = useState(false);
-	const [Register] = useMutation(REGISTER);
+	const [input, setInput] = useState({ _id: props.user._id, email: props.user.email, password: '', name: props.user.name });
+	const [showPassword, toggleShowPassword] = useState(false);
+	const passwordType = showPassword ? 'text' : 'password';
+	const [showErr, displayErrorMsg] = useState(false);
+	const errorMsg = "All fields must be filled out to update account information.";
+	const [Update] = useMutation(UPDATE);
+	const history = useHistory();
 
-	
 	const updateInput = (e) => {
 		const { name, value } = e.target;
 		const updated = { ...input, [name]: value };
 		setInput(updated);
 	};
 
+	const handleCheckShowPassword = () => {
+		toggleShowPassword(!showPassword);
+	}
+
 	const handleUpdate = async (e) => {
 		for (let field in input) {
 			if (!input[field]) {
-				alert('All fields must be filled out to register');
+				displayErrorMsg(true);
 				return;
 			}
 		}
-		const { loading, error, data } = await Register({ variables: { ...input } });
-		if (loading) { toggleLoading(true) };
-		if (error) { return `Error: ${error.message}` };
-		if (data) {
-			console.log(data)
-			toggleLoading(false);
-			if(data.register.email === 'already exists') {
-				alert('User with that email already registered');
-			}
-			else {
-				props.fetchUser();
-			}
-			props.toggleShowCreate(false);
-
-		};
+		const { data } = await Update({ variables: { ...input } });
+		props.toggleShowUpdate(false);
+		props.fetchUser();
+		history.push("/maps");
 	};
 
 	const handleCancel = () => {
@@ -49,42 +46,47 @@ const Update = (props) => {
 			<WMHeader className="modal-header" onClose={() => props.toggleShowUpdate(false)}>
 				Enter Updated Account Information
 			</WMHeader>
-
-			{
-				loading ? <div />
-					: <WMMain>
-						<WRow className="modal-row">
-							<div className="modal-row-content">
-								<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:</div>
-							
-								<WInput 
-									className="modal-input" onBlur={updateInput} name="name" labelAnimation="up" defaultValue={props.user.name}
-									labelText="*Enter Updated Name Here*" wType="outlined" inputType="text" 
-								/>
-							</div>
-						</WRow>
-						<div className="modal-spacer">&nbsp;</div>
-						<WRow className="modal-row">
-							<div className="modal-row-content">
-								<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
-								<WInput 
-									className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" defaultValue={props.user.email}
-									labelText="*Enter Updated Email Here*" wType="outlined" inputType="text" 
-								/>
-							</div>
-						</WRow>
-						<div className="modal-spacer">&nbsp;</div>
-						<WRow className="modal-row">
-							<div className="modal-row-content">
-								<div className="input-names">Password:</div>
-								<WInput 
-									className="modal-input" onBlur={updateInput} name="password" labelAnimation="up"
-									labelText="*Enter Updated Password Here*" wType="outlined" inputType="password"
-								/>
-							</div>
-						</WRow>
-					</WMMain>
-			}
+			<WMMain>
+				<WRow className="modal-row">
+					<div className="modal-row-content">
+						<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:</div>
+						<input 
+							className="modal-input update-input" onBlur={updateInput} name="name" defaultValue={props.user.name}
+							placeholder="*Enter Updated Name Here*" type="text" 
+						/>
+					</div>
+				</WRow>
+				<div className="modal-spacer">&nbsp;</div>
+				<WRow className="modal-row">
+					<div className="modal-row-content">
+						<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
+						<input 
+							className="modal-input update-input" onBlur={updateInput} name="email" defaultValue={props.user.email}
+							placeholder="*Enter Updated Email Here*" type="text" 
+						/>
+					</div>
+				</WRow>
+				<div className="modal-spacer">&nbsp;</div>
+				<WRow className="modal-row">
+					<div className="modal-row-content">
+						<div className="input-names">Password:</div>
+						<input 
+							className="modal-input update-input password" onBlur={updateInput} name="password"
+							placeholder="**********" type={passwordType}
+						/>
+					</div>
+				</WRow>
+				<div className='show-password'>
+					<input type="checkbox" id="create-password" name="password" onClick={handleCheckShowPassword}/>
+					<div>Show password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				</div>
+				{
+					showErr ? <div className='modal-error'>
+						{errorMsg}
+					</div>
+						: <div className='modal-error'>&nbsp;</div>
+				}
+			</WMMain>
 			<div className="button-layout">
 				<WButton className="modal-button left-button" onClick={handleUpdate} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
 					Update

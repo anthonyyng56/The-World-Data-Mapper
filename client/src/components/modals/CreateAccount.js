@@ -7,9 +7,13 @@ import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 
 const CreateAccount = (props) => {
 	const [input, setInput] = useState({ email: '', password: '', name: '' });
 	const [loading, toggleLoading] = useState(false);
+	const [showPassword, toggleShowPassword] = useState(false);
+	const [showErr1, displayErrorMsg1] = useState(false);
+	const [showErr2, displayErrorMsg2] = useState(false);
 	const [Register] = useMutation(REGISTER);
-
-	
+	const errorMsg1 = "All fields must be filled out to register.";
+	const errorMsg2 = "User with that email already registered.";
+	const passwordType = showPassword ? 'text' : 'password';
 	const updateInput = (e) => {
 		const { name, value } = e.target;
 		const updated = { ...input, [name]: value };
@@ -17,9 +21,11 @@ const CreateAccount = (props) => {
 	};
 
 	const handleCreateAccount = async (e) => {
+		displayErrorMsg1(false);
+		displayErrorMsg2(false);
 		for (let field in input) {
 			if (!input[field]) {
-				alert('All fields must be filled out to register');
+				displayErrorMsg1(true);
 				return;
 			}
 		}
@@ -30,15 +36,18 @@ const CreateAccount = (props) => {
 			console.log(data)
 			toggleLoading(false);
 			if(data.register.email === 'already exists') {
-				alert('User with that email already registered');
+				displayErrorMsg2(true);
+				return;
 			}
 			else {
 				props.fetchUser();
 			}
-			props.toggleShowCreate(false);
-
 		};
 	};
+
+	const handleCheckShowPassword = () => {
+		toggleShowPassword(!showPassword);
+	}
 
 	const handleCancel = () => {
 		props.toggleShowCreate(false);
@@ -55,7 +64,7 @@ const CreateAccount = (props) => {
 					: <WMMain>
 						<WRow className="modal-row">
 							<div className="modal-row-content">
-								<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:</div>
+								<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:</div>
 							
 								<WInput 
 									className="modal-input" onBlur={updateInput} name="name" labelAnimation="up" 
@@ -79,10 +88,23 @@ const CreateAccount = (props) => {
 								<div className="input-names">Password:</div>
 								<WInput 
 									className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
-									labelText="*Enter Password Here*" wType="outlined" inputType="password" 
+									labelText="*Enter Password Here*" wType="outlined" inputType={passwordType} 
 								/>
 							</div>
 						</WRow>
+						<div className='show-password'>
+							<input type="checkbox" id="create-password" name="password" onClick={handleCheckShowPassword}/>
+							<div>Show password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+						</div>
+						{
+							showErr1 ? <div className='modal-error'>
+								{errorMsg1}
+							</div> : 
+							showErr2 ? <div className='modal-error'>
+								{errorMsg2}
+							</div> : 
+							<div className='modal-error'>&nbsp;</div>
+						}
 					</WMMain>
 			}
 			<div className="button-layout">

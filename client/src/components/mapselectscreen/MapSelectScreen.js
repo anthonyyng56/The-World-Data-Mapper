@@ -1,4 +1,4 @@
-import React, { useState } 	from 'react';
+import React, { useState, useEffect } 	from 'react';
 import MapList 							from './MapList.js'
 import { WButton} 				from 'wt-frontend';
 import { GET_DB_MAPS } 				from '../../cache/queries';
@@ -25,6 +25,10 @@ const MapSelectScreen = (props) => {
 			maps = data.getAllMaps;
 		}
 	}
+
+	useEffect(() => {
+        refetch();
+    }, []);
 
 	const createNewMap = async () => {
 		if (createInput.name === '') {

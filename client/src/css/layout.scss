@@ -14,9 +14,14 @@ body {
     max-width: 123px;
 }
 
-.signup-modal, .login-modal {
+.signup-modal {
     width: 60%;
-    height: 50%;
+    height: 70%;
+}
+
+.login-modal {
+    width: 60%;
+    height: 60%;
 }
 
 .modal-input {
@@ -25,7 +30,6 @@ body {
 
 .input-names {
     padding: 10px;
-
 }
 
 .modal-row {
@@ -36,6 +40,12 @@ body {
 .modal-row-content {
     margin: 0 auto;
     display: flex;
+}
+
+.show-password {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
 }
 
 .modal-header {
@@ -159,7 +169,11 @@ body {
 }
 
 .map-entry-controls {
-    width: 25%;
+    width: 10%;
+}
+
+.edit, .delete {
+    float: right;
 }
 
 .material-icons {
