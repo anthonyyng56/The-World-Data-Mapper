@@ -10,14 +10,38 @@ const mapSchema = new Schema(
 			type: Number,
 			required: true
 		},
-		name: {
-			type: String,
-			required: true
-		},
 		owner: {
 			type: String,
 			required: true
 		},
+		name: {
+			type: String,
+			required: true
+		},
+		capital: {
+			type: String,
+			required: true
+		},
+		leader: {
+			type: String,
+			required: true
+		},
+		landmarks: {
+			type: [String],
+			required: true
+		},
+		subregions_id: {
+			type: [String],
+			required: true
+		},
+		ancestors_id: {
+			type: [String],
+			required: true
+		},
+		ancestors: {
+			type: [String],
+			required: true
+		}
 	},
 	{ timestamps: true }
 );

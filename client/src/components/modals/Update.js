@@ -34,7 +34,7 @@ const Update = (props) => {
 		const { data } = await Update({ variables: { ...input } });
 		props.toggleShowUpdate(false);
 		props.fetchUser();
-		history.push("/maps");
+		history.push("/home");
 	};
 
 	const handleCancel = () => {

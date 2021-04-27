@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { WButton } from 'wt-frontend';
+import { useHistory } from "react-router-dom";
 
 const MapEntry = (props) => {
     const [editMapName, toggleEditMapName] = useState(false);
     const [deleteMapConfirmation, toggleDeleteMapConfirmation] = useState(false);
-
+    const history = useHistory();
     const editingMap = editMapName || deleteMapConfirmation ? ' editingMap ' : '';
 
     const handleEditMapName = () => {
@@ -15,7 +16,11 @@ const MapEntry = (props) => {
     const handleUpdateMapName = (e) => {
         toggleEditMapName(false);
         if (props.name !== e.target.value) {
-            props.updateMapField(props._id, 'name', e.target.value);
+            if (e.target.value.trim() === '') {
+                props.updateMapField(props._id, 'name', 'Untitled Map');
+            } else {
+                props.updateMapField(props._id, 'name', e.target.value);
+            }
         }
     }
 
@@ -31,7 +36,12 @@ const MapEntry = (props) => {
     const handleDeleteMap = () => {
         toggleDeleteMapConfirmation(false);
         props.deleteMap(props._id);
-        
+    }
+
+    const handleSelectMap = () => {
+        props.setCurrentRegion(props.name);
+        props.setCurrentRegion_id(props._id);
+		history.push("/region/" + props._id);
     }
 
     return (
@@ -54,8 +64,10 @@ const MapEntry = (props) => {
                             
                     </div>
                 </> :
-                <>
-                    <div className="map-entry-name">{props.name}</div>
+                <>  
+                    <div className="map-entry-name-container" onClick={handleSelectMap}>
+                        <div className="map-entry-name">{props.name}</div>
+                    </div>
                     <div className="map-entry-controls">
                         <i className="material-icons edit" onClick={handleEditMapName}>edit</i>
                     </div>

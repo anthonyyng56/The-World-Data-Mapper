@@ -1,19 +1,20 @@
 import React, { useState, useEffect } 	from 'react';
 import MapList 							from './MapList.js'
-import { WButton} 				from 'wt-frontend';
-import { GET_DB_MAPS } 				from '../../cache/queries';
+import { WButton} 						from 'wt-frontend';
+import { GET_DB_MAPS } 					from '../../cache/queries';
 import { useMutation, useQuery } 		from '@apollo/client';
 import * as mutations 					from '../../cache/mutations';
+import { useHistory }					from "react-router-dom";
 
 const MapSelectScreen = (props) => {
 	let maps = [];
 	const [showMapInput, toggleShowMapInput] = useState(false);
 	const [createInput, setCreateInput] = useState({ name: '' });
-
+	
+	const history = useHistory();
 	const [AddMap] 			= useMutation(mutations.ADD_MAP);
 	const [DeleteMap] 		= useMutation(mutations.DELETE_MAP);
 	const [UpdateMapField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
-
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
@@ -31,8 +32,8 @@ const MapSelectScreen = (props) => {
     }, []);
 
 	const createNewMap = async () => {
-		if (createInput.name === '') {
-			alert("Please provide a name for your map");
+		if (createInput.name.trim() === '') {
+			alert("Please provide a non-empty name for your map");
 			return;
 		}
 		const length = maps.length
@@ -47,13 +48,16 @@ const MapSelectScreen = (props) => {
 		let map = {
 			_id: '',
 			id: id,
-			name: createInput.name,
 			owner: props.user._id,
+			name: createInput.name,
 		}
 		const {data} = await AddMap({ variables: { map: map }});
 		map._id = data.addMap;
 		refetch();
 		toggleShowMapInput(false);
+		props.setCurrentRegion(map.name);
+		props.setCurrentRegion_id(map._id);
+		history.push("/region/" + map._id);
 	};
 
 	const deleteMap = async (_id) => {
@@ -80,7 +84,7 @@ const MapSelectScreen = (props) => {
 		<div className="map-select">
 			<h1 className="map-select-header">Your Maps</h1>
 			<div className="maps-container">
-				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} deleteMap={deleteMap} />
+				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} deleteMap={deleteMap} setCurrentRegion={props.setCurrentRegion} setCurrentRegion_id={props.setCurrentRegion_id}/>
 				<div className="create-map-container">
 					<div className="map-earth-container">
 						<img src={require('../../images/earth-1.png')} className = "map-earth" />

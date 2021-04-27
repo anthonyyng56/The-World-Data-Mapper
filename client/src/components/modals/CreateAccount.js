@@ -42,6 +42,7 @@ const CreateAccount = (props) => {
 			else {
 				props.fetchUser();
 			}
+			props.toggleShowCreate(false);
 		};
 	};
 

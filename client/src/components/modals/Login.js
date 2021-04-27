@@ -33,7 +33,7 @@ const Login = (props) => {
 			props.fetchUser();
 			toggleLoading(false)
 			props.toggleShowLogin(false)
-			history.push("/maps");
+			history.push("/home");
 		};
 	};
 

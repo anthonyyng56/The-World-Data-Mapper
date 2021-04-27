@@ -1,6 +1,7 @@
 import React, { useState, useEffect } 				from 'react';
 import WelcomeScreen 								from './components/welcomescreen/WelcomeScreen';
 import MapSelectScreen 								from './components/mapselectscreen/MapSelectScreen';
+import RegionSpreadsheetScreen 						from './components/regionspreadsheetscreen/RegionSpreadsheetScreen';
 import { useQuery } 								from '@apollo/client';
 import * as queries 								from './cache/queries';
 import { jsTPS } 									from './utils/jsTPS';
@@ -19,7 +20,8 @@ const App = () => {
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showUpdate, toggleShowUpdate] 	= useState(false);
-
+	const [currentRegion, setCurrentRegion] = useState('')
+	const [currentRegion_id, setCurrentRegion_id] = useState('')
     const { loading, error, data, refetch } = useQuery(queries.GET_DB_USER);
 
     if(error) { console.log(error); }
@@ -62,7 +64,7 @@ const App = () => {
 				<WNavbar color="colored">
 					<ul>
 						<WNavItem>
-							<Logo className='logo' />
+							<Logo className='logo' setCurrentRegion={setCurrentRegion} setCurrentRegion_id={setCurrentRegion_id}/>
 						</WNavItem>
 					</ul>
 					<ul>
@@ -85,13 +87,19 @@ const App = () => {
 					} 
 				/>
 				<Route 
-					exact path="/maps"
-					name="maps" 
+					exact path="/home"
+					name="home" 
 					render={() => 
-						<MapSelectScreen tps={transactionStack} fetchUser={refetch} user={user} />
+						<MapSelectScreen fetchUser={refetch} user={user} setCurrentRegion={setCurrentRegion} setCurrentRegion_id={setCurrentRegion_id} />
 					} 
 				/>
-			
+				<Route 
+					path="/region/:id"
+					name="region" 
+					render={() => 
+						<RegionSpreadsheetScreen tps={transactionStack} fetchUser={refetch} user={user} currentRegion={currentRegion} currentRegion_id={currentRegion_id} />
+					} 
+				/>
 			</Switch>
 
 			{

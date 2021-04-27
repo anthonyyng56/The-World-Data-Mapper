@@ -117,6 +117,10 @@ html, body {
     color: rgb(85, 85, 85);
 }
 
+.map-entry-name-container:hover {
+    cursor: pointer;
+}
+
 .editingMap {
     background-color: rgb(226, 226, 226);
 }
@@ -134,5 +138,52 @@ html, body {
 }
 
 .password::placeholder {
+    opacity: 1;
     font-weight: bold;
+}
+
+.region-spreadsheet-header {
+    background-color: #02BFA5;
+}
+
+.region-spreadsheet {
+    background-color: rgb(214, 214, 214);
+}
+
+.region-spreadsheet-name-container {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.region-spreadsheet-name {
+    color: #5597BC;
+}
+
+.region-spreadsheet-header {
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+}
+
+.header-col {
+    background-color: #06d1b6;
+    cursor: pointer;
+}
+
+.spreadsheet-entry {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.entry-col {
+    border: 1px solid rgb(187, 187, 187);
+}
+
+.entry-col:hover {
+    background-color: rgb(230, 230, 230);
+    cursor: pointer;
+}
+
+.region-spreadsheet-list {
+    scrollbar-width: thin;
 }

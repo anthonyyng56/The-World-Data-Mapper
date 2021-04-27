@@ -5,7 +5,9 @@ const Logo = (props) => {
     const history = useHistory();
 
     const goHome = () => {
-        history.push("/maps");
+        props.setCurrentRegion('');
+        props.setCurrentRegion_id('');
+        history.push("/home");
     }
     return (
         <div className='logo' onClick={goHome}>
