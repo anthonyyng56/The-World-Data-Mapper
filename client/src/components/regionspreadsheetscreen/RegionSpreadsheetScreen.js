@@ -42,14 +42,14 @@ const RegionSpreadsheetScreen = (props) => {
 				</WRow>	
 			</div>
 			<div className="region-spreadsheet-header">
-				<div className="header-col col-1">Name</div>
+				<div className="header-col col-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name&nbsp;</div>
 				<div className="header-col col-1">Capital</div>
 				<div className="header-col col-1">Leader</div>
 				<div className="header-col col-2">Flag</div>
-				<div className="header-col col-3">Landmarks&nbsp;&nbsp;</div>
+				<div className="header-col col-3">Landmarks</div>
 			</div>
 			<div className="region-spreadsheet">
-				<RegionSpreadsheetList subregions={subregions} />
+				<RegionSpreadsheetList subregions={subregions} setCurrentRegion={props.setCurrentRegion} setCurrentRegion_id={props.setCurrentRegion_id} />
 			</div>
 		</div>
 	);

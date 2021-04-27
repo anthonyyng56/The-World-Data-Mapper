@@ -11,6 +11,7 @@ const RegionSpreadsheetList = (props) => {
                 props.subregions.map(subregion => (
                     <RegionSpreadsheetEntry
                         subregion={subregion} key={subregion.id} _id={subregion._id} 
+                        setCurrentRegion={props.setCurrentRegion} setCurrentRegion_id={props.setCurrentRegion_id}
                     />
                 ))
             }

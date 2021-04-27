@@ -97,7 +97,8 @@ const App = () => {
 					path="/region/:id"
 					name="region" 
 					render={() => 
-						<RegionSpreadsheetScreen tps={transactionStack} fetchUser={refetch} user={user} currentRegion={currentRegion} currentRegion_id={currentRegion_id} />
+						<RegionSpreadsheetScreen tps={transactionStack} fetchUser={refetch} user={user} currentRegion={currentRegion} 
+						currentRegion_id={currentRegion_id} setCurrentRegion={setCurrentRegion} setCurrentRegion_id={setCurrentRegion_id} />
 					} 
 				/>
 			</Switch>

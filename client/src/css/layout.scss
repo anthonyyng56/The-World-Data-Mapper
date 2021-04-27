@@ -267,22 +267,23 @@ body {
     text-align: center;
 }
 
+.col-0 {
+    width: 22%;
+}
+
 .col-1 {
-    width: 21%;
-    height: 100%;
+    width: 19%;
 }
 
 .col-2 {
-    width: 12%;
-    height: 100%;
+    width: 10%;
 }
 
 .col-3 {
-    width: 31%;
-    height: 100%;
+    width: 30%;
 }
 
-.col-1, .col-2, .col-3 {
+.header-col {
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -290,8 +291,33 @@ body {
     padding: 10px 20px;
 }
 
+.entry-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.name-col-container {
+    display: flex;
+}
+
+.delete-subregion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    width: 40px;
+}
+
+.name-col {
+   width: calc(100% - 40px);
+}
+
 .region-spreadsheet-list {
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 100%;
 }
 
@@ -303,4 +329,12 @@ body {
 .region-spreadsheet-name-container {
     padding-top: 5px;
     text-align: center;
+}
+
+.subregion-input {
+    height: 100%;
+    width: 70%;
+    margin: 0;
+    padding: 0;
+    padding-left: 5px;
 }
