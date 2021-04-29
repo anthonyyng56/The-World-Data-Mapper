@@ -141,7 +141,7 @@ html, body {
 }
 
 .password::placeholder {
-    opacity: 1;
+    opacity: 0.3;
     font-weight: bold;
 }
 
@@ -193,6 +193,7 @@ html, body {
 
 .link-color {
     color: #5597BC;
+    cursor: pointer;
 }
 
 .link-color:hover {
@@ -218,7 +219,42 @@ html, body {
     background-color: rgb(223, 0, 0);
 } 
 
-.viewer-information-container {
+.viewer-information-container, .viewer-landmarks-title {
     font-weight: bold;
     font-size: 25px;
+}
+
+.add-landmark, .submit-add-landmark {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.add-landmark-input {
+    font-size: 20px;
+    outline: 0;
+}
+
+.submit-add-landmark {
+    border-radius: 3px;
+    background-color: #02BFA5;
+    color: white;
+    cursor: pointer;
+}
+
+.submit-add-landmark:hover {
+    background-color: #00b69e;
+}
+
+.viewer-landmarks-container {
+    background-color: rgb(214, 214, 214);
+}
+
+.navigate-parent {
+    height: 100%;
+}
+
+.navigate-parent:hover {
+    background-color: rgb(238, 238, 238);
+    border-radius: 10px;
+    padding: 5px;
 }

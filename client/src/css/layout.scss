@@ -125,7 +125,7 @@ body {
 .map-list {
     width: 50%;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .create-map-container {
@@ -361,7 +361,6 @@ body {
 
 .viewer-left-content {
     width: 60%;
-    border: 1px solid black;
 }
 
 .viewer-image-container {
@@ -369,6 +368,7 @@ body {
 }
 
 .viewer-filler-image {
+    margin-top: 25px;
     width: 60%;
 }
 
@@ -377,11 +377,55 @@ body {
 }
 
 .viewer-information-row {
-    border: 1px solid black;
     padding: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .viewer-right-content {
     width: 40%;
-    border: 1px solid black;
+}
+
+.viewer-landmarks-title {
+    width: 100%;
+    text-align: center;
+}
+
+.viewer-landmarks-container {
+    width: 100%;
+    height: calc(100% - 79px);
+}
+
+.viewer-add-landmark {
+    height: 50px;
+}
+
+.add-landmark {
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.add-landmark-input-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.add-landmark-input, .submit-add-landmark {
+    height: 100%;
+}
+
+.add-landmark-input {
+    width: 80%;
+    padding: 0;
+    padding-left: 5px;
+}
+
+.submit-add-landmark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
 }
