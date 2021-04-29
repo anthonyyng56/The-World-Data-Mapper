@@ -20,8 +20,6 @@ const App = () => {
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showUpdate, toggleShowUpdate] 	= useState(false);
-	const [currentRegion, setCurrentRegion] = useState('')
-	const [currentRegion_id, setCurrentRegion_id] = useState('')
     const { loading, error, data, refetch } = useQuery(queries.GET_DB_USER);
 
     if(error) { console.log(error); }
@@ -64,7 +62,7 @@ const App = () => {
 				<WNavbar color="colored">
 					<ul>
 						<WNavItem>
-							<Logo className='logo' setCurrentRegion={setCurrentRegion} setCurrentRegion_id={setCurrentRegion_id}/>
+							<Logo className='logo' />
 						</WNavItem>
 					</ul>
 					<ul>
@@ -90,15 +88,14 @@ const App = () => {
 					exact path="/home"
 					name="home" 
 					render={() => 
-						<MapSelectScreen fetchUser={refetch} user={user} setCurrentRegion={setCurrentRegion} setCurrentRegion_id={setCurrentRegion_id} />
+						<MapSelectScreen fetchUser={refetch} user={user} />
 					} 
 				/>
 				<Route 
-					path="/region/:id"
+					path="/region/:name/:id"
 					name="region" 
 					render={() => 
-						<RegionSpreadsheetScreen tps={transactionStack} fetchUser={refetch} user={user} currentRegion={currentRegion} 
-						currentRegion_id={currentRegion_id} setCurrentRegion={setCurrentRegion} setCurrentRegion_id={setCurrentRegion_id} />
+						<RegionSpreadsheetScreen tps={transactionStack} fetchUser={refetch} user={user} />
 					} 
 				/>
 			</Switch>

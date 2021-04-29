@@ -36,18 +36,8 @@ const MapSelectScreen = (props) => {
 			alert("Please provide a non-empty name for your map");
 			return;
 		}
-		const length = maps.length
-		let largestId = 0;
-		for (let i = 0; i < length; i++) {
-			if (maps[i].id >= largestId) {
-				largestId = maps[i].id + 1;
-			}
-		}
-		largestId =  largestId + Math.floor((Math.random() * 100) + 1);
-		const id = largestId;
 		let map = {
 			_id: '',
-			id: id,
 			owner: props.user._id,
 			name: createInput.name,
 		}
@@ -55,9 +45,7 @@ const MapSelectScreen = (props) => {
 		map._id = data.addMap;
 		refetch();
 		toggleShowMapInput(false);
-		props.setCurrentRegion(map.name);
-		props.setCurrentRegion_id(map._id);
-		history.push("/region/" + map._id);
+		history.push("/region/" + map.name + '/' + map._id);
 	};
 
 	const deleteMap = async (_id) => {
@@ -84,7 +72,7 @@ const MapSelectScreen = (props) => {
 		<div className="map-select">
 			<h1 className="map-select-header">Your Maps</h1>
 			<div className="maps-container">
-				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} deleteMap={deleteMap} setCurrentRegion={props.setCurrentRegion} setCurrentRegion_id={props.setCurrentRegion_id}/>
+				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} deleteMap={deleteMap} />
 				<div className="create-map-container">
 					<div className="map-earth-container">
 						<img src={require('../../images/earth-1.png')} className = "map-earth" />

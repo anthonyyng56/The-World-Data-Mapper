@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { useHistory }					from "react-router-dom";
 
 const RegionSpreadsheetEntry = (props) => {
     const [editingName, toggleEditingName] = useState(false);
     const [editingCapital, toggleEditingCapital] = useState(false);
     const [editingLeader, toggleEditingLeader] = useState(false);
+    const history = useHistory();
 
     const handleSelectSubregion = () => {
-        props.setCurrentRegion(props.subregion.name);
-        props.setCurrentRegion_id(props._id);
+        history.push("/region/" + props.subregion.name + '/' + props._id);
     }
 
     const handleUpdateCapitalInput = () => {
@@ -27,7 +28,7 @@ const RegionSpreadsheetEntry = (props) => {
                 :  */}
                 <div className="name-col-container col-0">
                     <i className="material-icons delete-subregion">close</i>
-                    <div className="entry-col name-col" onClick={handleSelectSubregion}>{props.subregion.name}</div>
+                    <div className="entry-col name-col link-color" onClick={handleSelectSubregion}>{props.subregion.name}</div>
                 </div>
             {
                 editingCapital ? <div className="entry-col col-1"><input className="subregion-input" type="text" defaultValue={props.subregion.capital} autoFocus={true} onBlur={handleUpdateCapitalInput}/></div>

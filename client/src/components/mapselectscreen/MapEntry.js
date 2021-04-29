@@ -39,9 +39,7 @@ const MapEntry = (props) => {
     }
 
     const handleSelectMap = () => {
-        props.setCurrentRegion(props.name);
-        props.setCurrentRegion_id(props._id);
-		history.push("/region/" + props._id);
+		history.push("/region/" + props.name + '/' + props._id);
     }
 
     return (

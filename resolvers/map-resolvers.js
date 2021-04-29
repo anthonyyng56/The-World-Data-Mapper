@@ -36,10 +36,9 @@ module.exports = {
 		addMap: async (_, args) => {
 			const { map } = args;
 			const objectId = new ObjectId();
-			const { id, name, owner} = map;
+			const { name, owner} = map;
 			const newMap = new Map({
-				_id: objectId,
-				id: id,		
+				_id: objectId,	
 				owner: owner,
 				name: name,
 				capital: ' ',
@@ -48,6 +47,7 @@ module.exports = {
 				subregions_id: [],
 				ancestors_id: [],
 				ancestors: [],
+				root: objectId.toString(),
 			});
 			const updated = await newMap.save();
 			if(updated) return objectId;
@@ -55,8 +55,7 @@ module.exports = {
 		},
 		deleteMap: async (_, args) => {
 			const { _id } = args;
-			const objectId = new ObjectId(_id);
-			const deleted = await Map.deleteOne({_id: objectId});
+			const deleted = await Map.deleteMany({root: _id});
 			if(deleted) return true;
 			else return false;
 		},
@@ -68,7 +67,7 @@ module.exports = {
 			else return "";
 		},
 		addSubregion: async (_, args) => {
-			const { _id, subregion } = args;
+			const { _id } = args;
 			const objectId = new ObjectId(_id);
 			const parentMap = await Map.findOne({_id: objectId});
 			if(!parentMap) return ('Map Not Found');
@@ -80,10 +79,8 @@ module.exports = {
 			let children = parentMap.subregions_id;
 			children.push(subregionId);
 			const updated1 = await Map.updateOne({_id: objectId}, { subregions_id: children });
-			const { id } = subregion;
 			const newSubregion = new Map({
-				_id: subregionId,
-				id: id,		
+				_id: subregionId,	
 				owner: ' ',
 				name: 'Untitled Region',
 				capital: 'Unknown',
@@ -92,6 +89,7 @@ module.exports = {
 				subregions_id: [],
 				ancestors_id: ancestors_id,
 				ancestors: ancestors,
+				root: ancestors_id[0],
 			});
 			const updated2 = await newSubregion.save();
 			if(updated2) return subregionId;

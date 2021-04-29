@@ -52,7 +52,7 @@ export const UPDATE_MAP_FIELD = gql`
 `;
 
 export const ADD_SUBREGION = gql`
-	mutation AddSubregion($_id: String!, $subregion: MapInput!) {
-		addSubregion(_id: $_id, subregion: $subregion) 
+	mutation AddSubregion($_id: String!) {
+		addSubregion(_id: $_id) 
 	}
 `;

@@ -6,10 +6,6 @@ const mapSchema = new Schema(
 			type: ObjectId,
 			required: true
 		},
-		id: {
-			type: Number,
-			required: true
-		},
 		owner: {
 			type: String,
 			required: true
@@ -40,6 +36,10 @@ const mapSchema = new Schema(
 		},
 		ancestors: {
 			type: [String],
+			required: true
+		},
+		root: {
+			type: String,
 			required: true
 		}
 	},

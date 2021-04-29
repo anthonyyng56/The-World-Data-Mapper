@@ -9,22 +9,23 @@ import { useParams } from 'react-router';
 const RegionSpreadsheetScreen = (props) => {
 	let subregions = [];
 	const [AddSubregion] 			= useMutation(mutations.ADD_SUBREGION);
+	const [UpdateMapField] 			= useMutation(mutations.UPDATE_MAP_FIELD);
 
-	const { loading, error, data, refetch } = useQuery(GET_DB_SUBREGIONS, {variables: { _id: props.currentRegion_id }});
+	const { name, id } = useParams();
+	const { loading, error, data, refetch } = useQuery(GET_DB_SUBREGIONS, {variables: { _id: id }});
+	
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
 	if(data) { subregions = data.getSubregionsById; }
 
 
 	const handleAddSubregion = async () => {
-		let subregion = {
-			_id: '',
-			id: 1575,
-			owner: '',
-			name: '',
-		}
-		const {data} = await AddSubregion({ variables: { _id: props.currentRegion_id, subregion: subregion }});
+		const {data} = await AddSubregion({ variables: { _id: id }});
 		refetch();
+	}
+
+	const handleUpdateField = async (_id, field, value) => {
+
 	}
 
 	return (
@@ -37,7 +38,7 @@ const RegionSpreadsheetScreen = (props) => {
 						</div>
 					</WCol>
 					<WCol size="8">
-						<div className="region-spreadsheet-name-container">Region Name: <span className="region-spreadsheet-name">{props.currentRegion}</span></div>
+						<div className="region-spreadsheet-name-container">Region Name: <span className="region-spreadsheet-name">{name}</span></div>
 					</WCol>
 				</WRow>	
 			</div>
@@ -49,7 +50,7 @@ const RegionSpreadsheetScreen = (props) => {
 				<div className="header-col col-3">Landmarks</div>
 			</div>
 			<div className="region-spreadsheet">
-				<RegionSpreadsheetList subregions={subregions} setCurrentRegion={props.setCurrentRegion} setCurrentRegion_id={props.setCurrentRegion_id} />
+				<RegionSpreadsheetList subregions={subregions} />
 			</div>
 		</div>
 	);

@@ -4,7 +4,6 @@ const { gql } = require('apollo-server');
 const typeDefs = gql `
 	type Map {
 		_id: String!
-		id: Int!
 		owner: String!
 		name: String!
 		capital: String!
@@ -13,6 +12,7 @@ const typeDefs = gql `
 		subregions_id: [String]!
 		ancestors_id: [String]!
 		ancestors: [String]!
+		root: String!
 	}
 	extend type Query {
 		getAllMaps: [Map]
@@ -23,7 +23,7 @@ const typeDefs = gql `
 		addMap(map: MapInput!): String
 		deleteMap(_id: String!): Boolean
 		updateMapField(_id: String!, field: String!, value: String!): String
-		addSubregion(_id: String!, subregion: MapInput!): String
+		addSubregion(_id: String!): String
 	}
     input FieldInput {
 		_id: String
@@ -32,7 +32,6 @@ const typeDefs = gql `
 	}
 	input MapInput {
 		_id: String
-		id: Int
 		owner: String
 		name: String
 	}

@@ -10,8 +10,8 @@ const MapList = (props) => {
                 props.maps &&
                 props.maps.map(map => (
                     <MapEntry
-                        name={map.name} key={map.id} _id={map._id} updateMapField={props.updateMapField} toggleShowMapInput={props.toggleShowMapInput} 
-                        deleteMap={props.deleteMap} setCurrentRegion={props.setCurrentRegion} setCurrentRegion_id={props.setCurrentRegion_id}
+                        name={map.name} key={map._id} _id={map._id} updateMapField={props.updateMapField} toggleShowMapInput={props.toggleShowMapInput} 
+                        deleteMap={props.deleteMap}
                     />
                 ))
             }

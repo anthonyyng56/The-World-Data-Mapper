@@ -14,7 +14,6 @@ export const GET_DB_MAPS = gql`
 	query GetDBMaps {
 		getAllMaps {
 			_id
-			id
 			owner
 			name
 			capital
@@ -23,6 +22,7 @@ export const GET_DB_MAPS = gql`
 			subregions_id
 			ancestors_id
 			ancestors
+			root
 		}
 	}
 `;
@@ -31,7 +31,6 @@ export const GET_DB_SUBREGIONS = gql`
 	query GetDBSubregions($_id: String!) {
 		getSubregionsById(_id: $_id) {
 			_id
-			id
 			owner
 			name
 			capital
@@ -40,6 +39,7 @@ export const GET_DB_SUBREGIONS = gql`
 			subregions_id
 			ancestors_id
 			ancestors
+			root
 		}
 	}
 `;

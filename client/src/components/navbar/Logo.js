@@ -5,8 +5,6 @@ const Logo = (props) => {
     const history = useHistory();
 
     const goHome = () => {
-        props.setCurrentRegion('');
-        props.setCurrentRegion_id('');
         history.push("/home");
     }
     return (
