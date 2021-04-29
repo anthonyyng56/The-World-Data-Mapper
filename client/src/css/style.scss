@@ -76,6 +76,10 @@ html, body {
     background-color: rgb(226, 226, 226);
 }
 
+.edit-subregion-name:hover {
+    background-color: rgb(226, 226, 226);
+}
+
 .create-map-input {
     border: none;
     border-bottom: 1px solid rgb(226, 226, 226);
@@ -83,13 +87,16 @@ html, body {
     color: rgb(109, 109, 109);
 }
 
-.material-icons:hover {
-    background-color: rgb(194, 194, 194);
+.material-icons {
     cursor: pointer;
 }
 
-.edit {
-    color: rgb(240, 206, 56);
+.edit:hover, .delete:hover {
+    background-color: rgb(201, 201, 201);
+}
+
+.edit, .edit-subregion-name {
+    color: rgb(219, 186, 40);
 }
 
 .delete {
@@ -203,4 +210,12 @@ html, body {
 
 .link-color:hover {
     color: #64aed8;
+}
+
+.name-col-container {
+    border-right: 1px solid rgb(180, 180, 180);
+}
+
+.name-col {
+    border-right: none;
 }

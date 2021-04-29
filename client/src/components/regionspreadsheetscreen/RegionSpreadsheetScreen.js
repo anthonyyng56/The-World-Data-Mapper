@@ -25,7 +25,8 @@ const RegionSpreadsheetScreen = (props) => {
 	}
 
 	const handleUpdateField = async (_id, field, value) => {
-
+		const {data} = await UpdateMapField({variables: { _id: _id, field: field, value: value }})
+		refetch();
 	}
 
 	return (
@@ -50,7 +51,7 @@ const RegionSpreadsheetScreen = (props) => {
 				<div className="header-col col-3">Landmarks</div>
 			</div>
 			<div className="region-spreadsheet">
-				<RegionSpreadsheetList subregions={subregions} />
+				<RegionSpreadsheetList subregions={subregions} handleUpdateField={handleUpdateField} />
 			</div>
 		</div>
 	);

@@ -11,25 +11,52 @@ const RegionSpreadsheetEntry = (props) => {
         history.push("/region/" + props.subregion.name + '/' + props._id);
     }
 
-    const handleUpdateCapitalInput = () => {
-        toggleEditingCapital(false);
+    const handleUpdateNameInput = (e) => {
+        toggleEditingName(false);
+        if (props.subregion.name !== e.target.value) {
+            if (e.target.value.trim() === '') {
+                props.handleUpdateField(props._id, 'name', 'Unknown');
+            } else {
+                props.handleUpdateField(props._id, 'name', e.target.value);
+            }
+        }
     }
 
-    const handleUpdateLeaderInput = () => {
+    const handleUpdateCapitalInput = (e) => {
+        toggleEditingCapital(false);
+        if (props.subregion.capital !== e.target.value) {
+            if (e.target.value.trim() === '') {
+                props.handleUpdateField(props._id, 'capital', 'Unknown');
+            } else {
+                props.handleUpdateField(props._id, 'capital', e.target.value);
+            }
+        }
+    }
+
+    const handleUpdateLeaderInput = (e) => {
         toggleEditingLeader(false);
+        if (props.subregion.leader !== e.target.value) {
+            if (e.target.value.trim() === '') {
+                props.handleUpdateField(props._id, 'leader', 'Unknown');
+            } else {
+                props.handleUpdateField(props._id, 'leader', e.target.value);
+            }
+        }
     }
     return (
         <div className="spreadsheet-entry">
-                
-                {/* editingName ? 
+            {
+                editingName ? 
                 <div className="entry-col col-0">
                     <input className="subregion-input" type="text" defaultValue={props.subregion.name} autoFocus={true} onBlur={handleUpdateNameInput}/>
                 </div>
-                :  */}
+                : 
                 <div className="name-col-container col-0">
                     <i className="material-icons delete-subregion">close</i>
-                    <div className="entry-col name-col link-color" onClick={handleSelectSubregion}>{props.subregion.name}</div>
+                    <div className="entry-col name-col link-color" onClick={handleSelectSubregion} onBlur={handleUpdateNameInput}>{props.subregion.name}</div>
+                    <i className="material-icons edit-subregion-name" onClick={toggleEditingName}>edit</i>
                 </div>
+            }
             {
                 editingCapital ? <div className="entry-col col-1"><input className="subregion-input" type="text" defaultValue={props.subregion.capital} autoFocus={true} onBlur={handleUpdateCapitalInput}/></div>
                 : <div className="entry-col col-1" onClick={toggleEditingCapital}>{props.subregion.capital}</div>

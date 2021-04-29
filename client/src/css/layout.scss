@@ -312,8 +312,12 @@ body {
     width: 40px;
 }
 
+.edit-subregion-name {
+    width: 40px;
+}
+
 .name-col {
-   width: calc(100% - 40px);
+   width: calc(100% - 80px);
 }
 
 .region-spreadsheet-list {
@@ -332,7 +336,7 @@ body {
 }
 
 .subregion-input {
-    height: 100%;
+    height: 80%;
     width: 70%;
     margin: 0;
     padding: 0;
