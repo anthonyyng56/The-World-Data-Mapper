@@ -27,6 +27,23 @@ export const GET_DB_MAPS = gql`
 	}
 `;
 
+export const GET_DB_MAP = gql`
+	query GetDBMap($_id: String!) {
+		getMapById(_id: $_id) {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			subregions_id
+			ancestors_id
+			ancestors
+			root
+		}
+	}
+`;
+
 export const GET_DB_SUBREGIONS = gql`
 	query GetDBSubregions($_id: String!) {
 		getSubregionsById(_id: $_id) {

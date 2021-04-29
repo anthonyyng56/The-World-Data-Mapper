@@ -10,7 +10,7 @@ const RegionSpreadsheetList = (props) => {
                 props.subregions &&
                 props.subregions.map(subregion => (
                     <RegionSpreadsheetEntry
-                        subregion={subregion} key={subregion._id} _id={subregion._id} handleUpdateField={props.handleUpdateField}
+                        subregion={subregion} key={subregion._id} _id={subregion._id} handleUpdateField={props.handleUpdateField} handleDeleteSubregion={props.handleDeleteSubregion}
                     />
                 ))
             }

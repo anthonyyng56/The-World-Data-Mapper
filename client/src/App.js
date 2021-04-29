@@ -2,6 +2,7 @@ import React, { useState, useEffect } 				from 'react';
 import WelcomeScreen 								from './components/welcomescreen/WelcomeScreen';
 import MapSelectScreen 								from './components/mapselectscreen/MapSelectScreen';
 import RegionSpreadsheetScreen 						from './components/regionspreadsheetscreen/RegionSpreadsheetScreen';
+import RegionViewerScreen 							from './components/regionviewerscreen/RegionViewerScreen';
 import { useQuery } 								from '@apollo/client';
 import * as queries 								from './cache/queries';
 import { jsTPS } 									from './utils/jsTPS';
@@ -96,6 +97,13 @@ const App = () => {
 					name="region" 
 					render={() => 
 						<RegionSpreadsheetScreen tps={transactionStack} fetchUser={refetch} user={user} />
+					} 
+				/>
+				<Route 
+					path="/regionview/:name/:id"
+					name="regionview" 
+					render={() => 
+						<RegionViewerScreen tps={transactionStack} fetchUser={refetch} user={user} />
 					} 
 				/>
 			</Switch>

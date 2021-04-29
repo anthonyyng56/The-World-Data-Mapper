@@ -291,16 +291,7 @@ body {
     padding: 10px 20px;
 }
 
-.entry-col {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.name-col-container {
+.entry-container {
     display: flex;
 }
 
@@ -309,15 +300,20 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 25px;
-    width: 40px;
+    width: 45px;
 }
 
 .edit-subregion-name {
-    width: 40px;
+    width: 45px;
 }
 
-.name-col {
-   width: calc(100% - 80px);
+.entry-col {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    padding: 8px;
 }
 
 .region-spreadsheet-list {
@@ -341,4 +337,51 @@ body {
     margin: 0;
     padding: 0;
     padding-left: 5px;
+}
+
+.entry-input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flag-filler-image {
+    height: 20px;
+}
+
+.region-viewer-container {
+    height: 80%;
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -47%);
+    display: flex;
+}
+
+.viewer-left-content {
+    width: 60%;
+    border: 1px solid black;
+}
+
+.viewer-image-container {
+    width: 100%;
+}
+
+.viewer-filler-image {
+    width: 60%;
+}
+
+.viewer-information-container, viewer-information-row {
+    width: 100%;
+}
+
+.viewer-information-row {
+    border: 1px solid black;
+    padding: 4px;
+}
+
+.viewer-right-content {
+    width: 40%;
+    border: 1px solid black;
 }

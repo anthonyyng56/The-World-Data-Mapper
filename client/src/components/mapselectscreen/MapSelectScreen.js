@@ -50,7 +50,6 @@ const MapSelectScreen = (props) => {
 
 	const deleteMap = async (_id) => {
 		DeleteMap({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAPS }] });
-		refetch();
 	};
 
 	const updateMapField = async (_id, field, value) => {

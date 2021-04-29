@@ -95,5 +95,22 @@ module.exports = {
 			if(updated2) return subregionId;
 			else return ('Could not add subregion');
 		},
+		deleteSubregion: async (_, args) => {
+			const { _id } = args;
+			const objectId = new ObjectId(_id);
+			const subregion = await Map.findOne({_id: objectId});
+			let parent_id = subregion.ancestors_id[subregion.ancestors_id.length - 1];
+			const parentId = new ObjectId(parent_id);
+			const parent = await Map.findOne({_id: parentId});
+			let parentSubregions = parent.subregions_id;
+			let index = parentSubregions.indexOf(_id);
+			if (index !== -1) {
+				parentSubregions.splice(index, 1);
+			}
+			const updated = await Map.updateOne({_id: parentId}, { subregions_id: parentSubregions });
+			const deleted = await Map.deleteOne({_id: objectId});
+			if(deleted) return true;
+			else return false;
+		},
 	}
 }

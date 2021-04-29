@@ -77,7 +77,7 @@ html, body {
 }
 
 .edit-subregion-name:hover {
-    background-color: rgb(226, 226, 226);
+    background-color: rgb(230, 230, 230);
 }
 
 .create-map-input {
@@ -99,8 +99,8 @@ html, body {
     color: rgb(219, 186, 40);
 }
 
-.delete {
-    color: rgb(85, 85, 85);
+.map-entry-name, .delete, .entry-col {
+    color: rgb(49, 49, 49);
 }
 
 .edit-map-name-input {
@@ -118,10 +118,6 @@ html, body {
     outline: none;
     border-radius: 5px;
     border: 2px solid #02BFA5;
-}
-
-.map-entry-name {
-    color: rgb(85, 85, 85);
 }
 
 .map-entry-name-container:hover {
@@ -183,15 +179,6 @@ html, body {
     border-bottom: 1px solid rgb(180, 180, 180);
 }
 
-.entry-col {
-    border-right: 1px solid rgb(180, 180, 180);
-}
-
-.entry-col:hover {
-    background-color: rgb(230, 230, 230);
-    cursor: pointer;
-}
-
 .region-spreadsheet-list {
     scrollbar-width: thin;
 }
@@ -212,10 +199,26 @@ html, body {
     color: #64aed8;
 }
 
-.name-col-container {
+.entry-container, .entry-input-container {
     border-right: 1px solid rgb(180, 180, 180);
 }
 
-.name-col {
-    border-right: none;
+.entry-col:hover {
+    background-color: rgb(230, 230, 230);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-subregion {
+    color: rgb(223, 0, 0);
+}
+
+.delete-subregion:hover {
+    color: white;
+    background-color: rgb(223, 0, 0);
+} 
+
+.viewer-information-container {
+    font-weight: bold;
+    font-size: 25px;
 }
