@@ -10,7 +10,7 @@ module.exports = {
 			if(maps) return (maps);
 
 		},
-		getMapById: async (_, args) => {
+		getMapInfoById: async (_, args) => {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
 			const map = await Map.findOne({_id: objectId});
@@ -112,6 +112,16 @@ module.exports = {
 			const deleted = await Map.deleteOne({_id: objectId});
 			if(deleted) return true;
 			else return false;
+		},
+		addLandmark: async (_, args) => {
+			const { _id, value } = args;
+			const objectId = new ObjectId(_id);
+			const found = await Map.findOne({_id: objectId});
+			landmarks = found.landmarks;
+			landmarks.push(value);
+			const updated = await Map.updateOne({ _id: objectId}, { landmarks: landmarks });
+			if(updated) return value;
+			else return "";
 		},
 	}
 }

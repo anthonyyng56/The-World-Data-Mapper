@@ -15,7 +15,7 @@ const typeDefs = gql `
 	}
 	extend type Query {
 		getAllMaps: [Map]
-		getMapById(_id: String!): [Map] 
+		getMapInfoById(_id: String!): [Map] 
 		getSubregionsById(_id: String!): [Map]
 	}
 	extend type Mutation {
@@ -24,6 +24,7 @@ const typeDefs = gql `
 		updateMapField(_id: String!, field: String!, value: String!): String
 		addSubregion(_id: String!): String
 		deleteSubregion(_id: String!): Boolean
+		addLandmark(_id: String!, value: String!): String
 	}
     input FieldInput {
 		_id: String

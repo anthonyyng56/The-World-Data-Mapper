@@ -224,9 +224,13 @@ html, body {
     font-size: 25px;
 }
 
-.add-landmark, .submit-add-landmark {
+.add-landmark {
     font-size: 25px;
     font-weight: bold;
+}
+
+.add-landmark-controls {
+    font-size: 18px;
 }
 
 .add-landmark-input {
@@ -234,19 +238,19 @@ html, body {
     outline: 0;
 }
 
-.submit-add-landmark {
+.add-landmark-controls {
     border-radius: 3px;
     background-color: #02BFA5;
     color: white;
     cursor: pointer;
 }
 
-.submit-add-landmark:hover {
+.add-landmark-controls:hover {
     background-color: #00b69e;
 }
 
 .viewer-landmarks-container {
-    background-color: rgb(214, 214, 214);
+    background-color: rgb(226, 226, 226);
 }
 
 .navigate-parent {
@@ -257,4 +261,18 @@ html, body {
     background-color: rgb(238, 238, 238);
     border-radius: 10px;
     padding: 5px;
+}
+
+.landmarks-entry {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.landmarks-entry:hover {
+    background-color: rgb(236, 236, 236);
+    cursor: pointer;
+}
+
+.region-landmarks-list {
+    scrollbar-width: thin;
 }

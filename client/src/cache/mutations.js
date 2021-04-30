@@ -62,3 +62,9 @@ export const DELETE_SUBREGION = gql`
 		deleteSubregion(_id: $_id)
 	}
 `;
+
+export const ADD_LANDMARK = gql`
+	mutation AddLandmark($_id: String!, $value: String!) {
+		addLandmark(_id: $_id, value: $value) 
+	}
+`;
