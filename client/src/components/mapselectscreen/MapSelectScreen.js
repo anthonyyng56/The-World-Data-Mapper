@@ -15,6 +15,7 @@ const MapSelectScreen = (props) => {
 	const [AddMap] 			= useMutation(mutations.ADD_MAP);
 	const [DeleteMap] 		= useMutation(mutations.DELETE_MAP);
 	const [UpdateMapField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
+	
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }

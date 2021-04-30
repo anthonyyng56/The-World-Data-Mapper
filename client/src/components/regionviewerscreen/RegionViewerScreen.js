@@ -7,11 +7,11 @@ import { useHistory }					        from "react-router-dom";
 
 const RegionViewerScreen = (props) => {
     let name = '';
-    let parent = '';
     let capital = '';
     let leader = '';
     let numberOfSubregions;
     let parent_id = '';
+    let parent = '';
     const [showAddLandmark, toggleShowAddLandmark] = useState(false);
 
     const history = useHistory();
@@ -21,12 +21,12 @@ const RegionViewerScreen = (props) => {
     if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
     if(data) { 
-        name = data.getMapById.name; 
-        parent = data.getMapById.ancestors[data.getMapById.ancestors.length - 1];
-        capital = data.getMapById.capital;
-        leader = data.getMapById.leader;
-        numberOfSubregions = data.getMapById.subregions_id.length;
-        parent_id = data.getMapById.ancestors_id[data.getMapById.ancestors_id.length - 1]
+        name = data.getMapById[0].name; 
+        capital = data.getMapById[0].capital;
+        leader = data.getMapById[0].leader;
+        numberOfSubregions = data.getMapById[0].subregions_id.length;
+        parent_id = data.getMapById[0].ancestors_id[data.getMapById[0].ancestors_id.length - 1]
+        parent = data.getMapById[1].name;
     }
 
     const handleHideShowLandmark = () => {

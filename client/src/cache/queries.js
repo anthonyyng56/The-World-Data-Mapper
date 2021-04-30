@@ -21,7 +21,6 @@ export const GET_DB_MAPS = gql`
 			landmarks
 			subregions_id
 			ancestors_id
-			ancestors
 			root
 		}
 	}
@@ -38,7 +37,6 @@ export const GET_DB_MAP = gql`
 			landmarks
 			subregions_id
 			ancestors_id
-			ancestors
 			root
 		}
 	}
@@ -55,7 +53,6 @@ export const GET_DB_SUBREGIONS = gql`
 			landmarks
 			subregions_id
 			ancestors_id
-			ancestors
 			root
 		}
 	}

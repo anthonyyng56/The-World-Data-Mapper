@@ -11,12 +11,11 @@ const typeDefs = gql `
 		landmarks: [String]!
 		subregions_id: [String]!
 		ancestors_id: [String]!
-		ancestors: [String]!
 		root: String!
 	}
 	extend type Query {
 		getAllMaps: [Map]
-		getMapById(_id: String!): Map 
+		getMapById(_id: String!): [Map] 
 		getSubregionsById(_id: String!): [Map]
 	}
 	extend type Mutation {

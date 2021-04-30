@@ -7,10 +7,14 @@ import { WModal, WMHeader, WMMain, WButton, WRow } from 'wt-frontend';
 
 const Update = (props) => {
 	const [input, setInput] = useState({ _id: props.user._id, email: props.user.email, password: '', name: props.user.name });
+	const [loading, toggleLoading] = useState(false);
 	const [showPassword, toggleShowPassword] = useState(false);
 	const passwordType = showPassword ? 'text' : 'password';
-	const [showErr, displayErrorMsg] = useState(false);
-	const errorMsg = "All fields must be filled out to update account information.";
+	const [showErr1, displayErrorMsg1] = useState(false);
+	const [showErr2, displayErrorMsg2] = useState(false);
+	const errorMsg1 = "All fields must be filled out to update account information.";
+	const errorMsg2 = "User with that email already registered.";
+	
 	const [Update] = useMutation(UPDATE);
 	const history = useHistory();
 
@@ -25,16 +29,30 @@ const Update = (props) => {
 	}
 
 	const handleUpdate = async (e) => {
+		displayErrorMsg1(false);
+		displayErrorMsg2(false);
 		for (let field in input) {
 			if (!input[field]) {
-				displayErrorMsg(true);
+				displayErrorMsg1(true);
 				return;
 			}
 		}
-		const { data } = await Update({ variables: { ...input } });
-		props.toggleShowUpdate(false);
-		props.fetchUser();
-		history.push("/home");
+		const { loading, error, data } = await Update({ variables: { ...input } });
+		if (loading) { toggleLoading(true) };
+		if (error) { return `Error: ${error.message}` };
+		if (data) {
+			console.log(data)
+			toggleLoading(false);
+			if(data.update === false) {
+				displayErrorMsg2(true);
+				return;
+			}
+			else {
+				props.fetchUser();
+				history.push("/home");
+			}
+			props.toggleShowUpdate(false);
+		};
 	};
 
 	const handleCancel = () => {
@@ -46,7 +64,10 @@ const Update = (props) => {
 			<WMHeader className="modal-header" onClose={() => props.toggleShowUpdate(false)}>
 				Enter Updated Account Information
 			</WMHeader>
-			<WMMain>
+			{
+				loading ? <div />
+				:
+				<WMMain>
 				<WRow className="modal-row">
 					<div className="modal-row-content">
 						<div className="input-names">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:</div>
@@ -81,12 +102,16 @@ const Update = (props) => {
 					<div>Show password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 				</div>
 				{
-					showErr ? <div className='modal-error'>
-						{errorMsg}
-					</div>
-						: <div className='modal-error'>&nbsp;</div>
+					showErr1 ? <div className='modal-error'>
+						{errorMsg1}
+					</div> : 
+					showErr2 ? <div className='modal-error'>
+						{errorMsg2}
+					</div> : 
+					<div className='modal-error'>&nbsp;</div>
 				}
 			</WMMain>
+			}
 			<div className="button-layout">
 				<WButton className="modal-button left-button" onClick={handleUpdate} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
 					Update

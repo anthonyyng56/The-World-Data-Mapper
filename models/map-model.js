@@ -34,10 +34,6 @@ const mapSchema = new Schema(
 			type: [String],
 			required: true
 		},
-		ancestors: {
-			type: [String],
-			required: true
-		},
 		root: {
 			type: String,
 			required: true

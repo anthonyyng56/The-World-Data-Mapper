@@ -14,8 +14,13 @@ module.exports = {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
 			const map = await Map.findOne({_id: objectId});
-			if(map) return map;
-			else return ({});
+			let maps = []
+			maps.push(map);
+			let parent_id = map.ancestors_id[map.ancestors_id.length - 1];
+			const parentId = new ObjectId(parent_id);
+			const parent = await Map.findOne({_id: parentId});
+			maps.push(parent);
+			return maps;
 		},
 		getSubregionsById: async (_, args) => {
 			const { _id } = args;
@@ -29,7 +34,7 @@ module.exports = {
 					maps.push(subregion);
 				}
 			}
-			return maps
+			return maps;
 		}
 	},
 	Mutation: {
@@ -46,7 +51,6 @@ module.exports = {
 				landmarks: [],
 				subregions_id: [],
 				ancestors_id: [],
-				ancestors: [],
 				root: objectId.toString(),
 			});
 			const updated = await newMap.save();
@@ -71,9 +75,7 @@ module.exports = {
 			const objectId = new ObjectId(_id);
 			const parentMap = await Map.findOne({_id: objectId});
 			if(!parentMap) return ('Map Not Found');
-			let ancestors = parentMap.ancestors
 			let ancestors_id = parentMap.ancestors_id
-			ancestors.push(parentMap.name);
 			ancestors_id.push(parentMap._id);
 			const subregionId = new ObjectId();
 			let children = parentMap.subregions_id;
@@ -88,7 +90,6 @@ module.exports = {
 				landmarks: [],
 				subregions_id: [],
 				ancestors_id: ancestors_id,
-				ancestors: ancestors,
 				root: ancestors_id[0],
 			});
 			const updated2 = await newSubregion.save();
