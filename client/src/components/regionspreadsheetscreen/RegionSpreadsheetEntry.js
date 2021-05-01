@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useHistory }					from "react-router-dom";
+import React, { useState }      from 'react';
+import { useHistory }			from "react-router-dom";
 
 const RegionSpreadsheetEntry = (props) => {
     const [editingName, toggleEditingName] = useState(false);
@@ -7,21 +7,23 @@ const RegionSpreadsheetEntry = (props) => {
     const [editingLeader, toggleEditingLeader] = useState(false);
     const history = useHistory();
 
-    const handleSelectSubregion = () => {
+    const selectSubregion = () => {
         history.push("/region/" + props.subregion.name + '/' + props._id);
     }
 
-    const handleDeleteSubregion = () => {
-        props.handleDeleteSubregion(props._id)
+    const showDeleteConfirmation = () => {
+        props.setDelete_id(props._id);
+        props.setDeleteIndex(props.index);
+        props.toggleDeleteSubregionConfirmation(true);
     }
 
     const handleUpdateNameInput = (e) => {
         toggleEditingName(false);
         if (props.subregion.name !== e.target.value) {
             if (e.target.value.trim() === '') {
-                props.handleUpdateField(props._id, 'name', 'Unknown');
+                props.updateMapField(props._id, 'name', props.subregion.name, 'Unknown');
             } else {
-                props.handleUpdateField(props._id, 'name', e.target.value);
+                props.updateMapField(props._id, 'name', props.subregion.name, e.target.value);
             }
         }
     }
@@ -30,9 +32,9 @@ const RegionSpreadsheetEntry = (props) => {
         toggleEditingCapital(false);
         if (props.subregion.capital !== e.target.value) {
             if (e.target.value.trim() === '') {
-                props.handleUpdateField(props._id, 'capital', 'Unknown');
+                props.updateMapField(props._id, 'capital', props.subregion.capital, 'Unknown');
             } else {
-                props.handleUpdateField(props._id, 'capital', e.target.value);
+                props.updateMapField(props._id, 'capital', props.subregion.capital, e.target.value);
             }
         }
     }
@@ -41,14 +43,14 @@ const RegionSpreadsheetEntry = (props) => {
         toggleEditingLeader(false);
         if (props.subregion.leader !== e.target.value) {
             if (e.target.value.trim() === '') {
-                props.handleUpdateField(props._id, 'leader', 'Unknown');
+                props.updateMapField(props._id, 'leader', props.subregion.leader, 'Unknown');
             } else {
-                props.handleUpdateField(props._id, 'leader', e.target.value);
+                props.updateMapField(props._id, 'leader', props.subregion.leader, e.target.value);
             }
         }
     }
     
-    const handleRegionViewer = () => {
+    const openRegionViewer = () => {
         history.push("/regionview/" + props.subregion.name + '/' + props._id);
     }
 
@@ -61,8 +63,8 @@ const RegionSpreadsheetEntry = (props) => {
                 </div>
                 : 
                 <div className="entry-container col-0">
-                    <i className="material-icons delete-subregion" onClick={handleDeleteSubregion}>close</i>
-                    <div className="entry-col link-color" onClick={handleSelectSubregion} onBlur={handleUpdateNameInput}>{props.subregion.name}</div>
+                    <i className="material-icons delete-subregion" onClick={showDeleteConfirmation}>close</i>
+                    <div className="entry-col link-color" onClick={selectSubregion} onBlur={handleUpdateNameInput}>{props.subregion.name}</div>
                     <i className="material-icons edit-subregion-name" onClick={toggleEditingName}>edit</i>
                 </div>
             }
@@ -93,15 +95,13 @@ const RegionSpreadsheetEntry = (props) => {
             </div>
             {
                 props.subregion.landmarks.length === 0 ? 
-                <div className="entry-container col-3" onClick={handleRegionViewer}>
+                <div className="entry-container col-3" onClick={openRegionViewer}>
                     <div className="entry-col link-color">No Landmarks</div>
                 </div> 
                 :
-                <div className="entry-container col-3" onClick={handleRegionViewer}>
+                <div className="entry-container col-3" onClick={openRegionViewer}>
                     <div className="entry-col link-color">{props.subregion.landmarks[0]}...</div>
-                </div>
-                 
-                
+                </div>  
             }
         </div>
     );

@@ -36,26 +36,7 @@ const App = () => {
 
 
 	
-	// const undoCtrl = (event) => {
-	// 	if (event.ctrlKey === true && event.key === 'z') {
-	// 		tpsUndo();
-	// 	}
-	// }
 
-	// const redoCtrl = (event) => {
-	// 	if (event.ctrlKey === true && event.key === 'y') {
-	// 		tpsRedo();
-	// 	}
-	// }
-
-	// useEffect(() => {
-    //     document.addEventListener('keydown', undoCtrl);
-	// 	document.addEventListener('keydown', redoCtrl);
-	// 	return () => {
-	// 		document.removeEventListener("keydown", undoCtrl);
-	// 		document.removeEventListener("keydown", redoCtrl);
-	// 	}
-    // });
 
 	return(
 		<BrowserRouter>

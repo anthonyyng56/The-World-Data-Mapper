@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
-import { WButton } from 'wt-frontend';
-import { useHistory } from "react-router-dom";
+import React, { useState }          from 'react';
+import { useHistory }               from "react-router-dom";
 
 const MapEntry = (props) => {
     const [editMapName, toggleEditMapName] = useState(false);
-    const [deleteMapConfirmation, toggleDeleteMapConfirmation] = useState(false);
     const history = useHistory();
-    const editingMap = editMapName || deleteMapConfirmation ? ' editingMap ' : '';
 
     const handleEditMapName = () => {
         toggleEditMapName(true);
@@ -24,53 +21,32 @@ const MapEntry = (props) => {
         }
     }
 
-    const handleShowDeleteConfirmation = () => {
-        toggleDeleteMapConfirmation(true);
-        props.toggleShowMapInput(false);
-    }
-
-    const handleHideDeleteConfirmation = () => {
-        toggleDeleteMapConfirmation(false);
-    }
-
-    const handleDeleteMap = () => {
-        toggleDeleteMapConfirmation(false);
-        props.deleteMap(props._id);
-    }
-
-    const handleSelectMap = () => {
+    const selectMap = () => {
 		history.push("/region/" + props.name + '/' + props._id);
     }
 
+    const showDeleteConfirmation = () => {
+        props.setDelete_id(props._id);
+        props.toggleDeleteMapConfirmation(true);
+        props.toggleShowMapInput(false);
+    }
+
     return (
-        <div className={`${editingMap} map-entry`}>
+        <div className='map-entry'>
             {
                 editMapName ? 
                 <>
                     <input type="text" name="name" className="edit-map-name-input" autoFocus={true} defaultValue={props.name} onBlur={handleUpdateMapName} />
                 </> :
-                deleteMapConfirmation ? 
-                <>
-                    <div className="map-delete-confirmation" onBlur={handleHideDeleteConfirmation}>
-                        <div className="map-delete-confirmation-text">Delete Map?</div>
-                        <WButton clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="danger" className="map-delete-confirmation-controls" autoFocus={true} onClick={handleDeleteMap}>
-							Delete
-						</WButton>
-                        <WButton clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="danger" className="map-delete-confirmation-controls"  onClick={handleHideDeleteConfirmation}>
-							Cancel
-						</WButton>
-                            
-                    </div>
-                </> :
                 <>  
-                    <div className="map-entry-name-container" onClick={handleSelectMap}>
+                    <div className="map-entry-name-container" onClick={selectMap}>
                         <div className="map-entry-name">{props.name}</div>
                     </div>
                     <div className="map-entry-controls">
                         <i className="material-icons edit" onClick={handleEditMapName}>edit</i>
                     </div>
                     <div className="map-entry-controls">
-                        <i className="material-icons delete" onClick={handleShowDeleteConfirmation}>delete</i>
+                        <i className="material-icons delete" onClick={showDeleteConfirmation}>delete</i>
                     </div>
                 </>
             }

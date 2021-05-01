@@ -11,7 +11,7 @@ const MapList = (props) => {
                 props.maps.map(map => (
                     <MapEntry
                         name={map.name} key={map._id} _id={map._id} updateMapField={props.updateMapField} toggleShowMapInput={props.toggleShowMapInput} 
-                        deleteMap={props.deleteMap}
+                        toggleDeleteMapConfirmation={props.toggleDeleteMapConfirmation} setDelete_id={props.setDelete_id}
                     />
                 ))
             }

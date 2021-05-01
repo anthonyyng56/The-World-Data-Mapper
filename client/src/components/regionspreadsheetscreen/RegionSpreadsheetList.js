@@ -8,9 +8,11 @@ const RegionSpreadsheetList = (props) => {
 		<div className="region-spreadsheet-list">
 			{
                 props.subregions &&
-                props.subregions.map(subregion => (
+                props.subregions.map((subregion, index) => (
                     <RegionSpreadsheetEntry
-                        subregion={subregion} key={subregion._id} _id={subregion._id} handleUpdateField={props.handleUpdateField} handleDeleteSubregion={props.handleDeleteSubregion}
+                        subregion={subregion} key={subregion._id} _id={subregion._id} updateMapField={props.updateMapField}
+                        toggleDeleteSubregionConfirmation={props.toggleDeleteSubregionConfirmation} setDelete_id={props.setDelete_id}
+                        index={index} setDeleteIndex={props.setDeleteIndex}
                     />
                 ))
             }

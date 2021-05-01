@@ -161,12 +161,13 @@ body {
 }
 
 .map-entry-name {
+    padding-top: 26px;
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     height: 81px;
-    display: flex;
+    display: inline-block;
     align-items: center;
 }
 
@@ -261,6 +262,11 @@ body {
     height: 8%;
 }
 
+.spreadsheet-controls {
+    display: flex;
+    width: 150px;
+}
+
 .region-spreadsheet-header, .spreadsheet-entry {
     width: 100%;
     display: flex;
@@ -327,6 +333,11 @@ body {
 }
 
 .region-spreadsheet-name-container {
+    width: calc(100% - 300px);
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     padding-top: 5px;
     text-align: center;
 }
@@ -434,11 +445,15 @@ body {
 .region-landmarks-list {
     height: 100%;
     width: 100%;
-    padding: 6% 0%;
+    padding: 6% 10%;
     overflow-y: auto;
 }
 
 .landmarks-entry {
     width: 100%;
     padding: 5px 0px;
+}
+
+.spreadsheet-buttons {
+    height: 40px;
 }

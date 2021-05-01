@@ -36,15 +36,15 @@ const RegionViewerScreen = (props) => {
         parent = data.getMapInfoById[1].name;
     }
 
-    const handleHideShowLandmark = () => {
+    const hideAddLandmark = () => {
         toggleShowAddLandmark(false);
     }
 
-    const handleReturnToSpreadsheet = () => {
+    const returnToSpreadsheet = () => {
         history.push("/region/" + parent + '/' + parent_id);
     }
 
-    const handleAddNewLandmark = async () => {
+    const addNewLandmark = async () => {
         if (landmarkInput.name.trim() === '') {
 			alert("Please provide a non-empty landmark name");
 			return;
@@ -73,7 +73,7 @@ const RegionViewerScreen = (props) => {
                 </div>
                 <div className="viewer-information-container">
                     <div className="viewer-information-row">Region Name: &nbsp;&nbsp;{name}</div>
-                    <div className="viewer-information-row">Parent Region: &nbsp;&nbsp;<span className="link-color navigate-parent" onClick={handleReturnToSpreadsheet}>{parent}</span></div>
+                    <div className="viewer-information-row">Parent Region: &nbsp;&nbsp;<span className="link-color navigate-parent" onClick={returnToSpreadsheet}>{parent}</span></div>
                     <div className="viewer-information-row">Region Capital: &nbsp;&nbsp;{capital}</div>
                     <div className="viewer-information-row">Region Leader: &nbsp;&nbsp;{leader}</div>
                     <div className="viewer-information-row"># Of Subregions: &nbsp;&nbsp;{numberOfSubregions}</div>
@@ -89,10 +89,10 @@ const RegionViewerScreen = (props) => {
                     showAddLandmark ?
                     <div className="add-landmark-input-container">
                         <input type="text" placeholder="Enter Landmark Name Here" name="name" className="add-landmark-input" autoFocus={true} onBlur={updateLandmarkInput}/>
-                        <div className="add-landmark-controls" onClick={handleAddNewLandmark}>
+                        <div className="add-landmark-controls" onClick={addNewLandmark}>
 						    Add
 					    </div>
-                        <div className="add-landmark-controls" onClick={handleHideShowLandmark}>
+                        <div className="add-landmark-controls" onClick={hideAddLandmark}>
 						    Cancel
 					    </div>
                     </div>

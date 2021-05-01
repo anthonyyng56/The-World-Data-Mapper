@@ -3,26 +3,71 @@ export class jsTPS_Transaction {
     doTransaction() {};
     undoTransaction () {};
 }
-/*  Handles map field changes   */
-export class UpdateMapField_Transaction extends jsTPS_Transaction {
-    constructor(_id, field, prev, update, callback) {
+
+/*  Handles creation of subregions */
+export class AddSubregion_Transaction extends jsTPS_Transaction {
+    constructor(newSubregion, parent_id, index, addfunc, delfunc) {
         super();
-        this.prev = prev;
-        this.update = update;
-        this.field = field;
-        this._id = _id;
-        this.updateFunction = callback;
+        this.newSubregion = newSubregion
+        this.parent_id = parent_id;
+        this.index = index;
+        this.addfunc = addfunc;
+        this.deletefunc = delfunc;
     }
     async doTransaction() {
-		const { data } = await this.updateFunction({ variables: { _id: this._id, field: this.field, value: this.update }});
+		const { data } = await this.addfunc({ variables: { map: this.newSubregion, parent_id: this.parent_id, index: this.index }});
+        this._id = data.addSubregion;
 		return data;
     }
     async undoTransaction() {
-        const { data } = await this.updateFunction({ variables: { _id: this._id, field: this.field, value: this.prev }});
+		const { data } = await this.deletefunc({ variables: { _id: this._id }});
+        this.newSubregion = data.deleteSubregion;
+        delete this.newSubregion.__typename;
 		return data;
     }
 }
 
+/*  Handles deletion of subregions */
+export class DeleteSubregion_Transaction extends jsTPS_Transaction {
+    constructor(_id, index, delfunc, addfunc) {
+        super();
+        this._id = _id;
+        this.index = index;
+        this.deletefunc = delfunc;
+        this.addfunc = addfunc;
+    }
+    async doTransaction() {
+		const { data } = await this.deletefunc({ variables: { _id: this._id }});
+        this.deletedSubregion = data.deleteSubregion;
+        delete this.deletedSubregion.__typename;
+        this.parent_id = this.deletedSubregion.ancestors_id[this.deletedSubregion.ancestors_id.length - 1]
+		return data;
+    }
+    async undoTransaction() {
+		const { data } = await this.addfunc({ variables: { map: this.deletedSubregion, parent_id: this.parent_id, index: this.index }});
+		return data;
+    }
+}
+
+/*  Handles map field changes  */
+export class UpdateMapField_Transaction extends jsTPS_Transaction {
+    constructor(_id, field, prev, value, updatefunc) {
+        super();
+        this._id = _id;
+        this.field = field;
+        this.prev = prev;
+        this.value = value;
+        this.updatefunc = updatefunc;
+    }
+    async doTransaction() {
+		const { data } = await this.updatefunc({ variables: { _id: this._id, field: this.field, value: this.value }});
+		return data;
+    }
+    async undoTransaction() {
+        const { data } = await this.updatefunc({ variables: { _id: this._id, field: this.field, value: this.prev }});
+		return data;
+    }
+}
 
 
 

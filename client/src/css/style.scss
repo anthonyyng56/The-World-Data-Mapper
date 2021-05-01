@@ -168,7 +168,7 @@ html, body {
     color: white;
 }
 
-.header-col:hover {
+.sort-col:hover {
     background-color: #06d1b6;
     cursor: pointer;
 }
@@ -275,4 +275,9 @@ html, body {
 
 .region-landmarks-list {
     scrollbar-width: thin;
+}
+
+.spreadsheet-buttons:hover {
+    background-color: rgb(182, 182, 182);
+    color: white;
 }

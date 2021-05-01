@@ -5,11 +5,16 @@ import { GET_DB_MAPS } 					from '../../cache/queries';
 import { useMutation, useQuery } 		from '@apollo/client';
 import * as mutations 					from '../../cache/mutations';
 import { useHistory }					from "react-router-dom";
+import { WLMain} 						from 'wt-frontend';
+import DeleteModal                  	from '../modals/DeleteModal.js'
 
 const MapSelectScreen = (props) => {
 	let maps = [];
 	const [showMapInput, toggleShowMapInput] = useState(false);
 	const [createInput, setCreateInput] = useState({ name: '' });
+	const [deleteMapConfirmation, toggleDeleteMapConfirmation] = useState(false);
+	const [delete_id, setDelete_id] = useState('');
+	const deleteMessage = 'Delete Map?'
 	
 	const history = useHistory();
 	const [AddMap] 			= useMutation(mutations.ADD_MAP);
@@ -50,7 +55,8 @@ const MapSelectScreen = (props) => {
 	};
 
 	const deleteMap = async (_id) => {
-		DeleteMap({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAPS }] });
+		DeleteMap({ variables: { _id: delete_id }, refetchQueries: [{ query: GET_DB_MAPS }] });
+		toggleDeleteMapConfirmation(false);
 	};
 
 	const updateMapField = async (_id, field, value) => {
@@ -58,7 +64,7 @@ const MapSelectScreen = (props) => {
 		refetchMaps(refetch);
 	}
 
-	const handleHideCreateInput = () => {
+	const hideCreateInput = () => {
 		toggleShowMapInput(false)
 	}
 
@@ -69,10 +75,11 @@ const MapSelectScreen = (props) => {
 	}
 
 	return (
+		<WLMain>
 		<div className="map-select">
 			<h1 className="map-select-header">Your Maps</h1>
 			<div className="maps-container">
-				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} deleteMap={deleteMap} />
+				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} toggleDeleteMapConfirmation={toggleDeleteMapConfirmation} deleteMap={deleteMap} setDelete_id={setDelete_id}/>
 				<div className="create-map-container">
 					<div className="map-earth-container">
 						<img src={require('../../images/earth-1.png')} className = "map-earth" />
@@ -85,7 +92,7 @@ const MapSelectScreen = (props) => {
 								<WButton clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary" className="create-map-buttons" onClick={createNewMap}>
 									Create
 								</WButton>
-								<WButton clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary" className="create-map-buttons" onClick={handleHideCreateInput}>
+								<WButton clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary" className="create-map-buttons" onClick={hideCreateInput}>
 									Cancel
 								</WButton>
 							</div>
@@ -97,6 +104,10 @@ const MapSelectScreen = (props) => {
 				</div>
 			</div>
 		</div>
+		{
+			deleteMapConfirmation && <DeleteModal deleteMessage={deleteMessage} toggleDeleteConfirmation={toggleDeleteMapConfirmation} delete={deleteMap} />
+		}
+		</WLMain>
 	);
 };
 

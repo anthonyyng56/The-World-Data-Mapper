@@ -52,14 +52,24 @@ export const UPDATE_MAP_FIELD = gql`
 `;
 
 export const ADD_SUBREGION = gql`
-	mutation AddSubregion($_id: String!) {
-		addSubregion(_id: $_id) 
+	mutation AddSubregion($map: SubregionInput!, $parent_id: String!, $index: Int!) {
+		addSubregion(map: $map, parent_id: $parent_id, index: $index) 
 	}
 `;
 
 export const DELETE_SUBREGION = gql`
 	mutation DeleteSubregion($_id: String!) {
-		deleteSubregion(_id: $_id)
+		deleteSubregion(_id: $_id) {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			subregions_id
+			ancestors_id
+			root
+		}
 	}
 `;
 

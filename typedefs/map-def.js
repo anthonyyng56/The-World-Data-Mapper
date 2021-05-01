@@ -22,8 +22,8 @@ const typeDefs = gql `
 		addMap(map: MapInput!): String
 		deleteMap(_id: String!): Boolean
 		updateMapField(_id: String!, field: String!, value: String!): String
-		addSubregion(_id: String!): String
-		deleteSubregion(_id: String!): Boolean
+		addSubregion(map: SubregionInput!, parent_id: String!, index: Int!): String
+		deleteSubregion(_id: String!): Map
 		addLandmark(_id: String!, value: String!): String
 	}
     input FieldInput {
@@ -35,6 +35,17 @@ const typeDefs = gql `
 		_id: String
 		owner: String
 		name: String
+	}
+	input SubregionInput {
+		_id: String
+		owner: String
+		name: String
+		capital: String
+		leader: String
+		landmarks: [String]
+		subregions_id: [String]
+		ancestors_id: [String]
+		root: String
 	}
 `;
 
