@@ -1,10 +1,10 @@
-import React, { useState }      from 'react';
-import { useHistory }			from "react-router-dom";
+import React, { useState, useEffect }       from 'react';
+import { useHistory }			            from "react-router-dom";
 
 const RegionSpreadsheetEntry = (props) => {
-    const [editingName, toggleEditingName] = useState(false);
-    const [editingCapital, toggleEditingCapital] = useState(false);
-    const [editingLeader, toggleEditingLeader] = useState(false);
+    const [editName, setEditName] = useState(props.subregion.name);
+    const [editCapital, setEditCapital] = useState(props.subregion.capital);
+    const [editLeader, setEditLeader] = useState(props.subregion.leader);
     const history = useHistory();
 
     const selectSubregion = () => {
@@ -17,35 +17,50 @@ const RegionSpreadsheetEntry = (props) => {
         props.toggleDeleteSubregionConfirmation(true);
     }
 
-    const handleUpdateNameInput = (e) => {
-        toggleEditingName(false);
-        if (props.subregion.name !== e.target.value) {
-            if (e.target.value.trim() === '') {
+    const updateEditName = (e) => {
+        setEditName(e.target.value);
+    }
+
+    const updateEditCapital = (e) => {
+        setEditCapital(e.target.value);
+    }
+
+    const updateEditLeader = (e) => {
+        setEditLeader(e.target.value);
+    }
+
+    const handleUpdateNameInput = () => {
+        props.setEditingRow(-1);
+        props.setEditingColumn(-1);
+        if (props.subregion.name !== editName) {
+            if (editName.trim() === '') {
                 props.updateMapField(props._id, 'name', props.subregion.name, 'Unknown');
             } else {
-                props.updateMapField(props._id, 'name', props.subregion.name, e.target.value);
+                props.updateMapField(props._id, 'name', props.subregion.name, editName);
             }
         }
     }
 
-    const handleUpdateCapitalInput = (e) => {
-        toggleEditingCapital(false);
-        if (props.subregion.capital !== e.target.value) {
-            if (e.target.value.trim() === '') {
+    const handleUpdateCapitalInput = () => {
+        props.setEditingRow(-1);
+        props.setEditingColumn(-1);
+        if (props.subregion.capital !== editCapital) {
+            if (editCapital.trim() === '') {
                 props.updateMapField(props._id, 'capital', props.subregion.capital, 'Unknown');
             } else {
-                props.updateMapField(props._id, 'capital', props.subregion.capital, e.target.value);
+                props.updateMapField(props._id, 'capital', props.subregion.capital, editCapital);
             }
         }
     }
 
-    const handleUpdateLeaderInput = (e) => {
-        toggleEditingLeader(false);
-        if (props.subregion.leader !== e.target.value) {
-            if (e.target.value.trim() === '') {
+    const handleUpdateLeaderInput = () => {
+        props.setEditingRow(-1);
+        props.setEditingColumn(-1);
+        if (props.subregion.leader !== editLeader) {
+            if (editLeader.trim() === '') {
                 props.updateMapField(props._id, 'leader', props.subregion.leader, 'Unknown');
             } else {
-                props.updateMapField(props._id, 'leader', props.subregion.leader, e.target.value);
+                props.updateMapField(props._id, 'leader', props.subregion.leader, editLeader);
             }
         }
     }
@@ -54,38 +69,101 @@ const RegionSpreadsheetEntry = (props) => {
         history.push("/regionview/" + props.subregion.name + '/' + props._id);
     }
 
+    const shiftFocus = (event) => {
+		if (event.keyCode == '38') {
+            if (props.editingRow !== 0){
+                if (props.editingColumn === 0) {
+                    handleUpdateNameInput();
+                } else if (props.editingColumn === 1) {
+                    handleUpdateCapitalInput();
+                } else if (props.editingColumn === 2) {
+                    handleUpdateLeaderInput();
+                }
+                props.setEditingRow(props.editingRow - 1);
+                props.setEditingColumn(props.editingColumn)
+            }
+		} else if (event.keyCode == '40') {
+            if (props.editingRow !== props.length - 1){
+                if (props.editingColumn === 0) {
+                    handleUpdateNameInput();
+                } else if (props.editingColumn === 1) {
+                    handleUpdateCapitalInput();
+                } else if (props.editingColumn === 2) {
+                    handleUpdateLeaderInput();
+                }
+                props.setEditingRow(props.editingRow + 1);
+                props.setEditingColumn(props.editingColumn)
+            }
+		} else if (event.keyCode == '37') {
+            if (props.editingColumn !== 0) {
+                if (props.editingColumn === 1) {
+                    handleUpdateCapitalInput();
+                } else if (props.editingColumn === 2) {
+                    handleUpdateLeaderInput();
+                }
+                props.setEditingRow(props.editingRow);
+                props.setEditingColumn(props.editingColumn - 1)
+            }
+        } else if (event.keyCode == '39') {
+            if (props.editingColumn !== 2) {
+                if (props.editingColumn === 0) {
+                    handleUpdateNameInput();
+                } else if (props.editingColumn === 1) {
+                    handleUpdateCapitalInput();
+                }
+                props.setEditingRow(props.editingRow);
+                props.setEditingColumn(props.editingColumn + 1)
+            }
+        }
+	}    
+
+    const setEditNamePosition = () => {
+        props.setEditingRow(props.index);
+        props.setEditingColumn(0);
+    }
+
+    const setEditCapitalPosition = () => {
+        props.setEditingRow(props.index);
+        props.setEditingColumn(1);
+    }
+
+    const setEditLeaderPosition = () => {
+        props.setEditingRow(props.index);
+        props.setEditingColumn(2);
+    }
+
     return (
         <div className="spreadsheet-entry">
             {
-                editingName ? 
+                props.editingRow === props.index && props.editingColumn === 0 ? 
                 <div className="entry-input-container col-0">
-                    <input className="subregion-input" type="text" defaultValue={props.subregion.name} autoFocus={true} onBlur={handleUpdateNameInput}/>
+                    <input className="subregion-input" type="text" defaultValue={props.subregion.name} autoFocus={true} onFocus={updateEditName} onBlur={handleUpdateNameInput} onChange={updateEditName} onKeyUp={shiftFocus}/>
                 </div>
                 : 
                 <div className="entry-container col-0">
                     <i className="material-icons delete-subregion" onClick={showDeleteConfirmation}>close</i>
                     <div className="entry-col link-color" onClick={selectSubregion} onBlur={handleUpdateNameInput}>{props.subregion.name}</div>
-                    <i className="material-icons edit-subregion-name" onClick={toggleEditingName}>edit</i>
+                    <i className="material-icons edit-subregion-name" onClick={setEditNamePosition}>edit</i>
                 </div>
             }
             {
-                editingCapital ? 
+                props.editingRow === props.index && props.editingColumn === 1 ? 
                 <div className="entry-input-container col-1">
-                    <input className="subregion-input" type="text" defaultValue={props.subregion.capital} autoFocus={true} onBlur={handleUpdateCapitalInput}/>
+                    <input className="subregion-input" type="text" defaultValue={props.subregion.capital} autoFocus={true} onFocus={updateEditCapital} onBlur={handleUpdateCapitalInput} onChange={updateEditCapital} onKeyUp={shiftFocus}/>
                 </div>
                 : 
                 <div className="entry-container col-1">
-                    <div className="entry-col" onClick={toggleEditingCapital}>{props.subregion.capital}</div>
+                    <div className="entry-col" onClick={setEditCapitalPosition}>{props.subregion.capital}</div>
                 </div>
             }
             {
-                editingLeader ? 
+                props.editingRow === props.index && props.editingColumn === 2 ? 
                 <div className="entry-input-container col-1">
-                    <input className="subregion-input" type="text" defaultValue={props.subregion.leader} autoFocus={true} onBlur={handleUpdateLeaderInput}/>
+                    <input className="subregion-input" type="text" defaultValue={props.subregion.leader} autoFocus={true} onFocus={updateEditLeader} onBlur={handleUpdateLeaderInput} onChange={updateEditLeader} onKeyUp={shiftFocus}/>
                     </div>
                 : 
                 <div className="entry-container col-1">
-                    <div className="entry-col" onClick={toggleEditingLeader}>{props.subregion.leader}</div>
+                    <div className="entry-col" onClick={setEditLeaderPosition}>{props.subregion.leader}</div>
                 </div>
             }
             <div className="entry-container col-2">
