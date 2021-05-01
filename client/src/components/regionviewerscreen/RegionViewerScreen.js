@@ -30,9 +30,9 @@ const RegionViewerScreen = (props) => {
         name = data.getMapInfoById[0].name; 
         capital = data.getMapInfoById[0].capital;
         leader = data.getMapInfoById[0].leader;
-        numberOfSubregions = data.getMapInfoById[0].subregions_id.length;
+        numberOfSubregions = data.getMapInfoById[0].subregion_ids.length;
         landmarks = data.getMapInfoById[0].landmarks;
-        parent_id = data.getMapInfoById[0].ancestors_id[data.getMapInfoById[0].ancestors_id.length - 1]
+        parent_id = data.getMapInfoById[0].ancestor_ids[data.getMapInfoById[0].ancestor_ids.length - 1]
         parent = data.getMapInfoById[1].name;
     }
 

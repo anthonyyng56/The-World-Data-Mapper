@@ -6,13 +6,15 @@ import * as mutations 								from '../../cache/mutations';
 import { GET_DB_SUBREGIONS } 						from '../../cache/queries';
 import { useParams } 								from 'react-router';
 import DeleteModal                  				from '../modals/DeleteModal.js'
-import { AddSubregion_Transaction, DeleteSubregion_Transaction, UpdateMapField_Transaction } 	from '../../utils/jsTPS';
+import { AddSubregion_Transaction, DeleteSubregion_Transaction, UpdateMapField_Transaction, SortSubregions_Transaction } 	from '../../utils/jsTPS';
 
 const RegionSpreadsheetScreen = (props) => {
 	let subregions = [];
 	const [AddSubregion] 			= useMutation(mutations.ADD_SUBREGION);
 	const [UpdateMapField] 			= useMutation(mutations.UPDATE_MAP_FIELD);
 	const [DeleteSubregion] 		= useMutation(mutations.DELETE_SUBREGION);
+	const [SortSubregionsByCategory] 		= useMutation(mutations.SORT_SUBREGIONS_BY_CATEGORY);
+	const [ReorderSubregions] 		= useMutation(mutations.REORDER_SUBREGIONS);
 	const [deleteSubregionConfirmation, toggleDeleteSubregionConfirmation] = useState(false);
 	const [delete_id, setDelete_id] = useState('');
 	const [deleteIndex, setDeleteIndex] = useState(0);
@@ -54,8 +56,8 @@ const RegionSpreadsheetScreen = (props) => {
 			capital: 'Unknown',
 			leader: 'Unknown',
 			landmarks: [],
-			subregions_id: [],
-			ancestors_id: [],
+			subregion_ids: [],
+			ancestor_ids: [],
 			root: '',
 		};
 		let transaction = new AddSubregion_Transaction(newSubregion, parent_id, index, AddSubregion, DeleteSubregion);
@@ -72,6 +74,42 @@ const RegionSpreadsheetScreen = (props) => {
 
 	const updateMapField = async (_id, field, prev, value) => {
 		let transaction = new UpdateMapField_Transaction(_id, field, prev, value, UpdateMapField);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	}
+
+	const sortSubregionsByName = async () => {
+		let subregionNames = [];
+		let subregion_ids = []
+		for (let i = 0; i < subregions.length; i++) {
+			subregionNames.push(subregions[i].name);
+			subregion_ids.push(subregions[i]._id);
+		}
+		let transaction = new SortSubregions_Transaction(id, subregionNames, subregion_ids, SortSubregionsByCategory, ReorderSubregions);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	}
+
+	const sortSubregionsByCapital = async () => {
+		let subregionCapitals = [];
+		let subregion_ids = []
+		for (let i = 0; i < subregions.length; i++) {
+			subregionCapitals.push(subregions[i].capital);
+			subregion_ids.push(subregions[i]._id);
+		}
+		let transaction = new SortSubregions_Transaction(id, subregionCapitals, subregion_ids, SortSubregionsByCategory, ReorderSubregions);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	}
+
+	const sortSubregionsByLeader = async () => {
+		let subregionLeaders = [];
+		let subregion_ids = []
+		for (let i = 0; i < subregions.length; i++) {
+			subregionLeaders.push(subregions[i].leader);
+			subregion_ids.push(subregions[i]._id);
+		}
+		let transaction = new SortSubregions_Transaction(id, subregionLeaders, subregion_ids, SortSubregionsByCategory, ReorderSubregions);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	}
@@ -110,9 +148,9 @@ const RegionSpreadsheetScreen = (props) => {
 
 			</div>
 			<div className="region-spreadsheet-header">
-				<div className="header-col sort-col col-0">Name</div>
-				<div className="header-col sort-col col-1">Capital</div>
-				<div className="header-col sort-col col-1">Leader</div>
+				<div className="header-col sort-col col-0" onClick={sortSubregionsByName}>Name</div>
+				<div className="header-col sort-col col-1" onClick={sortSubregionsByCapital}>Capital</div>
+				<div className="header-col sort-col col-1" onClick={sortSubregionsByLeader}>Leader</div>
 				<div className="header-col col-2">Flag</div>
 				<div className="header-col col-3">Landmarks</div>
 			</div>

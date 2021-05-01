@@ -19,8 +19,8 @@ export const GET_DB_MAPS = gql`
 			capital
 			leader
 			landmarks
-			subregions_id
-			ancestors_id
+			subregion_ids
+			ancestor_ids
 			root
 		}
 	}
@@ -35,8 +35,8 @@ export const GET_DB_MAP_INFO = gql`
 			capital
 			leader
 			landmarks
-			subregions_id
-			ancestors_id
+			subregion_ids
+			ancestor_ids
 			root
 		}
 	}
@@ -51,8 +51,8 @@ export const GET_DB_SUBREGIONS = gql`
 			capital
 			leader
 			landmarks
-			subregions_id
-			ancestors_id
+			subregion_ids
+			ancestor_ids
 			root
 		}
 	}

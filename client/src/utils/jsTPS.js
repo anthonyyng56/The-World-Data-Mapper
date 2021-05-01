@@ -40,7 +40,7 @@ export class DeleteSubregion_Transaction extends jsTPS_Transaction {
 		const { data } = await this.deletefunc({ variables: { _id: this._id }});
         this.deletedSubregion = data.deleteSubregion;
         delete this.deletedSubregion.__typename;
-        this.parent_id = this.deletedSubregion.ancestors_id[this.deletedSubregion.ancestors_id.length - 1]
+        this.parent_id = this.deletedSubregion.ancestor_ids[this.deletedSubregion.ancestor_ids.length - 1]
 		return data;
     }
     async undoTransaction() {
@@ -65,6 +65,26 @@ export class UpdateMapField_Transaction extends jsTPS_Transaction {
     }
     async undoTransaction() {
         const { data } = await this.updatefunc({ variables: { _id: this._id, field: this.field, value: this.prev }});
+		return data;
+    }
+}
+
+/*  Handles sort subregions   */
+export class SortSubregions_Transaction extends jsTPS_Transaction {
+    constructor(_id, subregionField, originalOrder, sortfunc, undosortfunc) {
+        super();
+        this._id = _id;
+        this.subregionField = subregionField;
+        this.originalOrder = originalOrder;
+        this.sortfunc = sortfunc;
+        this.undosortfunc = undosortfunc;
+    }
+    async doTransaction() {
+		const { data } = await this.sortfunc({ variables: { _id: this._id, subregionField: this.subregionField }});
+		return data;
+    }
+    async undoTransaction() {
+        const { data } = await this.undosortfunc({ variables: { _id: this._id, order: this.originalOrder }});
 		return data;
     }
 }

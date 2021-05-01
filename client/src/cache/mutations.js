@@ -66,8 +66,8 @@ export const DELETE_SUBREGION = gql`
 			capital
 			leader
 			landmarks
-			subregions_id
-			ancestors_id
+			subregion_ids
+			ancestor_ids
 			root
 		}
 	}
@@ -76,5 +76,17 @@ export const DELETE_SUBREGION = gql`
 export const ADD_LANDMARK = gql`
 	mutation AddLandmark($_id: String!, $value: String!) {
 		addLandmark(_id: $_id, value: $value) 
+	}
+`;
+
+export const SORT_SUBREGIONS_BY_CATEGORY = gql`
+	mutation SortSubregionsByCategory($_id: String!, $subregionField: [String]!) {
+		sortSubregionsByCategory(_id: $_id, subregionField: $subregionField) 
+	}
+`;
+
+export const REORDER_SUBREGIONS = gql`
+	mutation ReorderSubregions($_id: String!, $order: [String]!) {
+		reorderSubregions(_id: $_id, order: $order) 
 	}
 `;

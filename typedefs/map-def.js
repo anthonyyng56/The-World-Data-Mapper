@@ -9,8 +9,8 @@ const typeDefs = gql `
 		capital: String!
 		leader: String!
 		landmarks: [String]!
-		subregions_id: [String]!
-		ancestors_id: [String]!
+		subregion_ids: [String]!
+		ancestor_ids: [String]!
 		root: String!
 	}
 	extend type Query {
@@ -25,6 +25,8 @@ const typeDefs = gql `
 		addSubregion(map: SubregionInput!, parent_id: String!, index: Int!): String
 		deleteSubregion(_id: String!): Map
 		addLandmark(_id: String!, value: String!): String
+		sortSubregionsByCategory(_id: String!, subregionField: [String]!): [String]
+		reorderSubregions(_id: String, order: [String]!): [String]!
 	}
     input FieldInput {
 		_id: String
@@ -43,8 +45,8 @@ const typeDefs = gql `
 		capital: String
 		leader: String
 		landmarks: [String]
-		subregions_id: [String]
-		ancestors_id: [String]
+		subregion_ids: [String]
+		ancestor_ids: [String]
 		root: String
 	}
 `;

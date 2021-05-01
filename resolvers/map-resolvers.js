@@ -16,7 +16,7 @@ module.exports = {
 			const map = await Map.findOne({_id: objectId});
 			let maps = []
 			maps.push(map);
-			let parent_id = map.ancestors_id[map.ancestors_id.length - 1];
+			let parent_id = map.ancestor_ids[map.ancestor_ids.length - 1];
 			const parentId = new ObjectId(parent_id);
 			const parent = await Map.findOne({_id: parentId});
 			maps.push(parent);
@@ -26,9 +26,9 @@ module.exports = {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
 			const map = await Map.findOne({_id: objectId});
-			const subregions = map.subregions_id
+			const subregions = map.subregion_ids
 			let maps = []
-			for (i = 0; i < subregions.length; i++) {
+			for (let i = 0; i < subregions.length; i++) {
 				let subregion = Map.findOne({_id: new ObjectId(subregions[i])});
 				if (subregion) {
 					maps.push(subregion);
@@ -49,8 +49,8 @@ module.exports = {
 				capital: ' ',
 				leader: ' ',
 				landmarks: [],
-				subregions_id: [],
-				ancestors_id: [],
+				subregion_ids: [],
+				ancestor_ids: [],
 				root: objectId.toString(),
 			});
 			const updated = await newMap.save();
@@ -72,13 +72,13 @@ module.exports = {
 		},
 		addSubregion: async (_, args) => {
 			const { map, parent_id, index } = args;
-			const { _id, owner, name, capital, leader, landmarks, subregions_id, ancestors_id, root } = map;
+			const { _id, owner, name, capital, leader, landmarks, subregion_ids, ancestor_ids, root } = map;
 			const parentId = new ObjectId(parent_id);
 			if (index === -1) {
 				const parentMap = await Map.findOne({_id: parentId});
 				if(!parentMap) return ('Map Not Found');
-				let ancestors_id = parentMap.ancestors_id
-				ancestors_id.push(parentMap._id);
+				let ancestor_ids = parentMap.ancestor_ids
+				ancestor_ids.push(parentMap._id);
 				let tempId;
 				if (_id === '') {
 					tempId = new ObjectId();
@@ -86,9 +86,9 @@ module.exports = {
 					tempId = new ObjectId(_id);
 				}
 				const subregionId = tempId
-				let children = parentMap.subregions_id;
+				let children = parentMap.subregion_ids;
 				children.push(subregionId);
-				const updated1 = await Map.updateOne({_id: parentId}, { subregions_id: children });
+				const updated1 = await Map.updateOne({_id: parentId}, { subregion_ids: children });
 				const newSubregion = new Map({
 					_id: subregionId,	
 					owner: ' ',
@@ -96,8 +96,8 @@ module.exports = {
 					capital: 'Unknown',
 					leader: 'Unknown',
 					landmarks: [],
-					subregions_id: [],
-					ancestors_id: ancestors_id,
+					subregion_ids: [],
+					ancestor_ids: ancestor_ids,
 					root: parentMap.root,
 				});
 				const updated2 = await newSubregion.save();
@@ -106,9 +106,9 @@ module.exports = {
 			} else {
 				const subregionId = new ObjectId(_id);
 				const parentMap = await Map.findOne({_id: parentId});
-				let children = parentMap.subregions_id;
+				let children = parentMap.subregion_ids;
 				children.splice(index, 0, subregionId);
-				const updated1 = await Map.updateOne({_id: parentId}, { subregions_id: children });
+				const updated1 = await Map.updateOne({_id: parentId}, { subregion_ids: children });
 				const existingSubregion = new Map({
 					_id: subregionId,	
 					owner: owner,
@@ -116,8 +116,8 @@ module.exports = {
 					capital: capital,
 					leader: leader,
 					landmarks: landmarks,
-					subregions_id: subregions_id,
-					ancestors_id: ancestors_id,
+					subregion_ids: subregion_ids,
+					ancestor_ids: ancestor_ids,
 					root: root,
 				});
 				const updated2 = await existingSubregion.save();
@@ -129,15 +129,15 @@ module.exports = {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
 			const subregion = await Map.findOne({_id: objectId});
-			let parent_id = subregion.ancestors_id[subregion.ancestors_id.length - 1];
+			let parent_id = subregion.ancestor_ids[subregion.ancestor_ids.length - 1];
 			const parentId = new ObjectId(parent_id);
 			const parent = await Map.findOne({_id: parentId});
-			let parentSubregions = parent.subregions_id;
+			let parentSubregions = parent.subregion_ids;
 			let index = parentSubregions.indexOf(_id);
 			if (index !== -1) {
 				parentSubregions.splice(index, 1);
 			}
-			const updated = await Map.updateOne({_id: parentId}, { subregions_id: parentSubregions });
+			const updated = await Map.updateOne({_id: parentId}, { subregion_ids: parentSubregions });
 			const deleted = await Map.findOneAndDelete({_id: objectId});
 			return deleted;
 		},
@@ -150,6 +150,46 @@ module.exports = {
 			const updated = await Map.updateOne({ _id: objectId}, { landmarks: landmarks });
 			if(updated) return value;
 			else return "";
+		},
+		sortSubregionsByCategory: async (_, args) => {
+			const { _id, subregionField } = args;
+			const objectId = new ObjectId(_id);
+			const found = await Map.findOne({_id: objectId});
+			let subregion_ids = found.subregion_ids;
+			let sortedNormal = true;
+			for (let i = 0; i < subregionField.length-1; i++) {
+				if (subregionField[i] > subregionField[i+1]) {
+					sortedNormal = false;
+					break
+				}
+			}
+			if (sortedNormal) {
+				subregion_ids.reverse();
+				const updated = await Map.updateOne({_id: objectId}, { subregion_ids: subregion_ids });
+				return subregion_ids;
+			} else {
+				for (let i = 0; i < subregion_ids.length; i++) {
+					for (let j = 0; j < subregion_ids.length - 1; j++) {
+						if (subregionField[j] > subregionField[j+1]) {
+							let tempName = subregionField[j];
+							subregionField[j] = subregionField[j+1];
+							subregionField[j+1] = tempName;
+							let temp_id = subregion_ids[j];
+							subregion_ids[j] = subregion_ids[j+1];
+							subregion_ids[j+1] = temp_id;
+						}
+					}
+				}
+				
+				const updated = await Map.updateOne({_id: objectId}, { subregion_ids: subregion_ids });
+				return subregion_ids;
+			}
+		},
+		reorderSubregions: async (_, args) => {
+			const { _id, order } = args;
+			const objectId = new ObjectId(_id);	
+			const updated = await Map.updateOne({_id: objectId}, { subregion_ids: order });
+			return order;
 		},
 	}
 }

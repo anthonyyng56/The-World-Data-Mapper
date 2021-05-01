@@ -89,7 +89,7 @@ const RegionSpreadsheetEntry = (props) => {
                 </div>
             }
             <div className="entry-container col-2">
-                <div className="entry-col">
+                <div className="entry-col flag-col">
                     <img className = "flag-filler-image" src={require('../../images/image.png')}/>
                 </div>
             </div>

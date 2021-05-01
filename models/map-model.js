@@ -26,18 +26,18 @@ const mapSchema = new Schema(
 			type: [String],
 			required: true
 		},
-		subregions_id: {
+		subregion_ids: {
 			type: [String],
 			required: true
 		},
-		ancestors_id: {
+		ancestor_ids: {
 			type: [String],
 			required: true
 		},
 		root: {
 			type: String,
 			required: true
-		}
+		},
 	},
 	{ timestamps: true }
 );
