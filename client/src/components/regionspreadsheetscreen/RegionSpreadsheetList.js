@@ -15,6 +15,7 @@ const RegionSpreadsheetList = (props) => {
                         index={index} setDeleteIndex={props.setDeleteIndex} editingRow={editingRow} setEditingRow={setEditingRow}
                         editingColumn={editingColumn} setEditingColumn={setEditingColumn} length={props.subregions.length}
                         tps={props.tps} toggleDisableUndo={props.toggleDisableUndo} toggleDisableRedo={props.toggleDisableRedo}
+                        setDeleteName={props.setDeleteName}
                     />
                 ))
             }

@@ -27,6 +27,7 @@ const MapEntry = (props) => {
 
     const showDeleteConfirmation = () => {
         props.setDelete_id(props._id);
+        props.setDeleteName(props.name);
         props.toggleDeleteMapConfirmation(true);
         props.toggleShowMapInput(false);
     }

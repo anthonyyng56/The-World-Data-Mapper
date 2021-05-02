@@ -130,6 +130,26 @@ export class DeleteLandmark_Transaction extends jsTPS_Transaction {
     }
 }
 
+/*  Handles updating landmarks */
+export class UpdateLandmark_Transaction extends jsTPS_Transaction {
+    constructor(_id, index, newVal, oldVal, updatefunc) {
+        super();
+        this._id = _id;
+        this.index = index;
+        this.newVal = newVal;
+        this.oldVal = oldVal;
+        this.updatefunc = updatefunc;
+    }
+    async doTransaction() {
+		const { data } = await this.updatefunc({variables: { _id: this._id, index: this.index, value: this.newVal }});
+		return data;
+    }
+    async undoTransaction() {
+		const { data } = await this.updatefunc({variables: { _id: this._id, index: this.index, value: this.oldVal }});
+		return data;
+    }
+}
+
 
 
 export class jsTPS {

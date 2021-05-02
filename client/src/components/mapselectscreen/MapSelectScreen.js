@@ -14,6 +14,7 @@ const MapSelectScreen = (props) => {
 	const [createInput, setCreateInput] = useState({ name: '' });
 	const [deleteMapConfirmation, toggleDeleteMapConfirmation] = useState(false);
 	const [delete_id, setDelete_id] = useState('');
+	const [deleteName, setDeleteName] = useState('');
 	const deleteMessage = 'Delete Map?'
 	
 	const history = useHistory();
@@ -25,7 +26,7 @@ const MapSelectScreen = (props) => {
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
 	if(data) { maps = data.getAllMaps; }
-
+	
 	const refetchMaps = async (refetch) => {
 		const { loading, error, data } = await refetch();
 		if (data) {
@@ -79,7 +80,8 @@ const MapSelectScreen = (props) => {
 		<div className="map-select">
 			<h1 className="map-select-header">Your Maps</h1>
 			<div className="maps-container">
-				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} toggleDeleteMapConfirmation={toggleDeleteMapConfirmation} deleteMap={deleteMap} setDelete_id={setDelete_id}/>
+				<MapList maps={maps} updateMapField={updateMapField} toggleShowMapInput={toggleShowMapInput} toggleDeleteMapConfirmation={toggleDeleteMapConfirmation} 
+				deleteMap={deleteMap} setDelete_id={setDelete_id} setDeleteName={setDeleteName} />
 				<div className="create-map-container">
 					<div className="map-earth-container">
 						<img src={require('../../images/earth-1.png')} className = "map-earth" />
@@ -105,7 +107,7 @@ const MapSelectScreen = (props) => {
 			</div>
 		</div>
 		{
-			deleteMapConfirmation && <DeleteModal deleteMessage={deleteMessage} toggleDeleteConfirmation={toggleDeleteMapConfirmation} delete={deleteMap} />
+			deleteMapConfirmation && <DeleteModal deleteMessage={deleteMessage} name={deleteName} toggleDeleteConfirmation={toggleDeleteMapConfirmation} delete={deleteMap} />
 		}
 		</WLMain>
 	);

@@ -1,12 +1,14 @@
-import React, { useState, useEffect }           from 'react';
-import { useParams }                            from 'react-router';
-import { useMutation, useQuery } 		        from '@apollo/client';
-import { GET_DB_MAP, GET_DB_PARENT } 			from '../../cache/queries';
-import * as mutations 					        from '../../cache/mutations';
-import { WButton }                              from 'wt-frontend';
-import { useHistory }					        from "react-router-dom";
-import RegionLandmarksList 		                from './RegionLandmarksList.js'
-import { AddLandmark_Transaction, DeleteLandmark_Transaction } 	            from '../../utils/jsTPS';
+import React, { useState, useEffect }                           from 'react';
+import { useParams }                                            from 'react-router';
+import { useMutation, useQuery } 		                        from '@apollo/client';
+import { GET_DB_MAP, GET_DB_PARENT, GET_DB_ANCESTORS } 			from '../../cache/queries';
+import * as mutations 					                        from '../../cache/mutations';
+import { WButton, WLMain }                                      from 'wt-frontend';
+import { useHistory }					                        from "react-router-dom";
+import RegionLandmarksList 		                                from './RegionLandmarksList.js'
+import DeleteModal                  	                        from '../modals/DeleteModal.js'
+import AncestorsList 		    					from '../AncestorComponents/AncestorsList.js'
+import { AddLandmark_Transaction, DeleteLandmark_Transaction, UpdateLandmark_Transaction } 	            from '../../utils/jsTPS';
 
 const RegionViewerScreen = (props) => {
     let name = '';
@@ -16,18 +18,24 @@ const RegionViewerScreen = (props) => {
     let landmarks = [];
     let parentId = '';
     let parentName = '';
+    const deleteMessage = 'Delete Landmark?'
+    let ancestors = [];
 
     const history = useHistory();
     const [showAddLandmark, toggleShowAddLandmark] = useState(false);
     const [landmarkInput, setLandmarkInput] = useState({ name: '' });
     const [disableUndo, toggleDisableUndo]  = useState(true);
 	const [disableRedo, toggleDisableRedo]  = useState(true);
+    const [deleteIndex, setDeleteIndex] = useState('');
+	const [deleteName, setDeleteName] = useState('');
+    const [deleteMapConfirmation, toggleDeleteMapConfirmation] = useState(false);
 
 	const undoStatus = disableUndo && ' disabledButton ';
 	const redoStatus = disableRedo && ' disabledButton ';
 
     const [AddLandmark] 			= useMutation(mutations.ADD_LANDMARK);
     const [DeleteLandmark] 			= useMutation(mutations.DELETE_LANDMARK);
+    const [UpdateLandmark] 			= useMutation(mutations.UPDATE_LANDMARK);
 
     const { id } = useParams();
 	const { loading: loading1, error: error1, data: data1, refetch: refetch1 } = useQuery(GET_DB_MAP, {variables: { _id: id }});
@@ -41,6 +49,11 @@ const RegionViewerScreen = (props) => {
         landmarks = data1.getMapById.landmarks;
         parentId = data1.getMapById.parent_id;
     }
+
+    const { loading: loading2, error: error2, data: data2, refetch: refetch2 } = useQuery(GET_DB_ANCESTORS, {variables: { _id: id }});
+    if(loading2) { console.log(loading2, 'loading'); }
+	if(error2) { console.log(error2, 'error'); }
+    if(data2) { ancestors = data2.getAllAncestors; console.log(ancestors)}
 
     const { loading, error, data, refetch } = useQuery(GET_DB_PARENT, {variables: { _id: id }});
     if(loading) { console.log(loading, 'loading'); }
@@ -68,6 +81,7 @@ const RegionViewerScreen = (props) => {
     }
 
     const returnToSpreadsheet = () => {
+        props.tps.clearAllTransactions();
         history.push("/region/" + parentId);
     }
 
@@ -82,8 +96,15 @@ const RegionViewerScreen = (props) => {
         toggleShowAddLandmark(false);
     }
 
-    const deleteLandmark = async (landmark, index) => {
-        let transaction = new DeleteLandmark_Transaction(id, landmark, index, DeleteLandmark, AddLandmark);
+    const deleteLandmark = async () => {
+        let transaction = new DeleteLandmark_Transaction(id, deleteName, deleteIndex, DeleteLandmark, AddLandmark);
+		props.tps.addTransaction(transaction);
+		await tpsRedo();
+        toggleDeleteMapConfirmation(false);
+    }
+
+    const updateLandmark = async (index, newVal, oldVal) => {
+        let transaction = new UpdateLandmark_Transaction(id, index, newVal, oldVal, UpdateLandmark);
 		props.tps.addTransaction(transaction);
 		await tpsRedo();
     }
@@ -99,16 +120,24 @@ const RegionViewerScreen = (props) => {
     }, []);
 
     const undoCtrl = (event) => {
-		if (event.ctrlKey === true && event.key === 'z') {
+		if (event.ctrlKey === true && event.key === 'z' && props.tps.hasTransactionToUndo()) {
 			tpsUndo();
 		}
 	}
 
 	const redoCtrl = (event) => {
-		if (event.ctrlKey === true && event.key === 'y') {
+		if (event.ctrlKey === true && event.key === 'y' && props.tps.hasTransactionToRedo()) {
 			tpsRedo();
 		}
 	}
+
+    useEffect(() => {
+		window.onpopstate = () => {
+			props.tps.clearAllTransactions();
+			toggleDisableUndo(true);
+			toggleDisableRedo(true);
+		}
+	});
 
 	useEffect(() => {
         document.addEventListener('keydown', undoCtrl);
@@ -121,6 +150,12 @@ const RegionViewerScreen = (props) => {
 
 
 	return (
+        <WLMain>
+        <AncestorsList ancestors={ancestors} />
+        <div className="navigate-sister-regions">
+			<i className="material-icons navbar-arrow">arrow_back</i>
+			<i className="material-icons navbar-arrow">arrow_forward</i>
+		</div>
 		<div className="region-viewer-container">
 			<div className="viewer-left-content">
                 <div>
@@ -147,7 +182,8 @@ const RegionViewerScreen = (props) => {
             <div className="viewer-right-content">
                 <div className="viewer-landmarks-title">Region Landmarks:</div>
                 <div className="viewer-landmarks-container">
-                    <RegionLandmarksList landmarks={landmarks} deleteLandmark={deleteLandmark}/>
+                    <RegionLandmarksList landmarks={landmarks} deleteLandmark={deleteLandmark} updateLandmark={updateLandmark} setDeleteIndex={setDeleteIndex} 
+                    setDeleteName={setDeleteName} toggleDeleteMapConfirmation={toggleDeleteMapConfirmation} />
                 </div>
                 <div className="viewer-add-landmark">
                 {
@@ -168,7 +204,11 @@ const RegionViewerScreen = (props) => {
                 }
                 </div>
             </div>   
+            {
+			    deleteMapConfirmation && <DeleteModal deleteMessage={deleteMessage} name={deleteName} toggleDeleteConfirmation={toggleDeleteMapConfirmation} delete={deleteLandmark} />
+		    }
 		</div>
+        </WLMain>
 	);
 };
 

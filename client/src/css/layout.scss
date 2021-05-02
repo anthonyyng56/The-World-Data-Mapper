@@ -11,7 +11,25 @@ body {
 }
 
 .logo {
-    max-width: 123px;
+    width: 123px;
+    margin-left: 10px;
+    margin-right: 50px;
+}
+
+.navbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-options {
+    height: 64px;
+}
+
+.credential-controls-container {
+    width: calc(100% - 133px);
+    display: flex;
+    justify-content: flex-end;
 }
 
 .signup-modal {
@@ -46,6 +64,16 @@ body {
     display: flex;
     justify-content: center;
     margin-top: 10px;
+}
+
+.delete-modal {
+    width: 500px;
+}
+
+.delete-modal-message {
+    width: 470px;
+    padding: 5px 35px 20px 35px;
+    overflow-wrap: anywhere;
 }
 
 .modal-header {
@@ -481,9 +509,21 @@ body {
     height: 40px;
 }
 
-.region-landmarks-entry {
+.region-landmarks-entry, .region-landmarks-delete-entry {
     display: flex;
     width: 100%;
+}
+
+.region-landmarks-delete-entry {
+    height: 50px;
+    align-items: center;
+}
+
+.region-landmarks-edit-entry {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
 }
 
 .region-landmarks-entry-name {
@@ -500,4 +540,50 @@ body {
     align-items: center;
     height: 50px;
     width: 50px;
+}
+
+.region-landmarks-delete-confirmation {
+    margin-left: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: calc(100% - 265px);
+}
+
+.landmark-delete-controls {
+    justify-content: center;
+    margin-right: 5px;
+    width: 70px;
+}
+
+.landmark-input {
+    height: 70%;
+    width: calc(100% - 120px);
+    margin: 0;
+    padding: 0;
+    padding-left: 8px;
+}
+
+.path {
+    position: absolute;
+    left: 173px;
+    top: 0px;
+    height: 60px;
+    width: calc(50% - 263px);
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.navigate-sister-regions {
+    position: absolute;
+    left: calc(50% - 80px);
+    margin-left: 40px;
+    top: 10px;
+}
+
+.ancestor-link {
+    padding: 5px;
 }

@@ -1,20 +1,23 @@
 import React, { useState, useEffect }				from 'react';
 import { WLMain } 									from 'wt-frontend';
 import RegionSpreadsheetList 		    			from './RegionSpreadsheetList.js'
+import AncestorsList 		    					from '../AncestorComponents/AncestorsList.js'
 import { useMutation, useQuery } 					from '@apollo/client';
 import * as mutations 								from '../../cache/mutations';
-import { GET_DB_SUBREGIONS, GET_DB_MAP } 			from '../../cache/queries';
+import { GET_DB_SUBREGIONS, GET_DB_MAP, GET_DB_ANCESTORS } 			from '../../cache/queries';
 import { useParams } 								from 'react-router';
 import DeleteModal                  				from '../modals/DeleteModal.js'
 import { AddSubregion_Transaction, DeleteSubregion_Transaction, UpdateMapField_Transaction, SortSubregions_Transaction } 	from '../../utils/jsTPS';
 
 const RegionSpreadsheetScreen = (props) => {
 	let subregions = [];
+	let ancestors = [];
 	let parentName = '';
 	const deleteMessage = 'Delete Subregion?'
 
 	const [deleteSubregionConfirmation, toggleDeleteSubregionConfirmation] = useState(false);
 	const [delete_id, setDelete_id] = useState('');
+	const [deleteName, setDeleteName] = useState('');
 	const [deleteIndex, setDeleteIndex] = useState(0);
 	const [disableUndo, toggleDisableUndo]  = useState(true);
 	const [disableRedo, toggleDisableRedo]  = useState(true);
@@ -33,6 +36,11 @@ const RegionSpreadsheetScreen = (props) => {
 	if(loading1) { console.log(loading1, 'loading'); }
 	if(error1) { console.log(error1, 'error'); }
 	if(data1) { subregions = data1.getSubregionsById; }
+
+	const { loading: loading2, error: error2, data: data2, refetch: refetch2 } = useQuery(GET_DB_ANCESTORS, {variables: { _id: id }});
+    if(loading2) { console.log(loading2, 'loading'); }
+	if(error2) { console.log(error2, 'error'); }
+    if(data2) { ancestors = data2.getAllAncestors; }
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAP, {variables: { _id: id }});
     if(loading) { console.log(loading, 'loading'); }
@@ -131,16 +139,24 @@ const RegionSpreadsheetScreen = (props) => {
 	}
 
 	const undoCtrl = (event) => {
-		if (event.ctrlKey === true && event.key === 'z') {
+		if (event.ctrlKey === true && event.key === 'z' && props.tps.hasTransactionToUndo()) {
 			tpsUndo();
 		}
 	}
 
 	const redoCtrl = (event) => {
-		if (event.ctrlKey === true && event.key === 'y') {
+		if (event.ctrlKey === true && event.key === 'y' && props.tps.hasTransactionToRedo()) {
 			tpsRedo();
 		}
 	}
+
+	useEffect(() => {
+		window.onpopstate = () => {
+			props.tps.clearAllTransactions();
+			toggleDisableUndo(true);
+			toggleDisableRedo(true);
+		}
+	});
 
 	useEffect(() => {
         document.addEventListener('keydown', undoCtrl);
@@ -153,6 +169,7 @@ const RegionSpreadsheetScreen = (props) => {
 
 	return (
 		<WLMain>
+		<AncestorsList ancestors={ancestors} />
 		<div className="region-spreadsheet-container">
 			<div className="region-spreadsheet-preheader">
 				<div className="spreadsheet-controls">
@@ -172,11 +189,13 @@ const RegionSpreadsheetScreen = (props) => {
 			</div>
 			<div className="region-spreadsheet">
 				<RegionSpreadsheetList subregions={subregions} updateMapField={updateMapField} toggleDeleteSubregionConfirmation={toggleDeleteSubregionConfirmation} 
-				setDelete_id={setDelete_id} setDeleteIndex={setDeleteIndex} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo} />
+				setDelete_id={setDelete_id} setDeleteIndex={setDeleteIndex} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo} 
+				setDeleteName={setDeleteName}
+				/>
 			</div>
 		</div>
 		{
-			deleteSubregionConfirmation && <DeleteModal deleteMessage={deleteMessage} toggleDeleteConfirmation={toggleDeleteSubregionConfirmation} delete={deleteSubregion} />
+			deleteSubregionConfirmation && <DeleteModal deleteMessage={deleteMessage} name={deleteName} toggleDeleteConfirmation={toggleDeleteSubregionConfirmation} delete={deleteSubregion} />
 		}
 		</WLMain>
 	);

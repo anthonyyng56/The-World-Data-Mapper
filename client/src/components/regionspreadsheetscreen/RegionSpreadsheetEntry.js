@@ -21,6 +21,7 @@ const RegionSpreadsheetEntry = (props) => {
 
     const showDeleteConfirmation = () => {
         props.setDelete_id(props._id);
+        props.setDeleteName(props.subregion.name);
         props.setDeleteIndex(props.index);
         props.toggleDeleteSubregionConfirmation(true);
     }
@@ -42,7 +43,7 @@ const RegionSpreadsheetEntry = (props) => {
         props.setEditingColumn(-1);
         if (props.subregion.name !== editName) {
             if (editName.trim() === '') {
-                props.updateMapField(props._id, 'name', props.subregion.name, 'Unknown');
+                props.updateMapField(props._id, 'name', props.subregion.name, 'Untitled Region');
             } else {
                 props.updateMapField(props._id, 'name', props.subregion.name, editName);
             }
@@ -141,7 +142,7 @@ const RegionSpreadsheetEntry = (props) => {
             {
                 props.editingRow === props.index && props.editingColumn === 0 ? 
                 <div className="entry-input-container col-0">
-                    <input className="subregion-input" type="text" defaultValue={props.subregion.name} autoFocus={true} onFocus={updateEditName} onBlur={handleUpdateNameInput} onChange={updateEditName} onKeyUp={shiftFocus}/>
+                    <input className="subregion-input" type="text" defaultValue={props.subregion.name} autoFocus={true} placeholder="Enter Name" onFocus={updateEditName} onBlur={handleUpdateNameInput} onChange={updateEditName} onKeyUp={shiftFocus}/>
                 </div>
                 : 
                 <div className="entry-container col-0">
@@ -153,7 +154,7 @@ const RegionSpreadsheetEntry = (props) => {
             {
                 props.editingRow === props.index && props.editingColumn === 1 ? 
                 <div className="entry-input-container col-1">
-                    <input className="subregion-input" type="text" defaultValue={props.subregion.capital} autoFocus={true} onFocus={updateEditCapital} onBlur={handleUpdateCapitalInput} onChange={updateEditCapital} onKeyUp={shiftFocus}/>
+                    <input className="subregion-input" type="text" defaultValue={props.subregion.capital} autoFocus={true} placeholder="Enter Capital" onFocus={updateEditCapital} onBlur={handleUpdateCapitalInput} onChange={updateEditCapital} onKeyUp={shiftFocus}/>
                 </div>
                 : 
                 <div className="entry-container col-1">
@@ -163,7 +164,7 @@ const RegionSpreadsheetEntry = (props) => {
             {
                 props.editingRow === props.index && props.editingColumn === 2 ? 
                 <div className="entry-input-container col-1">
-                    <input className="subregion-input" type="text" defaultValue={props.subregion.leader} autoFocus={true} onFocus={updateEditLeader} onBlur={handleUpdateLeaderInput} onChange={updateEditLeader} onKeyUp={shiftFocus}/>
+                    <input className="subregion-input" type="text" defaultValue={props.subregion.leader} autoFocus={true} placeholder="Enter Leader" onFocus={updateEditLeader} onBlur={handleUpdateLeaderInput} onChange={updateEditLeader} onKeyUp={shiftFocus}/>
                     </div>
                 : 
                 <div className="entry-container col-1">

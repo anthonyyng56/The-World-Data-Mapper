@@ -32,30 +32,18 @@ const App = () => {
 		}
     }
 
-
-
-
-	
-
-
 	return(
 		<BrowserRouter>
-			<WLHeader>
-				<WNavbar color="colored">
-					<ul>
-						<WNavItem>
-							<Logo className='logo' tps={transactionStack} />
-						</WNavItem>
-					</ul>
-					<ul>
-						<NavbarOptions
-							fetchUser={refetch} user={user} tps={transactionStack}
-							toggleShowCreate={toggleShowCreate} toggleShowLogin={toggleShowLogin}
-							toggleShowUpdate={toggleShowUpdate} 
-						/>
-					</ul>
-				</WNavbar>
-			</WLHeader>
+			<div className="navbar">
+				<div>
+					<Logo className='logo' tps={transactionStack} />
+				</div>
+				<NavbarOptions
+					fetchUser={refetch} user={user} tps={transactionStack}
+					toggleShowCreate={toggleShowCreate} toggleShowLogin={toggleShowLogin}
+					toggleShowUpdate={toggleShowUpdate} 
+				/>
+			</div>
 			
 			<Switch>
 				<Redirect exact from="/" to={ {pathname: "/welcome"} } />

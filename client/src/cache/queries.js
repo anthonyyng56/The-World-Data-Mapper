@@ -73,3 +73,25 @@ export const GET_DB_SUBREGIONS = gql`
 		}
 	}
 `;
+
+export const GET_DB_ANCESTORS = gql`
+	query GetDBAncestors($_id: String!) {
+		getAllAncestors(_id: $_id) {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			subregion_ids
+			parent_id
+			root
+		}
+	}
+`;
+
+export const GET_DB_LANDMARKS = gql`
+	query GetDBLandmarks($_id: String!) {
+		getAllLandmarksById(_id: $_id) 
+	}
+`;

@@ -19,35 +19,35 @@ const LoggedIn = (props) => {
     };
 
     return (
-        <>
-            <WNavItem hoverAnimation="lighten">
+        <div className="credential-controls-container">
+            <div className="credential-controls">
                 <WButton className="navbar-options" onClick={props.toggleShowUpdate} wType="texted" hoverAnimation="text-primary">
                     {props.user.name}
                 </WButton>
-            </WNavItem >
-            <WNavItem hoverAnimation="lighten">
+            </div>
+            <div className="credential-controls">
                 <WButton className="navbar-options" onClick={handleLogout} wType="texted" hoverAnimation="text-primary">
                     Logout
                 </WButton>
-            </WNavItem >
-        </>
+            </div>
+        </div>
     );
 };
 
 const LoggedOut = (props) => {
     return (
-        <>
-            <WNavItem hoverAnimation="lighten">
+        <div className="credential-controls-container">
+            <div className="credential-controls">
                 <WButton className="navbar-options" onClick={props.toggleShowCreate} wType="texted" hoverAnimation="text-primary"> 
                     Create Account 
                 </WButton>
-            </WNavItem>
-            <WNavItem hoverAnimation="lighten">
+            </div>
+            <div className="credential-controls">
                 <WButton className="navbar-options" onClick={props.toggleShowLogin} wType="texted" hoverAnimation="text-primary">
                     Login
                 </WButton>
-            </WNavItem>
-        </>
+            </div>
+        </div>
     );
 };
 

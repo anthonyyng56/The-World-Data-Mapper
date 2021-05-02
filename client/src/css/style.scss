@@ -14,6 +14,7 @@ html, body {
 }
 
 .logo {
+    color: white;
     font-weight: bold;
     font-size: 20px;
     text-align: center;
@@ -21,7 +22,7 @@ html, body {
 
 .logo:hover {
     cursor: pointer;
-    color: rgb(196, 196, 196);
+    color: rgb(82, 82, 82);
 }
 
 .input-names {
@@ -34,8 +35,22 @@ html, body {
     font-size: 20px;
 }
 
-.navbar-options:hover {
-    color: black;
+.navbar-options:hover, .navbar-arrow:hover {
+    color: rgb(82, 82, 82);
+}
+
+.navbar {
+    background-color: #02BFA5;
+}
+
+.credential-controls:hover, .navbar-arrow:hover, .ancestor-link:hover {
+    background-color: #1CC6AE;
+}
+
+.ancestor-link:hover {
+    cursor: pointer;
+    border-radius: 10px;
+    color: rgb(82, 82, 82);
 }
 
 .modal-header, .map-select-header {
@@ -183,7 +198,7 @@ html, body {
     scrollbar-width: thin;
 }
 
-.subregion-input {
+.subregion-input, .landmark-input {
     border-radius: 5px;
     border: 1px solid rgb(179, 179, 179);
     outline: 0;
@@ -202,6 +217,10 @@ html, body {
 
 .entry-container, .entry-input-container {
     border-right: 1px solid rgb(180, 180, 180);
+}
+
+.entry-input-container {
+    background-color: #E6E6E6;
 }
 
 .entry-col:hover {
@@ -266,7 +285,7 @@ html, body {
     background-color: rgb(224, 224, 224);
 }
 
-.region-landmarks-entry-name {
+.region-landmarks-entry-name, .region-landmarks-delete-confirmation {
     font-size: 25px;
     font-weight: bold;
 }
@@ -292,4 +311,33 @@ html, body {
 .disabledButton {
     pointer-events: none;
     color: rgb(226, 226, 226);
+}
+
+.region-landmarks-delete-entry, .region-landmarks-edit-entry {
+    background-color: rgb(243, 243, 243);
+}
+
+.region-landmarks-delete-confirmation {
+    color: #D32F2F;
+}
+
+.navbar-arrow {
+    color: white;
+}
+
+.path {
+    scrollbar-width: thin;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+    background: #078B7A;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #7ddacd;
 }

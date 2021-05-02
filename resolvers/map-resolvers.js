@@ -31,6 +31,7 @@ module.exports = {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
 			const map = await Map.findOne({_id: objectId});
+			if(!map) return [];
 			const subregions = map.subregion_ids
 			let maps = []
 			for (i = 0; i < subregions.length; i++) {
@@ -40,6 +41,36 @@ module.exports = {
 				}
 			}
 			return maps
+		},
+		getAllAncestors: async (_, args) => {
+			const { _id } = args;
+			const objectId = new ObjectId(_id);
+			let map = await Map.findOne({_id: objectId});
+			if(!map) return [];
+			let ancestors = [];
+			while (map.parent_id !== ' ') {
+				map = await Map.findOne({_id: new ObjectId(map.parent_id) });
+				if (map) {
+					ancestors.unshift(map);
+				}
+			}
+			return ancestors;
+		},
+		getAllLandmarksById: async (_, args) => {
+			const { _id } = args;
+			const objectId = new ObjectId(_id);
+			const map = await Map.findOne({_id: objectId});
+			if(!map) return [];
+			let landmarks = map.landmarks;
+			const subregions = map.subregion_ids
+			// if (subregions.length === 0) {
+			// 	return landmarks;
+			// } else {
+			// 	for (let i = 0; i < subregions.length; i++) {
+			// 		landmarks.concat( await getAllLandmarksById(subregions[i]) )
+			// 	}
+				return landmarks;
+			// }
 		}
 	},
 	Mutation: {
@@ -223,5 +254,22 @@ module.exports = {
 			if(updated) return true;
 			else return false;
 		},
+		updateLandmark: async (_, args) => {
+			const { _id, index, value } = args;
+			const objectId = new ObjectId(_id);
+			const found = await Map.findOne({_id: objectId});
+			if(!found) return false;
+			let landmarks = found.landmarks;
+			if (index < 0 || index >= landmarks.length) {
+				return false;
+			}
+			landmarks[index] = value;
+			const updated = await Map.updateOne({ _id: objectId}, { landmarks: landmarks });
+			if(updated) return true;
+			else return false;
+		},
 	}
+}
+const findLandmarks = async (_id) => {
+	
 }
