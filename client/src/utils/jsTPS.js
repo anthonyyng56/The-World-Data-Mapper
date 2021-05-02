@@ -6,16 +6,16 @@ export class jsTPS_Transaction {
 
 /*  Handles creation of subregions */
 export class AddSubregion_Transaction extends jsTPS_Transaction {
-    constructor(newSubregion, parent_id, index, addfunc, delfunc) {
+    constructor(newSubregion, parentId, index, addfunc, delfunc) {
         super();
         this.newSubregion = newSubregion
-        this.parent_id = parent_id;
+        this.parentId = parentId;
         this.index = index;
         this.addfunc = addfunc;
         this.deletefunc = delfunc;
     }
     async doTransaction() {
-		const { data } = await this.addfunc({ variables: { map: this.newSubregion, parent_id: this.parent_id, index: this.index }});
+		const { data } = await this.addfunc({ variables: { map: this.newSubregion, parentId: this.parentId, index: this.index }});
         this._id = data.addSubregion;
 		return data;
     }
@@ -40,11 +40,11 @@ export class DeleteSubregion_Transaction extends jsTPS_Transaction {
 		const { data } = await this.deletefunc({ variables: { _id: this._id }});
         this.deletedSubregion = data.deleteSubregion;
         delete this.deletedSubregion.__typename;
-        this.parent_id = this.deletedSubregion.ancestor_ids[this.deletedSubregion.ancestor_ids.length - 1]
+        this.parentId = this.deletedSubregion.parent_id;
 		return data;
     }
     async undoTransaction() {
-		const { data } = await this.addfunc({ variables: { map: this.deletedSubregion, parent_id: this.parent_id, index: this.index }});
+		const { data } = await this.addfunc({ variables: { map: this.deletedSubregion, parentId: this.parentId, index: this.index }});
 		return data;
     }
 }
@@ -89,6 +89,46 @@ export class SortSubregions_Transaction extends jsTPS_Transaction {
     }
 }
 
+/*  Handles creation of landmarks */
+export class AddLandmark_Transaction extends jsTPS_Transaction {
+    constructor(_id, value, index, addfunc, deletefunc) {
+        super();
+        this._id = _id;
+        this.value = value;
+        this.index = index;
+        this.addfunc = addfunc;
+        this.deletefunc = deletefunc;
+    }
+    async doTransaction() {
+		const { data } = await this.addfunc({variables: { _id: this._id, value: this.value, index: this.index }});
+        this.index = data.addLandmark;
+		return data;
+    }
+    async undoTransaction() {
+		const { data } = await this.deletefunc({variables: { _id: this._id, index: this.index }});
+		return data;
+    }
+}
+
+/*  Handles deletion of landmarks */
+export class DeleteLandmark_Transaction extends jsTPS_Transaction {
+    constructor(_id, value, index, deletefunc, addfunc) {
+        super();
+        this._id = _id;
+        this.value = value;
+        this.index = index;
+        this.deletefunc = deletefunc;
+        this.addfunc = addfunc;
+    }
+    async doTransaction() {
+		const { data } = await this.deletefunc({variables: { _id: this._id, index: this.index }});
+		return data;
+    }
+    async undoTransaction() {
+		const { data } = await this.addfunc({variables: { _id: this._id, value: this.value, index: this.index }});
+		return data;
+    }
+}
 
 
 

@@ -210,11 +210,11 @@ html, body {
     cursor: pointer;
 }
 
-.delete-subregion {
+.delete-subregion, .delete-landmark {
     color: rgb(223, 0, 0);
 }
 
-.delete-subregion:hover {
+.delete-subregion:hover, .delete-landmark:hover {
     color: white;
     background-color: rgb(223, 0, 0);
 } 
@@ -258,18 +258,21 @@ html, body {
 }
 
 .navigate-parent:hover {
-    background-color: rgb(238, 238, 238);
+    background-color: rgb(224, 224, 224);
     border-radius: 10px;
-    padding: 5px;
 }
 
-.landmarks-entry {
+.edit-parent:hover {
+    background-color: rgb(224, 224, 224);
+}
+
+.region-landmarks-entry-name {
     font-size: 25px;
     font-weight: bold;
 }
 
-.landmarks-entry:hover {
-    background-color: rgb(236, 236, 236);
+.region-landmarks-entry:hover {
+    background-color: rgb(243, 243, 243);
     cursor: pointer;
 }
 
@@ -277,11 +280,16 @@ html, body {
     scrollbar-width: thin;
 }
 
-.spreadsheet-buttons:hover {
-    background-color: rgb(182, 182, 182);
+.control-buttons:hover {
+    background-color: rgb(150, 150, 150);
     color: white;
 }
 
 .flag-col {
     pointer-events: none;
+}
+
+.disabledButton {
+    pointer-events: none;
+    color: rgb(226, 226, 226);
 }

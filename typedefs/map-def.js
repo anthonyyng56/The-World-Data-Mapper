@@ -10,23 +10,25 @@ const typeDefs = gql `
 		leader: String!
 		landmarks: [String]!
 		subregion_ids: [String]!
-		ancestor_ids: [String]!
+		parent_id: String!
 		root: String!
 	}
 	extend type Query {
 		getAllMaps: [Map]
-		getMapInfoById(_id: String!): [Map] 
+		getMapById(_id: String!): Map 
+		getParentById(_id: String!): Map 
 		getSubregionsById(_id: String!): [Map]
 	}
 	extend type Mutation {
 		addMap(map: MapInput!): String
 		deleteMap(_id: String!): Boolean
 		updateMapField(_id: String!, field: String!, value: String!): String
-		addSubregion(map: SubregionInput!, parent_id: String!, index: Int!): String
-		deleteSubregion(_id: String!): Map
-		addLandmark(_id: String!, value: String!): String
+		addSubregion(map: SubregionInput!, parentId: String!, index: Int!): String
+		deleteSubregion(_id: String!): Map	
 		sortSubregionsByCategory(_id: String!, subregionField: [String]!): [String]
-		reorderSubregions(_id: String, order: [String]!): [String]!
+		reorderSubregions(_id: String!, order: [String]!): [String]
+		addLandmark(_id: String!, value: String!, index: Int!): Int
+		deleteLandmark(_id: String!, index: Int!): Boolean
 	}
     input FieldInput {
 		_id: String
@@ -46,7 +48,7 @@ const typeDefs = gql `
 		leader: String
 		landmarks: [String]
 		subregion_ids: [String]
-		ancestor_ids: [String]
+		parent_id: String
 		root: String
 	}
 `;

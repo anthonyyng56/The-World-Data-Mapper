@@ -20,15 +20,15 @@ export const GET_DB_MAPS = gql`
 			leader
 			landmarks
 			subregion_ids
-			ancestor_ids
+			parent_id
 			root
 		}
 	}
 `;
 
-export const GET_DB_MAP_INFO = gql`
-	query GetDBMapInfo($_id: String!) {
-		getMapInfoById(_id: $_id) {
+export const GET_DB_MAP = gql`
+	query GetDBMap($_id: String!) {
+		getMapById(_id: $_id) {
 			_id
 			owner
 			name
@@ -36,7 +36,23 @@ export const GET_DB_MAP_INFO = gql`
 			leader
 			landmarks
 			subregion_ids
-			ancestor_ids
+			parent_id
+			root
+		}
+	}
+`;
+
+export const GET_DB_PARENT = gql`
+	query GetDBParent($_id: String!) {
+		getParentById(_id: $_id) {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			subregion_ids
+			parent_id
 			root
 		}
 	}
@@ -52,7 +68,7 @@ export const GET_DB_SUBREGIONS = gql`
 			leader
 			landmarks
 			subregion_ids
-			ancestor_ids
+			parent_id
 			root
 		}
 	}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect }       from 'react';
+import React, { useState }                  from 'react';
 import { useHistory }			            from "react-router-dom";
 
 const RegionSpreadsheetEntry = (props) => {
@@ -8,7 +8,15 @@ const RegionSpreadsheetEntry = (props) => {
     const history = useHistory();
 
     const selectSubregion = () => {
-        history.push("/region/" + props.subregion.name + '/' + props._id);
+        props.tps.clearAllTransactions();
+        props.toggleDisableUndo(true);
+        props.toggleDisableRedo(true);
+        history.push("/region/" + props._id);
+    }
+
+    const openRegionViewer = () => {
+        props.tps.clearAllTransactions();
+        history.push("/regionview/" + props._id);
     }
 
     const showDeleteConfirmation = () => {
@@ -63,10 +71,6 @@ const RegionSpreadsheetEntry = (props) => {
                 props.updateMapField(props._id, 'leader', props.subregion.leader, editLeader);
             }
         }
-    }
-    
-    const openRegionViewer = () => {
-        history.push("/regionview/" + props.subregion.name + '/' + props._id);
     }
 
     const shiftFocus = (event) => {

@@ -51,7 +51,7 @@ const MapSelectScreen = (props) => {
 		map._id = data.addMap;
 		refetch();
 		toggleShowMapInput(false);
-		history.push("/region/" + map.name + '/' + map._id);
+		history.push("/region/" + map._id);
 	};
 
 	const deleteMap = async (_id) => {

@@ -9,6 +9,7 @@ const LoggedIn = (props) => {
 	const [Logout] = useMutation(LOGOUT);
     const history = useHistory();
     const handleLogout = async (e) => {
+        props.tps.clearAllTransactions();
         Logout();
         const { data } = await props.fetchUser();
         if (data) {
@@ -56,7 +57,7 @@ const NavbarOptions = (props) => {
         <>
             {
                 props.user === null ? <LoggedOut toggleShowCreate={props.toggleShowCreate} toggleShowLogin={props.toggleShowLogin} />
-                : <LoggedIn fetchUser={props.fetchUser} logout={props.logout} user={props.user} toggleShowUpdate={props.toggleShowUpdate}/>
+                : <LoggedIn fetchUser={props.fetchUser} logout={props.logout} user={props.user} toggleShowUpdate={props.toggleShowUpdate} tps={props.tps} />
             }
         </>
 

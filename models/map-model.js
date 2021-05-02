@@ -30,8 +30,8 @@ const mapSchema = new Schema(
 			type: [String],
 			required: true
 		},
-		ancestor_ids: {
-			type: [String],
+		parent_id: {
+			type: String,
 			required: true
 		},
 		root: {

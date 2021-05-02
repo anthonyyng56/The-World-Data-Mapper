@@ -5,6 +5,7 @@ const Logo = (props) => {
     const history = useHistory();
 
     const goHome = () => {
+        props.tps.clearAllTransactions();
         history.push("/home");
     }
     return (

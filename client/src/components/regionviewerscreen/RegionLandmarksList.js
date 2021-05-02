@@ -9,7 +9,7 @@ const RegionLandmarksList = (props) => {
                 props.landmarks &&
                 props.landmarks.map((landmark, index) => (
                     <RegionLandmarkEntry
-                        landmark={landmark} key={index++} 
+                        landmark={landmark} index={index} key={index++} deleteLandmark={props.deleteLandmark}
                     />
                 ))
             }

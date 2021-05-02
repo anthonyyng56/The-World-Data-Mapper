@@ -48,6 +48,7 @@ const Update = (props) => {
 				return;
 			}
 			else {
+				props.tps.clearAllTransactions();
 				props.fetchUser();
 				history.push("/home");
 			}

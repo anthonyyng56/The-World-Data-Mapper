@@ -52,8 +52,8 @@ export const UPDATE_MAP_FIELD = gql`
 `;
 
 export const ADD_SUBREGION = gql`
-	mutation AddSubregion($map: SubregionInput!, $parent_id: String!, $index: Int!) {
-		addSubregion(map: $map, parent_id: $parent_id, index: $index) 
+	mutation AddSubregion($map: SubregionInput!, $parentId: String!, $index: Int!) {
+		addSubregion(map: $map, parentId: $parentId, index: $index) 
 	}
 `;
 
@@ -67,15 +67,9 @@ export const DELETE_SUBREGION = gql`
 			leader
 			landmarks
 			subregion_ids
-			ancestor_ids
+			parent_id
 			root
 		}
-	}
-`;
-
-export const ADD_LANDMARK = gql`
-	mutation AddLandmark($_id: String!, $value: String!) {
-		addLandmark(_id: $_id, value: $value) 
 	}
 `;
 
@@ -88,5 +82,17 @@ export const SORT_SUBREGIONS_BY_CATEGORY = gql`
 export const REORDER_SUBREGIONS = gql`
 	mutation ReorderSubregions($_id: String!, $order: [String]!) {
 		reorderSubregions(_id: $_id, order: $order) 
+	}
+`;
+
+export const ADD_LANDMARK = gql`
+	mutation AddLandmark($_id: String!, $value: String!, $index: Int!) {
+		addLandmark(_id: $_id, value: $value, index: $index) 
+	}
+`;
+
+export const DELETE_LANDMARK = gql`
+	mutation DeleteLandmark($_id: String!, $index: Int!) {
+		deleteLandmark(_id: $_id, index: $index) 
 	}
 `;

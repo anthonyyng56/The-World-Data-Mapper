@@ -379,7 +379,7 @@ body {
 }
 
 .viewer-filler-image {
-    margin-top: 25px;
+    margin: 15px 0px;
     width: 60%;
 }
 
@@ -392,6 +392,34 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.viewer-name-field {
+    display: flex;
+    padding-left: 4px;
+    align-items: center;
+}
+
+.viewer-edit-parent {
+    height: 29px;
+    width: 29px;
+    position: relative;
+}
+
+.navigate-parent {
+    max-width: calc(100% - 270px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 4px;
+}
+
+.edit-parent {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 .viewer-right-content {
@@ -445,15 +473,31 @@ body {
 .region-landmarks-list {
     height: 100%;
     width: 100%;
-    padding: 6% 10%;
+    padding: 6% 0%;
     overflow-y: auto;
 }
 
-.landmarks-entry {
-    width: 100%;
-    padding: 5px 0px;
+.control-buttons {
+    height: 40px;
 }
 
-.spreadsheet-buttons {
-    height: 40px;
+.region-landmarks-entry {
+    display: flex;
+    width: 100%;
+}
+
+.region-landmarks-entry-name {
+    width: calc(100% - 60px);
+    padding: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.delete-landmark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
 }

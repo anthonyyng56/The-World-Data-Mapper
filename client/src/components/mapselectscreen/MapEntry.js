@@ -22,7 +22,7 @@ const MapEntry = (props) => {
     }
 
     const selectMap = () => {
-		history.push("/region/" + props.name + '/' + props._id);
+		history.push("/region/" + props._id);
     }
 
     const showDeleteConfirmation = () => {

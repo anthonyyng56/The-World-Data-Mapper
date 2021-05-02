@@ -44,12 +44,12 @@ const App = () => {
 				<WNavbar color="colored">
 					<ul>
 						<WNavItem>
-							<Logo className='logo' />
+							<Logo className='logo' tps={transactionStack} />
 						</WNavItem>
 					</ul>
 					<ul>
 						<NavbarOptions
-							fetchUser={refetch} user={user} 
+							fetchUser={refetch} user={user} tps={transactionStack}
 							toggleShowCreate={toggleShowCreate} toggleShowLogin={toggleShowLogin}
 							toggleShowUpdate={toggleShowUpdate} 
 						/>
@@ -74,14 +74,14 @@ const App = () => {
 					} 
 				/>
 				<Route 
-					path="/region/:name/:id"
+					path="/region/:id"
 					name="region" 
 					render={() => 
 						<RegionSpreadsheetScreen tps={transactionStack} fetchUser={refetch} user={user} />
 					} 
 				/>
 				<Route 
-					path="/regionview/:name/:id"
+					path="/regionview/:id"
 					name="regionview" 
 					render={() => 
 						<RegionViewerScreen tps={transactionStack} fetchUser={refetch} user={user} />
@@ -98,7 +98,7 @@ const App = () => {
 			}
 			
 			{
-				showUpdate && (<Update fetchUser={refetch} toggleShowUpdate={toggleShowUpdate} user={user}/>)
+				showUpdate && (<Update fetchUser={refetch} toggleShowUpdate={toggleShowUpdate} user={user} tps={transactionStack} />)
 			}
 		</BrowserRouter>
 	);
