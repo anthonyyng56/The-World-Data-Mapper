@@ -35,7 +35,7 @@ const App = () => {
 		<BrowserRouter>
 			<div className="navbar">
 				<div>
-					<Logo className='logo' tps={transactionStack} />
+					<Logo className='logo' tps={transactionStack} user={user}/>
 				</div>
 				<NavbarOptions
 					fetchUser={refetch} user={user} tps={transactionStack}

@@ -7,7 +7,7 @@ import { WButton, WLMain }                                      from 'wt-fronten
 import { useHistory }					                        from "react-router-dom";
 import RegionLandmarksList 		                                from './RegionLandmarksList.js'
 import DeleteModal                  	                        from '../modals/DeleteModal.js'
-import AncestorsList 		    					from '../AncestorComponents/AncestorsList.js'
+import AncestorsList 		    					            from '../AncestorComponents/AncestorsList.js'
 import { AddLandmark_Transaction, DeleteLandmark_Transaction, UpdateLandmark_Transaction } 	            from '../../utils/jsTPS';
 
 const RegionViewerScreen = (props) => {
@@ -26,6 +26,7 @@ const RegionViewerScreen = (props) => {
     let right_id='';
 
     const history = useHistory();
+    const auth = props.user === null ? false : true;
     const [showAddLandmark, toggleShowAddLandmark] = useState(false);
     const [landmarkInput, setLandmarkInput] = useState({ name: '' });
     const [disableUndo, toggleDisableUndo]  = useState(true);
@@ -59,7 +60,7 @@ const RegionViewerScreen = (props) => {
     const { loading: loading2, error: error2, data: data2, refetch: refetch2 } = useQuery(GET_DB_ANCESTORS, {variables: { _id: id }});
     if(loading2) { console.log(loading2, 'loading'); }
 	if(error2) { console.log(error2, 'error'); }
-    if(data2) { ancestors = data2.getAllAncestors; console.log(ancestors)}
+    if(data2) { ancestors = data2.getAllAncestors; }
 
     const { loading, error, data, refetch } = useQuery(GET_DB_PARENT, {variables: { _id: id }});
     if(loading) { console.log(loading, 'loading'); }
@@ -200,66 +201,84 @@ const RegionViewerScreen = (props) => {
 		}
     });
 
+    const returnToWelcome = () => {
+        history.push("/");
+    }
 
 	return (
         <WLMain>
-        <AncestorsList ancestors={ancestors} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo}/>
-        <div className="navigate-sister-regions">
-			<i className={`${prevStatus} material-icons navbar-arrow`} onClick={prevSibling}>arrow_back</i>
-			<i className={`${nextStatus} material-icons navbar-arrow`} onClick={nextSibling}>arrow_forward</i>
-		</div>
-		<div className="region-viewer-container">
-			<div className="viewer-left-content">
-                <div>
-                    <i className={`${undoStatus} material-icons control-buttons`} onClick={tpsUndo}>undo</i>
-					<i className={`${redoStatus} material-icons control-buttons`} onClick={tpsRedo}>redo</i>
-                </div>
-                <div className="viewer-image-container">
-                    <img className="viewer-filler-image" src={require('../../images/image.png')}/>
-                </div>
-                <div className="viewer-information-container">
-                    <div className="viewer-information-row">Region Name: &nbsp;&nbsp;{name}</div>
-                    <div className="viewer-name-field">
-                        <div className="viewer-parent-name-field">Parent Region: &nbsp;&nbsp;</div>
-                        <div className="link-color navigate-parent" onClick={returnToSpreadsheet}>{parentName}</div>
-                        <div className="viewer-edit-parent edit"><i className="material-icons edit-parent">edit</i></div>
-                    </div>
-                     
-                        
-                    <div className="viewer-information-row">Region Capital: &nbsp;&nbsp;{capital}</div>
-                    <div className="viewer-information-row">Region Leader: &nbsp;&nbsp;{leader}</div>
-                    <div className="viewer-information-row"># Of Subregions: &nbsp;&nbsp;{numberOfSubregions}</div>
-                </div>
+        {
+            auth ?
+            <>
+            <AncestorsList ancestors={ancestors} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo}/>
+            <div className="navigate-sister-regions">
+                <i className={`${prevStatus} material-icons navbar-arrow`} onClick={prevSibling}>arrow_back</i>
+                <i className={`${nextStatus} material-icons navbar-arrow`} onClick={nextSibling}>arrow_forward</i>
             </div>
-            <div className="viewer-right-content">
-                <div className="viewer-landmarks-title">Region Landmarks:</div>
-                <div className="viewer-landmarks-container">
-                    <RegionLandmarksList landmarks={landmarks} deleteLandmark={deleteLandmark} updateLandmark={updateLandmark} setDeleteIndex={setDeleteIndex} 
-                    setDeleteName={setDeleteName} toggleDeleteMapConfirmation={toggleDeleteMapConfirmation} />
-                </div>
-                <div className="viewer-add-landmark">
-                {
-                    showAddLandmark ?
-                    <div className="add-landmark-input-container">
-                        <input type="text" placeholder="Enter Landmark Name Here" name="name" className="add-landmark-input" autoFocus={true} onBlur={updateLandmarkInput}/>
-                        <div className="add-landmark-controls" onClick={addNewLandmark}>
-						    Add
-					    </div>
-                        <div className="add-landmark-controls" onClick={hideAddLandmark}>
-						    Cancel
-					    </div>
+            <div className="region-viewer-container">
+                <div className="viewer-left-content">
+                    <div>
+                        <i className={`${undoStatus} material-icons control-buttons`} onClick={tpsUndo}>undo</i>
+                        <i className={`${redoStatus} material-icons control-buttons`} onClick={tpsRedo}>redo</i>
                     </div>
-                    :
-                    <WButton className="add-landmark" clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary" onClick={toggleShowAddLandmark}>
-						Add Landmark
-					</WButton>
-                }
+                    <div className="viewer-image-container">
+                        <img className="viewer-filler-image" src={require('../../images/image.png')}/>
+                    </div>
+                    <div className="viewer-information-container">
+                        <div className="viewer-information-row">Region Name: &nbsp;&nbsp;{name}</div>
+                        <div className="viewer-name-field">
+                            <div className="viewer-parent-name-field">Parent Region: &nbsp;&nbsp;</div>
+                            <div className="link-color navigate-parent" onClick={returnToSpreadsheet}>{parentName}</div>
+                            <div className="viewer-edit-parent edit"><i className="material-icons edit-parent">edit</i></div>
+                        </div>
+                        
+                            
+                        <div className="viewer-information-row">Region Capital: &nbsp;&nbsp;{capital}</div>
+                        <div className="viewer-information-row">Region Leader: &nbsp;&nbsp;{leader}</div>
+                        <div className="viewer-information-row"># Of Subregions: &nbsp;&nbsp;{numberOfSubregions}</div>
+                    </div>
                 </div>
-            </div>   
+                <div className="viewer-right-content">
+                    <div className="viewer-landmarks-title">Region Landmarks:</div>
+                    <div className="viewer-landmarks-container">
+                        <RegionLandmarksList landmarks={landmarks} deleteLandmark={deleteLandmark} updateLandmark={updateLandmark} setDeleteIndex={setDeleteIndex} 
+                        setDeleteName={setDeleteName} toggleDeleteMapConfirmation={toggleDeleteMapConfirmation} />
+                    </div>
+                    <div className="viewer-add-landmark">
+                    {
+                        showAddLandmark ?
+                        <div className="add-landmark-input-container">
+                            <input type="text" placeholder="Enter Landmark Name Here" name="name" className="add-landmark-input" autoFocus={true} onBlur={updateLandmarkInput}/>
+                            <div className="add-landmark-controls" onClick={addNewLandmark}>
+                                Add
+                            </div>
+                            <div className="add-landmark-controls" onClick={hideAddLandmark}>
+                                Cancel
+                            </div>
+                        </div>
+                        :
+                        <WButton className="add-landmark" clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary" onClick={toggleShowAddLandmark}>
+                            Add Landmark
+                        </WButton>
+                    }
+                    </div>
+                </div>   
+            </div>
             {
-			    deleteMapConfirmation && <DeleteModal deleteMessage={deleteMessage} name={deleteName} toggleDeleteConfirmation={toggleDeleteMapConfirmation} delete={deleteLandmark} />
-		    }
-		</div>
+                deleteMapConfirmation && <DeleteModal deleteMessage={deleteMessage} name={deleteName} toggleDeleteConfirmation={toggleDeleteMapConfirmation} delete={deleteLandmark} />
+            }
+            </>
+            :
+            <div className="no-access-page">
+				<div className="no-access-header">You do not have access to this page!</div>
+				<div className="no-access-text">Please log into your account to view your maps,  or click the button below to be redirected back to the welcome screen.</div>
+				<div className="no-access-return-container">
+				<WButton clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary" className="no-access-return-button" onClick={returnToWelcome}>
+					Return to Welcome page
+				</WButton>
+				</div>
+			</div>
+        }
         </WLMain>
 	);
 };

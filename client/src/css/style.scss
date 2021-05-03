@@ -65,6 +65,7 @@ html, body {
 
 .modal-error {
     font-size: 20px;
+    color: rgb(223, 0, 0);
 }
 
 .map-select {
@@ -345,4 +346,23 @@ html, body {
 
 ::-webkit-scrollbar-thumb {
     background: #7ddacd;
+}
+
+.no-access-header {
+    background-color: #02BFA5;
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+}
+
+.no-access-page {
+    background-color: rgb(226, 226, 226);
+}
+
+.no-access-text {
+    font-size: 25px;
+}
+
+.no-access-return-button {
+    font-size: 20px;
 }

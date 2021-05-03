@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { WButton} 						from 'wt-frontend';
 
 const RegionLandmarksEntry = (props) => {
     const [editingLandmark, toggleEditingLandmark] = useState(false);

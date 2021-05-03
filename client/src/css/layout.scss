@@ -592,3 +592,31 @@ body {
 .ancestor-link {
     padding: 5px;
 }
+
+.no-access-page {
+    width: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -47%);
+}
+
+.no-access-header {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+}
+
+.no-access-text {
+    padding: 30px 40px;
+}
+
+.no-access-return-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.no-access-return-button {
+    margin-bottom: 40px; 
+}

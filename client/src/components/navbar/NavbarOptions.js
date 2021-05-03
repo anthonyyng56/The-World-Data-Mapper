@@ -9,13 +9,13 @@ const LoggedIn = (props) => {
 	const [Logout] = useMutation(LOGOUT);
     const history = useHistory();
     const handleLogout = async (e) => {
+        history.push("/");
         props.tps.clearAllTransactions();
         Logout();
         const { data } = await props.fetchUser();
         if (data) {
             let reset = await client.resetStore();
         }
-        history.push("/");
     };
 
     return (

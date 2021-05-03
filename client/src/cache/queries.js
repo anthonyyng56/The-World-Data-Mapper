@@ -89,9 +89,3 @@ export const GET_DB_ANCESTORS = gql`
 		}
 	}
 `;
-
-export const GET_DB_LANDMARKS = gql`
-	query GetDBLandmarks($_id: String!) {
-		getAllLandmarksById(_id: $_id) 
-	}
-`;

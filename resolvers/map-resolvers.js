@@ -56,22 +56,6 @@ module.exports = {
 			}
 			return ancestors;
 		},
-		getAllLandmarksById: async (_, args) => {
-			const { _id } = args;
-			const objectId = new ObjectId(_id);
-			const map = await Map.findOne({_id: objectId});
-			if(!map) return [];
-			let landmarks = map.landmarks;
-			const subregions = map.subregion_ids
-			// if (subregions.length === 0) {
-			// 	return landmarks;
-			// } else {
-			// 	for (let i = 0; i < subregions.length; i++) {
-			// 		landmarks.concat( await getAllLandmarksById(subregions[i]) )
-			// 	}
-				return landmarks;
-			// }
-		}
 	},
 	Mutation: {
 		addMap: async (_, args) => {
@@ -274,10 +258,14 @@ module.exports = {
 			if(!user_id) { return false };
 			const maps = await Map.find({owner: user_id});
 			if(!maps) return false;
+			if ((maps[0]._id).toString() === _id) {
+				return true;
+			}
 			for (let i = 0; i < maps.length; i++) {
-				if ((maps[i]._id).toString() != _id) {
+				if ((maps[i]._id).toString() !== _id) {
 					let map = await Map.findOneAndDelete({_id: new ObjectId(maps[i]._id)});
-					const newMap = new Map({
+					if (map) {
+						const newMap = new Map({
 						_id: map._id,	
 						owner: map.owner,
 						name: map.name,
@@ -287,14 +275,12 @@ module.exports = {
 						subregion_ids: map.subregion_ids,
 						parent_id: map.parent_id,
 						root: map.root,
-					});
-					await newMap.save();
+						});
+						await newMap.save();
+					}
 				}
 			}
 			return true;
 		}
 	}
-}
-const findLandmarks = async (_id) => {
-	
 }

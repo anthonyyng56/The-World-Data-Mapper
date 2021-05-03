@@ -7,6 +7,8 @@ import * as mutations 								from '../../cache/mutations';
 import { GET_DB_SUBREGIONS, GET_DB_MAP, GET_DB_ANCESTORS } 			from '../../cache/queries';
 import { useParams } 								from 'react-router';
 import DeleteModal                  				from '../modals/DeleteModal.js'
+import { WButton} 									from 'wt-frontend';
+import { useHistory } 								from "react-router-dom";
 import { AddSubregion_Transaction, DeleteSubregion_Transaction, UpdateMapField_Transaction, SortSubregions_Transaction } 	from '../../utils/jsTPS';
 
 const RegionSpreadsheetScreen = (props) => {
@@ -14,7 +16,9 @@ const RegionSpreadsheetScreen = (props) => {
 	let ancestors = [];
 	let parentName = '';
 	const deleteMessage = 'Delete Subregion?'
-
+	
+	const history = useHistory();
+	const auth = props.user === null ? false : true;
 	const [deleteSubregionConfirmation, toggleDeleteSubregionConfirmation] = useState(false);
 	const [delete_id, setDelete_id] = useState('');
 	const [deleteName, setDeleteName] = useState('');
@@ -167,35 +171,54 @@ const RegionSpreadsheetScreen = (props) => {
 		}
     });
 
-	return (
-		<WLMain>
-		<AncestorsList ancestors={ancestors} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo}/>
-		<div className="region-spreadsheet-container">
-			<div className="region-spreadsheet-preheader">
-				<div className="spreadsheet-controls">
-					<i className="material-icons control-buttons" onClick={addSubregion}>add</i>
-					<i className={`${undoStatus} material-icons control-buttons`} onClick={tpsUndo}>undo</i>
-					<i className={`${redoStatus} material-icons control-buttons`} onClick={tpsRedo}>redo</i>
-				</div>	
-				<div className="region-spreadsheet-name-container">Region Name: <span className="region-spreadsheet-name">{parentName}</span></div>
+	const returnToWelcome = () => {
+        history.push("/");
+    }
 
-			</div>
-			<div className="region-spreadsheet-header">
-				<div className="header-col sort-col col-0" onClick={sortSubregionsByName}>Name</div>
-				<div className="header-col sort-col col-1" onClick={sortSubregionsByCapital}>Capital</div>
-				<div className="header-col sort-col col-1" onClick={sortSubregionsByLeader}>Leader</div>
-				<div className="header-col col-2">Flag</div>
-				<div className="header-col col-3">Landmarks</div>
-			</div>
-			<div className="region-spreadsheet">
-				<RegionSpreadsheetList subregions={subregions} updateMapField={updateMapField} toggleDeleteSubregionConfirmation={toggleDeleteSubregionConfirmation} 
-				setDelete_id={setDelete_id} setDeleteIndex={setDeleteIndex} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo} 
-				setDeleteName={setDeleteName}
-				/>
-			</div>
-		</div>
+	return (
+		<WLMain> 
 		{
-			deleteSubregionConfirmation && <DeleteModal deleteMessage={deleteMessage} name={deleteName} toggleDeleteConfirmation={toggleDeleteSubregionConfirmation} delete={deleteSubregion} />
+			auth ?
+			<>
+			<AncestorsList ancestors={ancestors} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo}/>
+			<div className="region-spreadsheet-container">
+				<div className="region-spreadsheet-preheader">
+					<div className="spreadsheet-controls">
+						<i className="material-icons control-buttons" onClick={addSubregion}>add</i>
+						<i className={`${undoStatus} material-icons control-buttons`} onClick={tpsUndo}>undo</i>
+						<i className={`${redoStatus} material-icons control-buttons`} onClick={tpsRedo}>redo</i>
+					</div>	
+					<div className="region-spreadsheet-name-container">Region Name: <span className="region-spreadsheet-name">{parentName}</span></div>
+
+				</div>
+				<div className="region-spreadsheet-header">
+					<div className="header-col sort-col col-0" onClick={sortSubregionsByName}>Name</div>
+					<div className="header-col sort-col col-1" onClick={sortSubregionsByCapital}>Capital</div>
+					<div className="header-col sort-col col-1" onClick={sortSubregionsByLeader}>Leader</div>
+					<div className="header-col col-2">Flag</div>
+					<div className="header-col col-3">Landmarks</div>
+				</div>
+				<div className="region-spreadsheet">
+					<RegionSpreadsheetList subregions={subregions} updateMapField={updateMapField} toggleDeleteSubregionConfirmation={toggleDeleteSubregionConfirmation} 
+					setDelete_id={setDelete_id} setDeleteIndex={setDeleteIndex} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo} 
+					setDeleteName={setDeleteName}
+					/>
+				</div>
+			</div>
+			{
+				deleteSubregionConfirmation && <DeleteModal deleteMessage={deleteMessage} name={deleteName} toggleDeleteConfirmation={toggleDeleteSubregionConfirmation} delete={deleteSubregion} />
+			}
+			</>
+			:
+			<div className="no-access-page">
+				<div className="no-access-header">You do not have access to this page!</div>
+				<div className="no-access-text">Please log into your account to view your maps,  or click the button below to be redirected back to the welcome screen.</div>
+				<div className="no-access-return-container">
+				<WButton clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary" className="no-access-return-button" onClick={returnToWelcome}>
+					Return to Welcome page
+				</WButton>
+				</div>
+			</div>
 		}
 		</WLMain>
 	);

@@ -19,7 +19,6 @@ const typeDefs = gql `
 		getParentById(_id: String!): Map 
 		getSubregionsById(_id: String!): [Map]
 		getAllAncestors(_id: String!): [Map]
-		getAllLandmarksById(_id: String!): [String]
 	}
 	extend type Mutation {
 		addMap(map: MapInput!): String

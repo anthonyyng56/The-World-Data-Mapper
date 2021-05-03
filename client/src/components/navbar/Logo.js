@@ -5,8 +5,12 @@ const Logo = (props) => {
     const history = useHistory();
 
     const goHome = () => {
-        props.tps.clearAllTransactions();
+        if (props.user === null) {
+            history.push("/");
+        } else {
+            props.tps.clearAllTransactions();
         history.push("/home");
+        }
     }
     return (
         <div className='logo' onClick={goHome}>
