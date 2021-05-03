@@ -102,3 +102,9 @@ export const UPDATE_LANDMARK = gql`
 		updateLandmark(_id: $_id, index: $index, value: $value) 
 	}
 `;
+
+export const SELECT_MAP = gql`
+	mutation SelectMap($_id: String!) {
+		selectMap(_id: $_id) 
+	}
+`;

@@ -35,7 +35,7 @@ html, body {
     font-size: 20px;
 }
 
-.navbar-options:hover, .navbar-arrow:hover {
+.navbar-options:hover  {
     color: rgb(82, 82, 82);
 }
 
@@ -323,6 +323,11 @@ html, body {
 
 .navbar-arrow {
     color: white;
+}
+
+.disabledArrow {
+    pointer-events: none;
+    color: #09a08c;
 }
 
 .path {

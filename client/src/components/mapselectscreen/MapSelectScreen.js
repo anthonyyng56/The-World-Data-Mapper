@@ -21,12 +21,13 @@ const MapSelectScreen = (props) => {
 	const [AddMap] 			= useMutation(mutations.ADD_MAP);
 	const [DeleteMap] 		= useMutation(mutations.DELETE_MAP);
 	const [UpdateMapField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
+	const [SelectMap] 		= useMutation(mutations.SELECT_MAP);
 	
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
 	if(data) { maps = data.getAllMaps; }
-	
+
 	const refetchMaps = async (refetch) => {
 		const { loading, error, data } = await refetch();
 		if (data) {
@@ -50,9 +51,9 @@ const MapSelectScreen = (props) => {
 		}
 		const {data} = await AddMap({ variables: { map: map }});
 		map._id = data.addMap;
-		refetch();
 		toggleShowMapInput(false);
 		history.push("/region/" + map._id);
+		await SelectMap({ variables: { _id: map._id }});
 	};
 
 	const deleteMap = async (_id) => {

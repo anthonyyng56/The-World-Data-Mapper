@@ -1,4 +1,4 @@
-import React, { useState } 	                        from 'react';
+import React	                                   from 'react';
 import Ancestor                                    from './Ancestor';
 
 const AncestorsList = (props) => {
@@ -7,7 +7,9 @@ const AncestorsList = (props) => {
 			{
                 props.ancestors &&
                 props.ancestors.map((ancestor, index) => (
-                    <Ancestor key={ancestor._id} name={ancestor.name} _id={ancestor._id} index={index}/>
+                    <Ancestor key={ancestor._id} name={ancestor.name} _id={ancestor._id} index={index} tps={props.tps}
+                     toggleDisableUndo={props.toggleDisableUndo} toggleDisableRedo={props.toggleDisableRedo}
+                    />
                 ))
             }
 		</div>

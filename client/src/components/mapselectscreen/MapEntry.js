@@ -1,9 +1,12 @@
 import React, { useState }          from 'react';
 import { useHistory }               from "react-router-dom";
+import { useMutation } 		        from '@apollo/client';
+import * as mutations 				from '../../cache/mutations';
 
 const MapEntry = (props) => {
     const [editMapName, toggleEditMapName] = useState(false);
     const history = useHistory();
+    const [SelectMap] 		= useMutation(mutations.SELECT_MAP);
 
     const handleEditMapName = () => {
         toggleEditMapName(true);
@@ -21,8 +24,10 @@ const MapEntry = (props) => {
         }
     }
 
-    const selectMap = () => {
-		history.push("/region/" + props._id);
+    const selectMap = async () => {
+        history.push("/region/" + props._id);
+        await SelectMap({ variables: { _id: props._id }});
+		
     }
 
     const showDeleteConfirmation = () => {

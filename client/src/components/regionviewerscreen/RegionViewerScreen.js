@@ -11,6 +11,7 @@ import AncestorsList 		    					from '../AncestorComponents/AncestorsList.js'
 import { AddLandmark_Transaction, DeleteLandmark_Transaction, UpdateLandmark_Transaction } 	            from '../../utils/jsTPS';
 
 const RegionViewerScreen = (props) => {
+    const deleteMessage = 'Delete Landmark?'
     let name = '';
     let capital = '';
     let leader = '';
@@ -18,8 +19,11 @@ const RegionViewerScreen = (props) => {
     let landmarks = [];
     let parentId = '';
     let parentName = '';
-    const deleteMessage = 'Delete Landmark?'
     let ancestors = [];
+    let index = -1;
+    let length = -1;
+    let left_id = '';
+    let right_id='';
 
     const history = useHistory();
     const [showAddLandmark, toggleShowAddLandmark] = useState(false);
@@ -32,6 +36,8 @@ const RegionViewerScreen = (props) => {
 
 	const undoStatus = disableUndo && ' disabledButton ';
 	const redoStatus = disableRedo && ' disabledButton ';
+    let prevStatus = '';
+    let nextStatus = '';
 
     const [AddLandmark] 			= useMutation(mutations.ADD_LANDMARK);
     const [DeleteLandmark] 			= useMutation(mutations.DELETE_LANDMARK);
@@ -58,7 +64,33 @@ const RegionViewerScreen = (props) => {
     const { loading, error, data, refetch } = useQuery(GET_DB_PARENT, {variables: { _id: id }});
     if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
-    if(data) { parentName = data.getParentById.name; }
+    if(data) { 
+        parentName = data.getParentById.name; 
+        let siblings = data.getParentById.subregion_ids;
+        index = siblings.indexOf(id);
+        length = siblings.length;
+        if (index > 0 && index < length - 1) {
+            left_id = siblings[index - 1];
+            right_id = siblings[index + 1];
+            prevStatus = '';
+            nextStatus = '';
+        } else if (index === 0 && length === 1) {
+            left_id = '';
+            right_id = '';
+            prevStatus = ' disabledArrow ';
+            nextStatus = ' disabledArrow ';
+        } else if (index === 0 && length > 1) {
+            left_id = '';
+            right_id = siblings[index + 1];
+            prevStatus = ' disabledArrow ';
+            nextStatus = '';
+        } else if (index > 0 && index === length - 1) {
+            left_id = siblings[index - 1];
+            right_id = '';
+            prevStatus = '';
+            nextStatus = ' disabledArrow ';
+        }
+    }
 
     const tpsUndo = async () => {
 		const retVal = await props.tps.undoTransaction();
@@ -75,6 +107,24 @@ const RegionViewerScreen = (props) => {
 		toggleDisableRedo(props.tps.mostRecentTransaction === props.tps.getSize() - 1);
 		return retVal;
 	}
+
+    const prevSibling = () => {
+        if (left_id !== '') {
+            props.tps.clearAllTransactions();
+            toggleDisableUndo(true);
+            toggleDisableRedo(true);
+            history.push("/regionview/" + left_id);
+        }
+    }
+
+    const nextSibling = () => {
+        if (right_id !== '') {
+            props.tps.clearAllTransactions();
+            toggleDisableUndo(true);
+            toggleDisableRedo(true);
+            history.push("/regionview/" + right_id);
+        }
+    }
 
     const hideAddLandmark = () => {
         toggleShowAddLandmark(false);
@@ -117,6 +167,8 @@ const RegionViewerScreen = (props) => {
 
     useEffect(() => {
         refetch1();
+        refetch2();
+        refetch();
     }, []);
 
     const undoCtrl = (event) => {
@@ -151,10 +203,10 @@ const RegionViewerScreen = (props) => {
 
 	return (
         <WLMain>
-        <AncestorsList ancestors={ancestors} />
+        <AncestorsList ancestors={ancestors} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo}/>
         <div className="navigate-sister-regions">
-			<i className="material-icons navbar-arrow">arrow_back</i>
-			<i className="material-icons navbar-arrow">arrow_forward</i>
+			<i className={`${prevStatus} material-icons navbar-arrow`} onClick={prevSibling}>arrow_back</i>
+			<i className={`${nextStatus} material-icons navbar-arrow`} onClick={nextSibling}>arrow_forward</i>
 		</div>
 		<div className="region-viewer-container">
 			<div className="viewer-left-content">

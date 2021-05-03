@@ -12,7 +12,6 @@ import CreateAccount								from './components/modals/CreateAccount';
 import Login										from './components/modals/Login';
 import Update										from './components/modals/Update';
 import NavbarOptions								from './components/navbar/NavbarOptions';
-import { WLHeader, WNavbar, WNavItem } 				from 'wt-frontend';
  
 const App = () => {
 	let user = null;

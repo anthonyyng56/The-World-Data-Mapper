@@ -32,6 +32,7 @@ const typeDefs = gql `
 		addLandmark(_id: String!, value: String!, index: Int!): Int
 		deleteLandmark(_id: String!, index: Int!): Boolean
 		updateLandmark(_id: String!, index: Int!, value: String!): Boolean
+		selectMap(_id: String!): Boolean
 	}
     input FieldInput {
 		_id: String

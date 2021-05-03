@@ -169,7 +169,7 @@ const RegionSpreadsheetScreen = (props) => {
 
 	return (
 		<WLMain>
-		<AncestorsList ancestors={ancestors} />
+		<AncestorsList ancestors={ancestors} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo}/>
 		<div className="region-spreadsheet-container">
 			<div className="region-spreadsheet-preheader">
 				<div className="spreadsheet-controls">

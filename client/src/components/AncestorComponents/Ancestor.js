@@ -5,6 +5,9 @@ const Ancestor = (props) => {
     const history = useHistory();
 
     const navigateAncestor = () => {
+        props.tps.clearAllTransactions();
+        props.toggleDisableUndo(true);
+        props.toggleDisableRedo(true);
         history.push("/region/" + props._id);
     }
 

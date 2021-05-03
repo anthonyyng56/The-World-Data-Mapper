@@ -268,6 +268,31 @@ module.exports = {
 			if(updated) return true;
 			else return false;
 		},
+		selectMap: async (_, args, { req }) => {
+			const { _id } = args;
+			const user_id = new ObjectId(req.userId);
+			if(!user_id) { return false };
+			const maps = await Map.find({owner: user_id});
+			if(!maps) return false;
+			for (let i = 0; i < maps.length; i++) {
+				if ((maps[i]._id).toString() != _id) {
+					let map = await Map.findOneAndDelete({_id: new ObjectId(maps[i]._id)});
+					const newMap = new Map({
+						_id: map._id,	
+						owner: map.owner,
+						name: map.name,
+						capital: map.capital,
+						leader: map.leader,
+						landmarks: map.landmarks,
+						subregion_ids: map.subregion_ids,
+						parent_id: map.parent_id,
+						root: map.root,
+					});
+					await newMap.save();
+				}
+			}
+			return true;
+		}
 	}
 }
 const findLandmarks = async (_id) => {

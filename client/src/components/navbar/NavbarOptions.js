@@ -1,8 +1,8 @@
 import React                                from 'react';
 import { LOGOUT }                           from '../../cache/mutations';
 import { useMutation, useApolloClient }     from '@apollo/client';
-import { WButton, WNavItem }                from 'wt-frontend';
-import { useHistory } from "react-router-dom";
+import { WButton }                          from 'wt-frontend';
+import { useHistory }                       from "react-router-dom";
 
 const LoggedIn = (props) => {
     const client = useApolloClient();
