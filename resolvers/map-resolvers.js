@@ -74,7 +74,28 @@ module.exports = {
 				root: objectId.toString(),
 			});
 			const updated = await newMap.save();
-			if(updated) return objectId;
+			if(updated) {
+				const maps = await Map.find({owner: owner});
+				if(!maps) return ('Could not add map');
+				for (let i = 0; i < maps.length - 1; i++) {
+					let map = await Map.findOneAndDelete({_id: new ObjectId(maps[i]._id)});
+					if (map) {
+						const newMap = new Map({
+						_id: map._id,	
+						owner: map.owner,
+						name: map.name,
+						capital: map.capital,
+						leader: map.leader,
+						landmarks: map.landmarks,
+						subregion_ids: map.subregion_ids,
+						parent_id: map.parent_id,
+						root: map.root,
+						});
+						await newMap.save();
+					}
+				}
+				return objectId;
+			}
 			else return ('Could not add map');
 		},
 		deleteMap: async (_, args) => {

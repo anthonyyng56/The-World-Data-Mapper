@@ -3,15 +3,15 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql `
 	type Map {
-		_id: String!
-		owner: String!
-		name: String!
-		capital: String!
-		leader: String!
-		landmarks: [String]!
-		subregion_ids: [String]!
-		parent_id: String!
-		root: String!
+		_id: String
+		owner: String
+		name: String
+		capital: String
+		leader: String
+		landmarks: [String]
+		subregion_ids: [String]
+		parent_id: String
+		root: String
 	}
 	extend type Query {
 		getAllMaps: [Map]

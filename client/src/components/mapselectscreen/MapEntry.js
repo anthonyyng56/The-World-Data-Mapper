@@ -27,7 +27,6 @@ const MapEntry = (props) => {
     const selectMap = async () => {
         history.push("/region/" + props._id);
         await SelectMap({ variables: { _id: props._id }});
-		
     }
 
     const showDeleteConfirmation = () => {

@@ -51,10 +51,12 @@ const MapSelectScreen = (props) => {
 			name: createInput.name,
 		}
 		const {data} = await AddMap({ variables: { map: map }});
-		map._id = data.addMap;
-		toggleShowMapInput(false);
-		history.push("/region/" + map._id);
-		await SelectMap({ variables: { _id: map._id }});
+		if (data) {
+			toggleShowMapInput(false);
+			if (data.addMap != 'Could not add map') {
+				history.push("/region/" + data.addMap);
+			}
+		}
 	};
 
 	const deleteMap = async () => {
