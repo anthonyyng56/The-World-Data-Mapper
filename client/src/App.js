@@ -1,5 +1,5 @@
 import React, { useState, useEffect } 				from 'react';
-import WelcomeScreen 								from './components/welcomescreen/WelcomeScreen';
+import Welcomescreen 								from './components/welcomescreen/Welcomescreen';
 import MapSelectScreen 								from './components/mapselectscreen/MapSelectScreen';
 import RegionSpreadsheetScreen 						from './components/regionspreadsheetscreen/RegionSpreadsheetScreen';
 import RegionViewerScreen 							from './components/regionviewerscreen/RegionViewerScreen';
@@ -50,7 +50,7 @@ const App = () => {
 					exact path="/welcome"
 					name="welcome" 
 					render={() => 
-						<WelcomeScreen fetchUser={refetch} user={user} />
+						<Welcomescreen fetchUser={refetch} user={user} />
 					} 
 				/>
 				<Route 

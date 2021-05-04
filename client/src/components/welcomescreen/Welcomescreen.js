@@ -1,6 +1,6 @@
 import React from 'react';
 
-const WelcomeScreen = (props) => {
+const Welcomescreen = (props) => {
 
 	return (
 		<div className="welcome-screen">
@@ -12,4 +12,4 @@ const WelcomeScreen = (props) => {
 	);
 };
 
-export default WelcomeScreen;
+export default Welcomescreen;
