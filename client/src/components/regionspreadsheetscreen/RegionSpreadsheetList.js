@@ -7,7 +7,7 @@ const RegionSpreadsheetList = (props) => {
 	return (
 		<div className="region-spreadsheet-list">
 			{
-                props.subregions &&
+                props.subregions && 
                 props.subregions.map((subregion, index) => (
                     <RegionSpreadsheetEntry
                         subregion={subregion} key={subregion._id} _id={subregion._id} updateMapField={props.updateMapField}
@@ -15,7 +15,7 @@ const RegionSpreadsheetList = (props) => {
                         index={index} setDeleteIndex={props.setDeleteIndex} editingRow={editingRow} setEditingRow={setEditingRow}
                         editingColumn={editingColumn} setEditingColumn={setEditingColumn} length={props.subregions.length}
                         tps={props.tps} toggleDisableUndo={props.toggleDisableUndo} toggleDisableRedo={props.toggleDisableRedo}
-                        setDeleteName={props.setDeleteName}
+                        setDeleteName={props.setDeleteName} imgPath={props.imgPath} regionName={props.regionName}
                     />
                 ))
             }

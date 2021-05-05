@@ -305,3 +305,8 @@ module.exports = {
 		}
 	}
 }
+
+const findLandmarks = async(_, args) => {
+	const { _id } = args;
+	const objectId = new ObjectId(_id);
+}

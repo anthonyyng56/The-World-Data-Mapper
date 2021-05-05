@@ -14,7 +14,8 @@ import { AddSubregion_Transaction, DeleteSubregion_Transaction, UpdateMapField_T
 const RegionSpreadsheetScreen = (props) => {
 	let subregions = [];
 	let ancestors = [];
-	let parentName = '';
+	let imgPath = '';
+	let regionName = '';
 	const deleteMessage = 'Delete Subregion?'
 	
 	const history = useHistory();
@@ -44,12 +45,19 @@ const RegionSpreadsheetScreen = (props) => {
 	const { loading: loading2, error: error2, data: data2, refetch: refetch2 } = useQuery(GET_DB_ANCESTORS, {variables: { _id: id }});
     if(loading2) { console.log(loading2, 'loading'); }
 	if(error2) { console.log(error2, 'error'); }
-    if(data2) { ancestors = data2.getAllAncestors; }
+    if(data2) { 
+		ancestors = data2.getAllAncestors; 
+		for (let i = 0; i < ancestors.length; i++) {
+			imgPath += ancestors[i].name + '/';
+		}
+	}
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAP, {variables: { _id: id }});
     if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
-    if(data) { parentName = data.getMapById.name; }
+    if(data) { 
+		regionName = data.getMapById.name; 
+	}
 	
 	const refetchSubregions = async (refetch1) => {
 		const { loading, error, data } = await refetch1();
@@ -188,7 +196,7 @@ const RegionSpreadsheetScreen = (props) => {
 						<i className={`${undoStatus} material-icons control-buttons`} onClick={tpsUndo}>undo</i>
 						<i className={`${redoStatus} material-icons control-buttons`} onClick={tpsRedo}>redo</i>
 					</div>	
-					<div className="region-spreadsheet-name-container">Region Name: <span className="region-spreadsheet-name">{parentName}</span></div>
+					<div className="region-spreadsheet-name-container">Region Name: <span className="region-spreadsheet-name">{regionName}</span></div>
 
 				</div>
 				<div className="region-spreadsheet-header">
@@ -201,7 +209,7 @@ const RegionSpreadsheetScreen = (props) => {
 				<div className="region-spreadsheet">
 					<RegionSpreadsheetList subregions={subregions} updateMapField={updateMapField} toggleDeleteSubregionConfirmation={toggleDeleteSubregionConfirmation} 
 					setDelete_id={setDelete_id} setDeleteIndex={setDeleteIndex} tps={props.tps} toggleDisableUndo={toggleDisableUndo} toggleDisableRedo={toggleDisableRedo} 
-					setDeleteName={setDeleteName}
+					setDeleteName={setDeleteName} imgPath={imgPath} regionName={regionName}
 					/>
 				</div>
 			</div>

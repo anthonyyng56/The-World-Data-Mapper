@@ -6,7 +6,15 @@ const RegionSpreadsheetEntry = (props) => {
     const [editCapital, setEditCapital] = useState(props.subregion.capital);
     const [editLeader, setEditLeader] = useState(props.subregion.leader);
     const history = useHistory();
-
+    let path = props.imgPath + props.regionName + '/' + props.subregion.name + ' Flag.png';
+    let flagSrc;
+    try {
+        flagSrc = require(`../../images/${path}`)
+    }
+    catch(err) {
+        flagSrc = require('../../images/image.png')
+    }
+    
     const selectSubregion = () => {
         props.tps.clearAllTransactions();
         props.toggleDisableUndo(true);
@@ -173,7 +181,7 @@ const RegionSpreadsheetEntry = (props) => {
             }
             <div className="entry-container col-2">
                 <div className="entry-col flag-col">
-                    <img className = "flag-filler-image" src={require('../../images/image.png')}/>
+                    <img className = "flag-image" src={flagSrc}/> 
                 </div>
             </div>
             {
