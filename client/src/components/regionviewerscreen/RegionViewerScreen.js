@@ -1,15 +1,16 @@
 import React, { useState, useEffect }                           from 'react';
 import { useParams }                                            from 'react-router';
 import { useMutation, useQuery } 		                        from '@apollo/client';
-import { GET_DB_MAP, GET_DB_PARENT, GET_DB_ANCESTORS, GET_DB_LANDMARKS } 			from '../../cache/queries';
+import { GET_DB_MAP, GET_DB_PARENT, GET_DB_ANCESTORS, GET_DB_LANDMARKS, GET_DB_POTENTIAL_PARENTS } 			from '../../cache/queries';
 import * as mutations 					                        from '../../cache/mutations';
 import { WButton, WLMain }                                      from 'wt-frontend';
 import { useHistory }					                        from "react-router-dom";
 import RegionLandmarksList 		                                from './RegionLandmarksList.js'
+import PotentialParentList 		                                from './PotentialParentList.js'
 import RegionViewerFlag 		                                from './RegionViewerFlag.js'
 import DeleteModal                  	                        from '../modals/DeleteModal.js'
 import AncestorsList 		    					            from '../AncestorComponents/AncestorsList.js'
-import { AddLandmark_Transaction, DeleteLandmark_Transaction, UpdateLandmark_Transaction } 	            from '../../utils/jsTPS';
+import { AddLandmark_Transaction, DeleteLandmark_Transaction, UpdateLandmark_Transaction, ChangeParent_Transaction } 	            from '../../utils/jsTPS';
 
 const RegionViewerScreen = (props) => {
     const deleteMessage = 'Delete Landmark?'
@@ -26,6 +27,7 @@ const RegionViewerScreen = (props) => {
     let left_id = '';
     let right_id='';
     let allLandmarks = [];
+    let potentialParents = [];
     let imgPath = '';
 
     const history = useHistory();
@@ -36,6 +38,7 @@ const RegionViewerScreen = (props) => {
 	const [disableRedo, toggleDisableRedo]  = useState(true);
 	const [deleteName, setDeleteName] = useState('');
     const [deleteMapConfirmation, toggleDeleteMapConfirmation] = useState(false);
+    const [changeParent, toggleChangeParent] = useState(false);
 
 	const undoStatus = disableUndo && ' disabledButton ';
 	const redoStatus = disableRedo && ' disabledButton ';
@@ -45,6 +48,8 @@ const RegionViewerScreen = (props) => {
     const [AddLandmark] 			= useMutation(mutations.ADD_LANDMARK);
     const [DeleteLandmark] 			= useMutation(mutations.DELETE_LANDMARK);
     const [UpdateLandmark] 			= useMutation(mutations.UPDATE_LANDMARK);
+    const [ChangeParent] 			= useMutation(mutations.CHANGE_PARENT);
+    const [UndoChangeParent] 		= useMutation(mutations.UNDO_CHANGE_PARENT);
 
     const { id } = useParams();
 	const { loading: loading1, error: error1, data: data1, refetch: refetch1 } = useQuery(GET_DB_MAP, {variables: { _id: id }});
@@ -74,6 +79,13 @@ const RegionViewerScreen = (props) => {
 	if(error3) { console.log(error3, 'error'); }
     if(data3) { 
         allLandmarks = data3.getAllLandmarks; 
+    }
+
+    const { loading: loading4, error: error4, data: data4, refetch: refetch4 } = useQuery(GET_DB_POTENTIAL_PARENTS, {variables: { _id: id }});
+    if(loading4) { console.log(loading4, 'loading'); }
+	if(error4) { console.log(error4, 'error'); }
+    if(data4) { 
+        potentialParents = data4.getAllPotentialParents;
     }
 
     const { loading, error, data, refetch } = useQuery(GET_DB_PARENT, {variables: { _id: id }});
@@ -112,6 +124,7 @@ const RegionViewerScreen = (props) => {
 		refetch1();
         refetch2();
         refetch3();
+        refetch4();
         refetch();
 		toggleDisableUndo(props.tps.mostRecentTransaction === -1);
 		toggleDisableRedo(props.tps.mostRecentTransaction === props.tps.getSize() - 1);
@@ -123,6 +136,7 @@ const RegionViewerScreen = (props) => {
 		refetch1();	
         refetch2();
         refetch3();
+        refetch4();
         refetch();
 		toggleDisableUndo(props.tps.mostRecentTransaction === -1);
 		toggleDisableRedo(props.tps.mostRecentTransaction === props.tps.getSize() - 1);
@@ -189,10 +203,24 @@ const RegionViewerScreen = (props) => {
 		setLandmarkInput(updated);
 	}
 
+    const hideChangeParent = () => {
+        toggleChangeParent(false);
+    }
+
+    const changeParentRegion = async (newParent_id) => {
+        if (newParent_id !== parentId) {
+            let transaction = new ChangeParent_Transaction(id, parentId, newParent_id, ChangeParent, UndoChangeParent)
+        props.tps.addTransaction(transaction);
+		await tpsRedo();
+        }
+        
+    }
+
     useEffect(() => {
         refetch1();
         refetch2();
         refetch3();
+        refetch4();
         refetch();
     }, []);
 
@@ -250,8 +278,18 @@ const RegionViewerScreen = (props) => {
                         <div className="viewer-information-row">Region Name: &nbsp;&nbsp;{name}</div>
                         <div className="viewer-name-field">
                             <div className="viewer-parent-name-field">Parent Region: &nbsp;&nbsp;</div>
-                            <div className="link-color navigate-parent" onClick={returnToSpreadsheet}>{parentName}</div>
-                            <div className="viewer-edit-parent edit"><i className="material-icons edit-parent">edit</i></div>
+                            {
+                                changeParent ?
+                                <>
+                                    <PotentialParentList potentialParents={potentialParents} parentName={parentName} hideChangeParent={hideChangeParent} changeParentRegion={changeParentRegion}/>
+                                </>
+                                :
+                                <>
+                                    <div className="link-color navigate-parent" onClick={returnToSpreadsheet}>{parentName}</div>
+                                    <div className="viewer-edit-parent edit"><i className="material-icons edit-parent" onClick={toggleChangeParent}>edit</i></div>
+                                </>
+                            }
+                            
                         </div>
                         
                             

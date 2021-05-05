@@ -149,6 +149,27 @@ export class UpdateLandmark_Transaction extends jsTPS_Transaction {
     }
 }
 
+/*  Handles changing parent region */
+export class ChangeParent_Transaction extends jsTPS_Transaction {
+    constructor(_id, parentId, newParent_id, updatefunc, undofunc) {
+        super();
+        this._id = _id;
+        this.parentId = parentId;
+        this.newParent_id = newParent_id;
+        this.updatefunc = updatefunc;
+        this.undofunc = undofunc
+    }
+    async doTransaction() {
+		const { data } = await this.updatefunc({variables: { _id: this._id, oldParent_id: this.parentId, newParent_id: this.newParent_id }});
+        this.originalParentSubregions = data.changeParent;
+		return data;
+    }
+    async undoTransaction() {
+		const { data } = await this.undofunc({variables: { _id: this._id, oldParent_id: this.parentId, newParent_id: this.newParent_id, originalParentSubregions: this.originalParentSubregions }});
+		return data;
+    }
+}
+
 
 
 export class jsTPS {

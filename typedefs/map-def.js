@@ -20,6 +20,7 @@ const typeDefs = gql `
 		getSubregionsById(_id: String!): [Map]
 		getAllAncestors(_id: String!): [Map]
 		getAllLandmarks(_id: String!): [String]
+		getAllPotentialParents(_id: String!): [Map]
 	}
 	extend type Mutation {
 		addMap(map: MapInput!): String
@@ -33,6 +34,8 @@ const typeDefs = gql `
 		deleteLandmark(_id: String!, landmark: String!): Int
 		updateLandmark(_id: String!, oldVal: String!, newVal: String!): Boolean
 		selectMap(_id: String!): Boolean
+		changeParent(_id: String!, oldParent_id: String!, newParent_id: String!): [String]
+		undoChangeParent(_id: String!, oldParent_id: String!, newParent_id: String!, originalParentSubregions: [String]!): Boolean
 	}
     input FieldInput {
 		_id: String

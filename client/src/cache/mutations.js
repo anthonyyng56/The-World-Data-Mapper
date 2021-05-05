@@ -108,3 +108,15 @@ export const SELECT_MAP = gql`
 		selectMap(_id: $_id) 
 	}
 `;
+
+export const CHANGE_PARENT = gql`
+	mutation ChangeParent($_id: String!, $oldParent_id: String!, $newParent_id: String!) {
+		changeParent(_id: $_id, oldParent_id: $oldParent_id, newParent_id: $newParent_id) 
+	}
+`;
+
+export const UNDO_CHANGE_PARENT = gql`
+	mutation UndoChangeParent($_id: String!, $oldParent_id: String!, $newParent_id: String!, $originalParentSubregions: [String]!) {
+		undoChangeParent(_id: $_id, oldParent_id: $oldParent_id, newParent_id: $newParent_id, originalParentSubregions: $originalParentSubregions)
+	}
+`;

@@ -69,6 +69,21 @@ module.exports = {
 				return a.toLowerCase().localeCompare(b.toLowerCase());
 			});
 			return landmarks;
+		},
+		getAllPotentialParents: async (_, args) => {
+			const { _id } = args;
+			const map = await Map.findOne({ _id: new ObjectId(_id) });
+			if (!map) return ([]);
+			let root = map.root;
+			const rootMap = await Map.findOne({ _id: new ObjectId(root) });
+			if (!rootMap) return ([]);
+			let maps = [];
+			maps.push(rootMap);
+			let subregions = rootMap.subregion_ids;
+			for (let i = 0; i < subregions.length; i++) {
+				maps = maps.concat( await findPotentialParents(_id, subregions[i]) )
+			}
+			return maps;
 		}
 	},
 	Mutation: {
@@ -316,6 +331,65 @@ module.exports = {
 				}
 			}
 			return true;
+		},
+		changeParent: async (_, args) => {
+			const { _id, oldParent_id, newParent_id } = args;
+			const objectId = new ObjectId(_id)
+			const region = await Map.findOne({ _id: objectId });
+			if (!region) return ([]);
+
+			const oldParentId = new ObjectId(oldParent_id)
+			const oldParent = await Map.findOne({ _id: oldParentId });
+			if (!oldParent) return ([]);
+
+			const newParentId = new ObjectId(newParent_id)
+			const newParent = await Map.findOne({ _id: newParentId });
+			if (!newParent) return ([]);
+
+			let oldParentSubregions = oldParent.subregion_ids;
+			const originalSubregionsCopy = oldParentSubregions.slice();
+			let index = oldParentSubregions.indexOf(_id);
+			oldParentSubregions.splice(index,1)
+			const updated1 = await Map.updateOne({ _id: oldParentId}, { subregion_ids: oldParentSubregions });
+			if (!updated1) return ([]);
+
+			let newParentSubregions = newParent.subregion_ids;
+			newParentSubregions.push(_id);
+			const updated2 = await Map.updateOne({ _id: newParentId}, { subregion_ids: newParentSubregions });
+			if (!updated2) return ([]);
+
+			const updated3 = await Map.updateOne({ _id: objectId}, { parent_id: newParent_id });
+			if (!updated3) return ([]);
+
+			return originalSubregionsCopy;
+		},
+		undoChangeParent: async (_, args) => {
+			const { _id, oldParent_id, newParent_id, originalParentSubregions } = args;
+
+			const objectId = new ObjectId(_id)
+			const region = await Map.findOne({ _id: objectId });
+			if (!region) return false;
+
+			const oldParentId = new ObjectId(oldParent_id)
+			const oldParent = await Map.findOne({ _id: oldParentId });
+			if (!oldParent) return false;
+
+			const newParentId = new ObjectId(newParent_id)
+			const newParent = await Map.findOne({ _id: newParentId });
+			if (!newParent) return false;
+
+			const updated1 = await Map.updateOne({ _id: oldParentId}, { subregion_ids: originalParentSubregions });
+			if (!updated1) return false;
+
+			let newParentSubregions = newParent.subregion_ids;
+			let index = newParentSubregions.indexOf(_id);
+			newParentSubregions.splice(index,1)
+			const updated2 = await Map.updateOne({ _id: newParentId}, { subregion_ids: newParentSubregions });
+			if (!updated2) return false;
+
+			const updated3 = await Map.updateOne({ _id: objectId}, { parent_id: oldParent_id });
+			if (!updated3) return false;
+			return true;
 		}
 	}
 }
@@ -332,4 +406,19 @@ const findLandmarks = async(_id) => {
 		landmarks = landmarks.concat( await findLandmarks(subregions[i]) );
 	}
 	return landmarks;
+}
+
+const findPotentialParents = async(_id, current_id) => {
+	if (_id === current_id) {
+		return ([]);
+	}
+	const region = await Map.findOne({ _id: new ObjectId(current_id) });
+	if (!region) return ([]);
+	let maps = [];
+	maps.push(region);
+	let subregions = region.subregion_ids;
+	for (let i = 0; i < subregions.length; i++) {
+		maps = maps.concat( await findPotentialParents(_id, subregions[i]) )
+	}
+	return maps;	
 }

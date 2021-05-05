@@ -163,6 +163,13 @@ const RegionSpreadsheetScreen = (props) => {
 	}
 
 	useEffect(() => {
+        refetch1();
+        refetch2();
+        refetch();
+    }, []);
+
+
+	useEffect(() => {
 		window.onpopstate = () => {
 			props.tps.clearAllTransactions();
 			toggleDisableUndo(true);

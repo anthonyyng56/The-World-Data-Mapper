@@ -30,6 +30,7 @@ const App = () => {
 			user = getCurrentUser; 
 		}
     }
+	let i = 1;
 
 	return(
 		<BrowserRouter>
@@ -64,7 +65,7 @@ const App = () => {
 					path="/region/:id"
 					name="region" 
 					render={() => 
-						<RegionSpreadsheetScreen tps={transactionStack} fetchUser={refetch} user={user} />
+						<RegionSpreadsheetScreen tps={transactionStack} fetchUser={refetch} user={user} key={i++}/>
 					} 
 				/>
 				<Route 

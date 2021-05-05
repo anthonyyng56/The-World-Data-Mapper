@@ -95,3 +95,19 @@ export const GET_DB_LANDMARKS = gql`
 		getAllLandmarks(_id: $_id)
 	}
 `;
+
+export const GET_DB_POTENTIAL_PARENTS = gql`
+	query GetDBPotentialParents($_id: String!) {
+		getAllPotentialParents(_id: $_id) {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			subregion_ids
+			parent_id
+			root
+		}
+	}
+`;
