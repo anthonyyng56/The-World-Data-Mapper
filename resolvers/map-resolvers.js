@@ -56,6 +56,20 @@ module.exports = {
 			}
 			return ancestors;
 		},
+		getAllLandmarks: async (_, args) => {
+			const { _id } = args;
+			const region = await Map.findOne({ _id: new ObjectId(_id) });
+			if (!region) return [];
+			let landmarks = region.landmarks;
+			let subregions = region.subregion_ids;
+			for (let i = 0; i < subregions.length; i++) {
+				landmarks = landmarks.concat( await findLandmarks(subregions[i]) );
+			}
+			landmarks.sort(function (a, b) {
+				return a.toLowerCase().localeCompare(b.toLowerCase());
+			});
+			return landmarks;
+		}
 	},
 	Mutation: {
 		addMap: async (_, args) => {
@@ -246,29 +260,29 @@ module.exports = {
 			else return -1;
 		},
 		deleteLandmark: async (_, args) => {
-			const { _id, index } = args;
+			const { _id, landmark } = args;
 			const objectId = new ObjectId(_id);
 			const found = await Map.findOne({_id: objectId});
-			if(!found) return false;
+			if(!found) return -1;
 			let landmarks = found.landmarks;
-			if (index < 0 || index >= landmarks.length) {
-				return false;
+			let index = landmarks.indexOf(landmark)
+			if (index != -1) {
+				landmarks.splice(index, 1);
 			}
-			landmarks.splice(index, 1);
 			const updated = await Map.updateOne({ _id: objectId}, { landmarks: landmarks });
-			if(updated) return true;
-			else return false;
+			if(updated) return index;
+			else return index;
 		},
 		updateLandmark: async (_, args) => {
-			const { _id, index, value } = args;
+			const { _id, oldVal, newVal } = args;
 			const objectId = new ObjectId(_id);
 			const found = await Map.findOne({_id: objectId});
 			if(!found) return false;
 			let landmarks = found.landmarks;
-			if (index < 0 || index >= landmarks.length) {
-				return false;
+			let index = landmarks.indexOf(oldVal);
+			if (index != -1) {
+				landmarks.splice(index, 1, newVal);
 			}
-			landmarks[index] = value;
 			const updated = await Map.updateOne({ _id: objectId}, { landmarks: landmarks });
 			if(updated) return true;
 			else return false;
@@ -306,7 +320,16 @@ module.exports = {
 	}
 }
 
-const findLandmarks = async(_, args) => {
-	const { _id } = args;
-	const objectId = new ObjectId(_id);
+const findLandmarks = async(_id) => {
+	const region = await Map.findOne({ _id: new ObjectId(_id) });
+	if (!region) return [];
+	let landmarks = region.landmarks;
+	for (let j = 0; j < landmarks.length; j++) {
+		landmarks[j] = landmarks[j] + ' - ' + region.name;
+	}
+	let subregions = region.subregion_ids;	
+	for (let i = 0; i < subregions.length; i++) {
+		landmarks = landmarks.concat( await findLandmarks(subregions[i]) );
+	}
+	return landmarks;
 }

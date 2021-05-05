@@ -1,11 +1,12 @@
 import React, { useState, useEffect }                           from 'react';
 import { useParams }                                            from 'react-router';
 import { useMutation, useQuery } 		                        from '@apollo/client';
-import { GET_DB_MAP, GET_DB_PARENT, GET_DB_ANCESTORS } 			from '../../cache/queries';
+import { GET_DB_MAP, GET_DB_PARENT, GET_DB_ANCESTORS, GET_DB_LANDMARKS } 			from '../../cache/queries';
 import * as mutations 					                        from '../../cache/mutations';
 import { WButton, WLMain }                                      from 'wt-frontend';
 import { useHistory }					                        from "react-router-dom";
 import RegionLandmarksList 		                                from './RegionLandmarksList.js'
+import RegionViewerFlag 		                                from './RegionViewerFlag.js'
 import DeleteModal                  	                        from '../modals/DeleteModal.js'
 import AncestorsList 		    					            from '../AncestorComponents/AncestorsList.js'
 import { AddLandmark_Transaction, DeleteLandmark_Transaction, UpdateLandmark_Transaction } 	            from '../../utils/jsTPS';
@@ -24,6 +25,8 @@ const RegionViewerScreen = (props) => {
     let length = -1;
     let left_id = '';
     let right_id='';
+    let allLandmarks = [];
+    let imgPath = '';
 
     const history = useHistory();
     const auth = props.user === null ? false : true;
@@ -31,7 +34,6 @@ const RegionViewerScreen = (props) => {
     const [landmarkInput, setLandmarkInput] = useState({ name: '' });
     const [disableUndo, toggleDisableUndo]  = useState(true);
 	const [disableRedo, toggleDisableRedo]  = useState(true);
-    const [deleteIndex, setDeleteIndex] = useState('');
 	const [deleteName, setDeleteName] = useState('');
     const [deleteMapConfirmation, toggleDeleteMapConfirmation] = useState(false);
 
@@ -60,7 +62,19 @@ const RegionViewerScreen = (props) => {
     const { loading: loading2, error: error2, data: data2, refetch: refetch2 } = useQuery(GET_DB_ANCESTORS, {variables: { _id: id }});
     if(loading2) { console.log(loading2, 'loading'); }
 	if(error2) { console.log(error2, 'error'); }
-    if(data2) { ancestors = data2.getAllAncestors; }
+    if(data2) { 
+        ancestors = data2.getAllAncestors; 
+        for (let i = 0; i < ancestors.length; i++) {
+			imgPath += ancestors[i].name + '/';
+		}
+    }
+
+    const { loading: loading3, error: error3, data: data3, refetch: refetch3 } = useQuery(GET_DB_LANDMARKS, {variables: { _id: id }});
+    if(loading3) { console.log(loading3, 'loading'); }
+	if(error3) { console.log(error3, 'error'); }
+    if(data3) { 
+        allLandmarks = data3.getAllLandmarks; 
+    }
 
     const { loading, error, data, refetch } = useQuery(GET_DB_PARENT, {variables: { _id: id }});
     if(loading) { console.log(loading, 'loading'); }
@@ -96,6 +110,9 @@ const RegionViewerScreen = (props) => {
     const tpsUndo = async () => {
 		const retVal = await props.tps.undoTransaction();
 		refetch1();
+        refetch2();
+        refetch3();
+        refetch();
 		toggleDisableUndo(props.tps.mostRecentTransaction === -1);
 		toggleDisableRedo(props.tps.mostRecentTransaction === props.tps.getSize() - 1);
 		return retVal;
@@ -104,6 +121,9 @@ const RegionViewerScreen = (props) => {
 	const tpsRedo = async () => {
 		const retVal = await props.tps.doTransaction();
 		refetch1();	
+        refetch2();
+        refetch3();
+        refetch();
 		toggleDisableUndo(props.tps.mostRecentTransaction === -1);
 		toggleDisableRedo(props.tps.mostRecentTransaction === props.tps.getSize() - 1);
 		return retVal;
@@ -138,9 +158,12 @@ const RegionViewerScreen = (props) => {
 
     const addNewLandmark = async () => {
         if (landmarkInput.name.trim() === '') {
-			alert("Please provide a non-empty landmark name");
+			alert("Please provide a non-empty landmark name.");
 			return;
-		}
+		} else if (landmarks.includes(landmarkInput.name)) {
+            alert("Landmark already exists.");
+			return;
+        }
         let transaction = new AddLandmark_Transaction(id, landmarkInput.name, -1, AddLandmark, DeleteLandmark);
 		props.tps.addTransaction(transaction);
 		await tpsRedo();
@@ -148,14 +171,14 @@ const RegionViewerScreen = (props) => {
     }
 
     const deleteLandmark = async () => {
-        let transaction = new DeleteLandmark_Transaction(id, deleteName, deleteIndex, DeleteLandmark, AddLandmark);
+        let transaction = new DeleteLandmark_Transaction(id, deleteName, DeleteLandmark, AddLandmark);
 		props.tps.addTransaction(transaction);
 		await tpsRedo();
         toggleDeleteMapConfirmation(false);
     }
 
-    const updateLandmark = async (index, newVal, oldVal) => {
-        let transaction = new UpdateLandmark_Transaction(id, index, newVal, oldVal, UpdateLandmark);
+    const updateLandmark = async (newVal, oldVal) => {
+        let transaction = new UpdateLandmark_Transaction(id, newVal, oldVal, UpdateLandmark);
 		props.tps.addTransaction(transaction);
 		await tpsRedo();
     }
@@ -169,6 +192,7 @@ const RegionViewerScreen = (props) => {
     useEffect(() => {
         refetch1();
         refetch2();
+        refetch3();
         refetch();
     }, []);
 
@@ -221,9 +245,7 @@ const RegionViewerScreen = (props) => {
                         <i className={`${undoStatus} material-icons control-buttons`} onClick={tpsUndo}>undo</i>
                         <i className={`${redoStatus} material-icons control-buttons`} onClick={tpsRedo}>redo</i>
                     </div>
-                    <div className="viewer-image-container">
-                        <img className="viewer-filler-image" src={require('../../images/image.png')}/>
-                    </div>
+                    <RegionViewerFlag imgPath={imgPath} name={name}/>
                     <div className="viewer-information-container">
                         <div className="viewer-information-row">Region Name: &nbsp;&nbsp;{name}</div>
                         <div className="viewer-name-field">
@@ -241,8 +263,8 @@ const RegionViewerScreen = (props) => {
                 <div className="viewer-right-content">
                     <div className="viewer-landmarks-title">Region Landmarks:</div>
                     <div className="viewer-landmarks-container">
-                        <RegionLandmarksList landmarks={landmarks} deleteLandmark={deleteLandmark} updateLandmark={updateLandmark} setDeleteIndex={setDeleteIndex} 
-                        setDeleteName={setDeleteName} toggleDeleteMapConfirmation={toggleDeleteMapConfirmation} />
+                        <RegionLandmarksList landmarks={landmarks} allLandmarks={allLandmarks} deleteLandmark={deleteLandmark} updateLandmark={updateLandmark}
+                        setDeleteName={setDeleteName} toggleDeleteMapConfirmation={toggleDeleteMapConfirmation}/>
                     </div>
                     <div className="viewer-add-landmark">
                     {

@@ -92,16 +92,6 @@ export const GET_DB_ANCESTORS = gql`
 
 export const GET_DB_LANDMARKS = gql`
 	query GetDBLandmarks($_id: String!) {
-		getAllLandmarks(_id: $_id) {
-			_id
-			owner
-			name
-			capital
-			leader
-			landmarks
-			subregion_ids
-			parent_id
-			root
-		}
+		getAllLandmarks(_id: $_id)
 	}
 `;

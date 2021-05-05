@@ -105,23 +105,23 @@ export class AddLandmark_Transaction extends jsTPS_Transaction {
 		return data;
     }
     async undoTransaction() {
-		const { data } = await this.deletefunc({variables: { _id: this._id, index: this.index }});
+		const { data } = await this.deletefunc({variables: { _id: this._id, landmark: this.value }});
 		return data;
     }
 }
 
 /*  Handles deletion of landmarks */
 export class DeleteLandmark_Transaction extends jsTPS_Transaction {
-    constructor(_id, value, index, deletefunc, addfunc) {
+    constructor(_id, value, deletefunc, addfunc) {
         super();
         this._id = _id;
         this.value = value;
-        this.index = index;
         this.deletefunc = deletefunc;
         this.addfunc = addfunc;
     }
     async doTransaction() {
-		const { data } = await this.deletefunc({variables: { _id: this._id, index: this.index }});
+		const { data } = await this.deletefunc({variables: { _id: this._id, landmark: this.value }});
+        this.index = data.deleteLandmark;
 		return data;
     }
     async undoTransaction() {
@@ -132,20 +132,19 @@ export class DeleteLandmark_Transaction extends jsTPS_Transaction {
 
 /*  Handles updating landmarks */
 export class UpdateLandmark_Transaction extends jsTPS_Transaction {
-    constructor(_id, index, newVal, oldVal, updatefunc) {
+    constructor(_id, newVal, oldVal, updatefunc) {
         super();
         this._id = _id;
-        this.index = index;
         this.newVal = newVal;
         this.oldVal = oldVal;
         this.updatefunc = updatefunc;
     }
     async doTransaction() {
-		const { data } = await this.updatefunc({variables: { _id: this._id, index: this.index, value: this.newVal }});
+		const { data } = await this.updatefunc({variables: { _id: this._id, oldVal: this.oldVal, newVal: this.newVal }});
 		return data;
     }
     async undoTransaction() {
-		const { data } = await this.updatefunc({variables: { _id: this._id, index: this.index, value: this.oldVal }});
+		const { data } = await this.updatefunc({variables: { _id: this._id, oldVal: this.newVal, newVal: this.oldVal }});
 		return data;
     }
 }

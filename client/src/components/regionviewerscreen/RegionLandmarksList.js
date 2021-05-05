@@ -6,11 +6,11 @@ const RegionLandmarksList = (props) => {
 	return (
 		<div className="region-landmarks-list">
 			{
-                props.landmarks &&
-                props.landmarks.map((landmark, index) => (
+                props.allLandmarks && props.landmarks &&
+                props.allLandmarks.map((landmark, index) => (
                     <RegionLandmarkEntry
-                        landmark={landmark} index={index} key={index++} deleteLandmark={props.deleteLandmark} updateLandmark={props.updateLandmark}
-                        setDeleteIndex={props.setDeleteIndex} setDeleteName={props.setDeleteName} toggleDeleteMapConfirmation={props.toggleDeleteMapConfirmation}
+                        landmark={landmark} landmarks={props.landmarks} key={index++} deleteLandmark={props.deleteLandmark} updateLandmark={props.updateLandmark}
+                        setDeleteName={props.setDeleteName} toggleDeleteMapConfirmation={props.toggleDeleteMapConfirmation}
                     />
                 ))
             }

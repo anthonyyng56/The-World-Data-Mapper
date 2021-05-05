@@ -92,14 +92,14 @@ export const ADD_LANDMARK = gql`
 `;
 
 export const DELETE_LANDMARK = gql`
-	mutation DeleteLandmark($_id: String!, $index: Int!) {
-		deleteLandmark(_id: $_id, index: $index) 
+	mutation DeleteLandmark($_id: String!, $landmark: String!) {
+		deleteLandmark(_id: $_id, landmark: $landmark) 
 	}
 `;
 
 export const UPDATE_LANDMARK = gql`
-	mutation UpdateLandmark($_id: String!, $index: Int!, $value: String!) {
-		updateLandmark(_id: $_id, index: $index, value: $value) 
+	mutation UpdateLandmark($_id: String!, $oldVal: String!, $newVal: String!) {
+		updateLandmark(_id: $_id, oldVal: $oldVal, newVal: $newVal) 
 	}
 `;
 

@@ -7,6 +7,13 @@ const RegionSpreadsheetEntry = (props) => {
     const [editLeader, setEditLeader] = useState(props.subregion.leader);
     const history = useHistory();
     let path = props.imgPath + props.regionName + '/' + props.subregion.name + ' Flag.png';
+    let firstLandmark = props.subregion.landmarks[0]
+    for (let i = 1; i < props.subregion.landmarks.length; i++) {
+        if (firstLandmark.toLowerCase() >= props.subregion.landmarks[i].toLowerCase()) {
+            firstLandmark = props.subregion.landmarks[i]
+        }
+    }
+
     let flagSrc;
     try {
         flagSrc = require(`../../images/${path}`)
@@ -191,7 +198,7 @@ const RegionSpreadsheetEntry = (props) => {
                 </div> 
                 :
                 <div className="entry-container col-3" onClick={openRegionViewer}>
-                    <div className="entry-col link-color">{props.subregion.landmarks[0]}...</div>
+                    <div className="entry-col link-color">{firstLandmark}...</div>
                 </div>  
             }
         </div>

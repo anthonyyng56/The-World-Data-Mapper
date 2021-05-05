@@ -30,8 +30,8 @@ const typeDefs = gql `
 		sortSubregionsByCategory(_id: String!, subregionField: [String]!): [String]
 		reorderSubregions(_id: String!, order: [String]!): [String]
 		addLandmark(_id: String!, value: String!, index: Int!): Int
-		deleteLandmark(_id: String!, index: Int!): Boolean
-		updateLandmark(_id: String!, index: Int!, value: String!): Boolean
+		deleteLandmark(_id: String!, landmark: String!): Int
+		updateLandmark(_id: String!, oldVal: String!, newVal: String!): Boolean
 		selectMap(_id: String!): Boolean
 	}
     input FieldInput {

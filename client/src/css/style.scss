@@ -366,3 +366,8 @@ html, body {
 .no-access-return-button {
     font-size: 20px;
 }
+
+.child-landmark {
+    pointer-events: none;
+    color: rgb(163, 163, 163); 
+}

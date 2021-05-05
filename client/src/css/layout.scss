@@ -385,7 +385,14 @@ body {
 }
 
 .flag-image {
-    height: 20px;
+    height: 30px;
+}
+
+.flag-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
 }
 
 .region-viewer-container {
@@ -532,7 +539,7 @@ body {
 }
 
 .region-landmarks-entry-name {
-    width: calc(100% - 60px);
+    width: calc(100% - 70px);
     padding: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -619,4 +626,8 @@ body {
 
 .no-access-return-button {
     margin-bottom: 40px; 
+}
+
+.child-landmark-name {
+    margin-left: 50px;
 }
