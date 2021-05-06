@@ -221,7 +221,7 @@ module.exports = {
 			let subregion_ids = found.subregion_ids;
 			let sortedNormal = true;
 			for (let i = 0; i < subregionField.length-1; i++) {
-				if (subregionField[i] > subregionField[i+1]) {
+				if (subregionField[i].toLowerCase() > subregionField[i+1].toLowerCase()) {
 					sortedNormal = false;
 					break
 				}
@@ -234,7 +234,7 @@ module.exports = {
 			} else {
 				for (let i = 0; i < subregion_ids.length; i++) {
 					for (let j = 0; j < subregion_ids.length - 1; j++) {
-						if (subregionField[j] > subregionField[j+1]) {
+						if (subregionField[j].toLowerCase() > subregionField[j+1].toLowerCase()) {
 							let tempName = subregionField[j];
 							subregionField[j] = subregionField[j+1];
 							subregionField[j+1] = tempName;
